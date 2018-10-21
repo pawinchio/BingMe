@@ -1,0 +1,269 @@
+@import 'index.css';
+@import 'searchForm.css';
+
+@font-face{
+    font-family: 'Gotham Rounded Bold';
+    src: url('../assets/fonts/Gotham Rounded Bold.otf');
+}
+
+body{
+    font-family: 'Kanit';
+    background: white;
+    color: black;
+}
+
+.form-control:focus{
+    outline:none !important;
+    box-shadow: none;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+.main-wrap{
+    display: block;
+}
+
+#sidebar{
+    background: white;
+    width: 25vw;
+    min-width: 150px;
+    max-width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -100vw;
+    z-index: 99;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition:all 0.5s ease-in-out;
+}
+
+#sidebar.active{
+    left: 0;
+}
+
+.sidebar-header{
+    background: white;
+    color: black;
+    text-transform: uppercase;
+    margin: auto;
+    text-align: center;
+    padding: 1.2vh;
+    font-family: 'Gotham Rounded Bold';
+}
+
+.sidebar-element > p{
+    text-transform: uppercase;
+    margin: auto;
+    text-align: center;
+    padding: 0.2vh;
+    background: #f3f4f5;
+    color: darkgray;
+    min-height: 30px;
+    line-height: 2vw;
+    padding: 10px 0;
+}
+
+.sidebar-element > p:hover{
+    color: #00FF89;
+}
+
+.overlay {
+    top: 0;
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 98;
+    opacity: 0;
+}
+
+.overlay.active{
+    display: block;
+    opacity: 1;
+}
+
+#dismiss{
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    transition: all 0.15s ease-in-out;
+    -webkit-transition:all 0.15s ease-in-out;
+}
+
+#dismiss.active{
+    right: -35px;
+}
+
+#dismiss > i{
+    color: white;
+    font-size: 1.5rem;
+}
+
+.menubar{
+    background: white;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 97;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.3s ease-in;
+}
+.menubar.black{
+    background: black;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.3s ease-in;
+}
+.menuicon{
+    color: #00FF89;
+    vertical-align: middle;
+    stroke-width: 3;
+}
+.menubar > #logo{
+    color: #00FF89;
+    -webkit-text-stroke: 1px rgba(0,0,0,0.17);
+}
+
+.menubar > .menu-element{
+    margin: auto 1rem;
+    text-transform: uppercase;
+    font-family: 'Gotham Rounded Bold';
+    font-size: 2rem;
+    
+    letter-spacing: -3px;
+}
+.menubar > .menu-element > i {
+    color: #00FF89;
+    font-size: 2rem;
+}
+
+#content{
+    margin-top: 4rem;
+}
+
+.container-fluid{
+    margin: 0;
+}
+
+.input-group-text{
+    margin-bottom: 17px;
+}
+
+.modal-body > .input-group-text > p > a{
+    color: #5168EA;
+}
+
+.input-group-text > p{
+    margin: 0 0 0 5px;
+    font-size: 0.6rem;
+}
+
+.modal{
+    color: white;
+    font-family: 'Kanit';
+}
+
+.modal.show .modal-dialog{
+    width: 300px;
+    margin: auto;
+    padding-top: 30vh;
+}
+
+.modal-dialog-login{
+    max-width: 300px;
+}
+
+.modal.show .modal-dialog-register{
+    padding-top: 19vh;
+}
+
+.modal-content{
+    border-radius: 15px;
+    background: white;
+    color: black;
+    border: none;
+}
+
+.modal-body{
+    padding: 0.2rem 2rem;
+    color: #00FF89;
+    text-transform: uppercase;
+    font-family: 'Gotham Rounded Bold';
+    font-weight: 100;
+    font-size: 0.8rem;
+}
+
+.modal-body >.form-group> .form-control{
+    font-size: 0.7rem;
+}
+
+.modal-header{
+    background: white;
+    border-radius: 15px 15px 0 0;
+    padding: 6px;
+    border-bottom: 0;
+}
+
+.modal-header > #register + .close {
+    position: absolute;
+    top: 5.5%;
+    left: 89%;
+    width: 22px;
+    height: 22px;
+    color: black;
+    padding: 0;
+}
+
+.modal-header > .close{
+    position: absolute;
+    top: 12%;
+    left: 89%;
+    width: 22px;
+    height: 22px;
+    color: black;
+    padding: 0;
+}
+
+.modal-header > h5{
+    font-family: 'Gotham Rounded Bold','Kanit';
+    color: black;
+    margin: 0 auto;
+}
+
+.modal-footer{
+    border-radius: 0 0 15px 15px;
+    border-top: 0;
+    padding: 0;
+    background: #00FF89;
+}
+
+.modal-footer > div {
+    margin: 10px auto;
+    color: black;
+    text-transform: uppercase;
+}
+
+.modal-footer > div > .login-icon{
+    width: 25px;
+    height: 25px;
+    vertical-align: middle
+}
+
+
+
+.modal-body >.form-group > label{
+    margin: 0;
+}
+
+.modal-body >.form-group> .form-control {
+    border: 0 solid #ced4da;
+    border-bottom: 1px solid #00FF89;
+    border-radius: 0;
+}
+
+
+

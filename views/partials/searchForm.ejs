@@ -1,0 +1,45 @@
+<div id="searchForm">
+    <div class="row">
+        <div class="col-lg-4 col-md-12" id="searchList">
+            <form id="searchbar">
+                <input type="search" class="form-control controls" id="searchInput" placeholder="ค้นหาร้านหรือเมนูที่คุณต้องการ" onkeydown="if (event.keyCode == 13) {return false;}">
+                <img class="search-load" src="/assets/images/loading.gif" alt="">
+            </form>
+            <div id="searchchoice">
+                <div id="searchResult">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8 col-md-12" id="searchMap">
+        <div id="map"></div>
+        <div class="choice-detail" style="padding:3px 6px; display:none;">
+            <div style="border-bottom: 0.5px solid lightgray;">ระยะทาง: <span id="choice-distance"></span></div>
+            <div style="">เรตติง: <span id="choice-rating"></span></div>
+        </div>
+        <script src="js/map-logic.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdYyhCUCpJwLDmuMnlePmtBIwj76H3MIg&libraries=places&callback=initMap"></script>
+        </div>
+    </div>
+</div>
+
+<template id="choice-template">
+  <div class="choice d-flex" style="border-radius: 10px;
+    margin: 15px 10px;
+    box-shadow: 0px 3px 7px grey;
+    padding: 6px;">
+    
+    <div class="mr-auto p-2" style="width: 59%; text-overflow: ellipsis;
+    overflow-x: hidden; font-size: smaller; margin: auto; white-space: initial;">
+            <div class="choice-name" style="font-size:1.2rem;"></div>
+            <div>
+                <td >เวลาเดินทาง: <span class="choice-duration"></span></td>
+            </div>
+    </div>
+    <table class="p-2" style="margin:auto;">
+        <tr><th><span class="choice-fee"></span>$</th></tr>
+        <tr><td>ค่าบริการ</td></tr>
+    </table>
+    <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2"></i>
+  </div>
+</template>

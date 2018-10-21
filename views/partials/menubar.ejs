@@ -1,0 +1,14 @@
+<div class="menubar d-flex justify-content-between">
+    <div id="sidebarCollapse" class="menu-element"><i class="menuicon" data-feather="menu"></i></div>
+    <div class="menu-element" id="logo">bingme</div>
+    <div class="menu-element">
+        <%try{ if(user.role=='hunter') {%>
+            <i id="searchCollapse" class="menuicon active" data-feather="crosshair"></i>
+        <% }else{ %>
+        <i id="searchCollapse" class="menuicon active" data-feather="search"></i>
+        <%}}catch(e){%>
+        <i id="searchCollapse" class="menuicon active" data-feather="search"></i>
+        <%}%>
+        <i id="searchDismiss" class="menuicon" data-feather="x"></i>
+    </div>
+</div>

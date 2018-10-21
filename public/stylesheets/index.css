@@ -1,0 +1,209 @@
+.login-button{
+    margin-left: 1rem;
+}
+
+.section.row{
+    margin-bottom: 2rem;
+    /* padding: 0 10px; */
+}
+
+.section.row > h4{
+    font-size: 6.3vw;
+}
+
+@media screen and (min-width: 450px){
+    .section.row > h4{
+        font-size: 1.5rem;
+    }
+}
+.scrollcard{
+    width: 100vw;
+    overflow: auto;
+    white-space: nowrap;
+    padding-top: 5px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scrollcard > .card > img{
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
+    border-style: none;
+    border-radius: 10px;
+    filter: blur(1.5px);
+    transform: scale(1.05);
+}
+
+.scrollcard > .usercard{
+    width: 200px;
+    border: 0.5px solid #707070;
+}
+
+.scrollcard > .usercard > table{
+    text-align: left;
+    position: absolute;
+    top: 22%;
+    left: 35%;
+}
+
+.scrollcard > .usercard > table > tbody > tr > th{
+    font-size: small;
+    white-space: normal;
+}
+
+.scrollcard > .usercard > table > tbody > tr > td{
+    padding-top: 5%;
+    padding-right: 5%;
+}
+
+.scrollcard > .usercard > #usercard-pic{
+    width: 50px;
+    height: 50px;
+    filter: none;
+    border-radius: 10px;
+    top: 19%;
+    position: absolute;
+    left: 8%;
+}
+
+.scrollcard > .statcard{
+    width: 120px;
+    border-radius: 15px;
+    border: 0.5px solid #707070;
+}
+.scrollcard > .statcard > img{
+    position: absolute;
+    left: -2px;
+    width: 105%;
+    filter: none;
+    height: inherit;
+    top: -1px;
+}
+
+.scrollcard > .statcard > p {
+    position: absolute;
+    top: 46%;
+    white-space: normal;
+    text-align: right;
+    color: white;
+    line-height: 1;
+    font-size: medium;
+    margin-right: 11%;
+    filter: drop-shadow(0 1px 0.5px black);
+}
+
+.scrollcard > .pendingcard{
+    border-radius: 15px;
+    border: 0.5px solid #707070;
+    width: 100px;
+}
+
+.scrollcard > .pendingcard > div {
+    background: #d40023;
+    height: 35px;
+    color: white;
+    border-bottom: 0.5px solid #707070;
+}
+
+.scrollcard > .pendingcard > .card-icon{
+    position: absolute;
+    color: #d40023;
+    font-size: 20px;
+    top: 8px;
+    left: 10px;
+}
+.scrollcard > .pendingcard > #eye{
+    color: white;
+    top: 2%;
+    width: 25px;
+    left: 8%;
+}
+.scrollcard > .pendingcard > #package{
+    position: absolute;
+    top: 53%;
+    left: 61%;
+}
+
+.scrollcard > .pendingcard > img{
+    width: auto;
+    filter: none;
+}
+
+.scrollcard > .pendingcard > p{
+    position: absolute;
+    top: 5%;
+    left: 39%;
+    white-space: normal;
+    text-align: right;
+    color: white;
+    line-height: 1;
+    font-size: small;
+    width: 50px;
+    filter: drop-shadow(0 1px 0.5px black);
+}
+
+.scrollcard > .adcard{
+    width: 200px;
+    height: 120px;
+    /* border: 1px solid #707070; */
+    /* filter: drop-shadow(0 0px 1px black); */
+}
+
+.scrollcard > .adcard > span{
+    position: absolute;
+    top: 7%;
+    left: 14%;
+    color: white;
+    text-align: right;
+    line-height: 1;
+    width: 160px;
+    white-space: initial;
+    filter: drop-shadow(0 1px 1px black);
+}
+
+.section > ol{
+    padding: 0;
+    width: 100%;
+    font-size: 1.5rem;
+}
+
+
+
+.card{
+    display: inline-block;
+    background: white;
+    color: black;
+    height: 85px;
+    margin: 0 3px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+}
+
+.list-card{
+    overflow: unset;
+    height: fit-content;
+}
+
+.card > li{
+    border-bottom: 1px solid darkgray;
+    padding: 10px 15px;
+    font-size:initial; 
+}
+
+.card > li > table > tbody> tr > th{
+    color: #00FF89;
+}
+.card > li > table > tbody> tr > td{
+    font-size: 0.8rem;
+    padding: 0;
+}
+
+.card > li > svg, span{
+    margin: auto 0;
+}
+.card > li > svg{
+    width: 40px;
+    height: 40px;
+    stroke-width: 2;
+}

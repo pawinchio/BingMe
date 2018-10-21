@@ -1,0 +1,73 @@
+<% include partials/header %>
+    <div class="container-fluid row">
+        <div class="col-md-2 col-sm-12"></div>
+        <div class="container-fluid col-md-8 col-sm-12" style="padding: 0;">
+            <div class="section user-section row">
+                <h4 class="col-12">หิวไหม, ทานอะไรมาหรือยัง ?</h4>
+                <%if(user){%>
+                <div class="scrollcard">
+                    <div class="card usercard">
+                        <img id="usercard-pic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzaLMnex1QwV83TBQgxLTaoDAQlFswsYy62L3mO4Su-CMkk3jX" alt="">
+                        <table>
+                            <tr>
+                                <th id="usercard-name"><%= user.username %></th>
+                            </tr>
+                            <tr>
+                                <td id="usercard-logout">ออกจากระบบ</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card statcard">
+                        <img src="../assets/images/Path_62.png" alt="">
+                        <img src="../assets/images/Path_61.png" alt="">
+                        <p>Statistic & History</p>
+                    </div>
+                    <div class="card pendingcard">
+                        <div></div>
+                        <i class="card-icon" id="eye" data-feather="eye"></i>
+                        <i class="card-icon" id="package" data-feather="package"></i>
+                        <p>Pending Order</p>
+                    </div>  
+                </div>
+                <%}else{ %>
+                <button type="button" class="btn btn-dark btn-sm col-3 login-button" data-toggle="modal" data-target="#loginModal">เข้าสู่ระบบ</button>
+                <% } %>
+                
+            </div>
+
+            <div class="section ad-section row">
+                <h4 class="col-12">ร้านค้าแนะนำ</h4>
+                <div class="scrollcard">
+                    <%# for loop render %>
+                    <div class="card adcard"><img src="https://www.brandbuffet.in.th/wp-content/uploads/2017/12/JayFai-Photo-Credit-www.siam2nite.com_.jpg" alt=""><span><b>Dummy Text</b><p>Dummy Description</p></span></div>
+                    <div class="card adcard"><img src="http://bk-review.com/wp-content/uploads/2017/05/Sweet-Cafe%CC%81-%E0%B9%80%E0%B8%AA%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F...%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A7%E0%B8%B2%E0%B8%99%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%94%E0%B8%B1%E0%B8%87-12-of-47.jpg" alt=""><span><b>Dummy Text</b><p>Dummy Description</p></span></div>
+                    <div class="card adcard"><img src="http://bk-review.com/wp-content/uploads/2017/05/Sweet-Cafe%CC%81-%E0%B9%80%E0%B8%AA%E0%B8%B4%E0%B8%A3%E0%B9%8C%E0%B8%9F...%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%AB%E0%B8%A7%E0%B8%B2%E0%B8%99%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%94%E0%B8%B1%E0%B8%87-39-of-47.jpg" alt=""><span><b>Dummy Text</b><p>Dummy Description</p></span></div>  
+                    <div class="card adcard"><img src="http://www.reviewnowz.com/wp-content/uploads/2017/11/Phetsamone-Boat-Noodle-1-770x385.jpg" alt=""><span><b>Dummy Text</b><p>Dummy Description</p></span></div>
+                    <div class="card adcard"><img src="https://media.timeout.com/images/103723258/630/472/image.jpg" alt=""><span><b>Dummy Text</b><p>Dummy Description</p></span></div>
+                    <div class="card adcard"><img src="https://pbs.twimg.com/media/CxIYd3XVEAACPd5.jpg" alt=""><span><b>Dummy Text</b><p>Dummy Description</p></span></div>
+                    <div class="card adcard"><img src="https://www.ryoiireview.com/upload/article/201702/1485943412_27b0ecf4567cbcdace46dff360a6e13e.jpg" alt=""><span><b>Dummy Text</b><p>Dummy Description</p></span></div>
+                </div>
+            </div>
+
+            <div class="section recommend-section row">
+                <h4 class="col-12">คิดไม่ออก ทานอะไรดี</h4>
+                <ol class="card list-card">
+                    <%# for loop render %>
+                    <% let i=0; for(i=0; i<20; i++){ %>
+                    <li class="d-flex bd-highlight">
+                        <span class="p-2 flex-grow-1 bd-highlight">List Element</span>
+                        <table class="p-2 bd-highlight">
+                            <tr><th>0.00$</th></tr>
+                            <tr><td>ราคาเฉลี่ย</td></tr>
+                        </table>
+                        <i data-feather="arrow-right" class="p-2 bd-highlight"></i>
+                    </li>
+                    <% } %>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-12"></div>
+        
+    </div>
+    
+<% include partials/footer %>

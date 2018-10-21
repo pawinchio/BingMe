@@ -40,7 +40,7 @@ app.get('/logout', (req,res) => {
 });
 
 app.get('/dashboard', (req,res) => {
-        // Comment by MArk
+        // Comment manipulated by Roy
 });
 
 app.listen(5500, () => console.log('Server run on port 5500'));

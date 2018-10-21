@@ -40,7 +40,7 @@ app.get('/logout', (req,res) => {
 });
 
 app.get('/dashboard', (req,res) => {
-        // InwBoyyyyyyyyyyyyyyyyyyyyyyyy
+        // This is InwROYYYYYYY
 });
 
 app.listen(5500, () => console.log('Server run on port 5500'));

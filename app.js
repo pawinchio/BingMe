@@ -39,5 +39,7 @@ app.get('/logout', (req,res) => {
         res.redirect('/');
 });
 
+
 //comment by Mark
+
 app.listen(5500, () => console.log('Server run on port 5500'));

@@ -9,7 +9,7 @@ const   express = require('express'),
 
 const   UserAuth = require('./models/userAuth');
 
-mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db');
+mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db',{ useNewUrlParser: true } );
 app.set('view engine','ejs');
 app.use(require('express-session')({
         secret: 'bing me is about eating',

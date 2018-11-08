@@ -57,5 +57,11 @@ $(document).ready(function () {
         }, 700);
     });
     
+    // var myCarousel = new floatingCarousel('.scrollcard',{
+    //     autoScroll : true,
+    //     autoScrollDirection : 'left',
+    //     autoScrollSpeed : 5000,
+    //     scrollSpeed : 'medium',
+    // });
 });
 

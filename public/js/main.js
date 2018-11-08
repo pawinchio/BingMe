@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    killInteractBoard();
     $('#dismiss, .overlay').on('click', function () {
         // hide sidebar
         console.log("click");
@@ -32,6 +33,8 @@ $(document).ready(function () {
         $('#searchCollapse').addClass('active');
         $('#searchInput').val('');
         $('#searchResult').html('');
+
+        killInteractBoard();
     });
 
     $('#searchCollapse').on('click', function () {
@@ -56,12 +59,7 @@ $(document).ready(function () {
             $('.search-load').css({"display":"none"});
         }, 700);
     });
-    
-    // var myCarousel = new floatingCarousel('.scrollcard',{
-    //     autoScroll : true,
-    //     autoScrollDirection : 'left',
-    //     autoScrollSpeed : 5000,
-    //     scrollSpeed : 'medium',
-    // });
 });
+
+
 

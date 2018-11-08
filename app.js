@@ -1,5 +1,7 @@
 const   express = require('express'),
         app = express(),
+        server = require('http').createServer(app),
+        io = require('socket.io').listen(server),
         mongoose = require('mongoose'),
         ejs = require('ejs'),
         passport = require('passport'),
@@ -43,4 +45,20 @@ app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });
 
-app.listen(5500, () => console.log('Server run on port 5500'));
+var interact = io.of('/interact');
+interact.on('connection', function(client){
+        client.on('connectRoom', function(roomName, clientID){
+                //Check if clientID have permission to see roomName
+                client.join(roomName);
+                console.log(roomName+" room is created!");
+                client.room = roomName;
+                interact.emit('ping','server is hello');
+        });
+        client.on('disconnectRoom', function(roomName, clientID){
+                //Check if clientID have permission to see roomName
+                client.leave(roomName);
+                console.log(roomName+" room is leaved!");
+        });
+});
+
+server.listen(5500, () => console.log('Server run on port 5500'));

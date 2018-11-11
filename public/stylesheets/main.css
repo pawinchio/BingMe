@@ -240,6 +240,8 @@ body{
     border-top: 0;
     padding: 0;
     background: #00FF89;
+    width: 100%;
+    border: none;
 }
 
 .modal-footer > div {
@@ -264,6 +266,21 @@ body{
     border: 0 solid #ced4da;
     border-bottom: 1px solid #00FF89;
     border-radius: 0;
+}
+
+#errorArea{
+    display: none;
+    color: red;
+    font-size: 0.5rem;
+    margin: 5px auto;
+    border: 1px solid red;
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.btn-sm{
+    padding: .05rem .5rem;
+    width: 100%;
 }
 
 

@@ -5,10 +5,11 @@
                 <input type="search" class="form-control controls" id="searchInput" placeholder="ค้นหาร้านหรือเมนูที่คุณต้องการ" onkeydown="if (event.keyCode == 13) {return false;}">
                 <img class="search-load" src="/assets/images/loading.gif" alt="">
             </form>
-            <div id="searchArrow">
-                    <i style="margin:auto;" data-feather="chevron-up"></i>
+            <div id="searchArrow" class="up">
+                    <i style="margin:auto;" id='upArrow' data-feather="chevron-up" display='none'></i>
+                    <i style="margin:auto;" id='downArrow' data-feather="chevron-down" display='block'></i>
             </div>
-            <div id="searchchoice">
+            <div id="searchchoice" class="up">
                 <div id="searchResult">
                     
                 </div>

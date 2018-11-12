@@ -56,6 +56,7 @@
     position: absolute;
     overflow: auto;
     white-space: nowrap;
+    transition: all 0.3s ease-in-out;
 }
 #searchForm > .row > #searchList > #searchchoice > #seachResult > .choice:active{
     border: 1px solid black;
@@ -106,10 +107,22 @@
         background: white;
         width: 100vw;
         height: 41vh;
-        bottom: 6%;
+        bottom: -17%;
         z-index: 1;
         background-color: #1d232821;
     }
+    #searchForm > .row > #searchList > #searchchoice.up{
+        bottom: 6%;
+    }
+    #searchArrow{
+        display: block!important;
+    }
+
+    #map + .choice-detail{
+        left: 34% !important;
+        top: 32%;
+    }
+    
 }
 
 #map {
@@ -138,6 +151,7 @@
 }
 
 #searchArrow{
+    display: none;
     background-color: #1d232821;
     width: 10%;
     position: absolute;
@@ -145,6 +159,12 @@
     text-align: center;
     height: 32px;
     border-radius: 10px 10px 0 0;
-    top: 48.7%;
     z-index: 5;
+    top: 71.6%;
+    transition: all 0.3s ease-in-out;
+}
+
+#searchArrow.up{
+    top: 48.7%;
+
 }

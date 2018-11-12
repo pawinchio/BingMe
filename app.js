@@ -32,7 +32,7 @@ passport.deserializeUser(UserAuth.deserializeUser());
 app.get('/', (req,res) => {
         let errSent = null;
         if(Object.keys(req.query).length > 0) errSent = req.query;
-        console.log(req.user);
+        // console.log(req.user);
         if(req.user){
                 res.render('index',{
                         user: req.user,
@@ -48,7 +48,13 @@ app.get('/', (req,res) => {
 app.post('/register', (req,res) => {
         let input = req.body;
         //Let the Passport.js handle the registration
-        UserAuth.register(new UserAuth({username: input.username}), input.password, (err, user) => {
+        UserAuth.register(new UserAuth({
+                username: input.username,
+                role: input.role,
+                isFirst: true,
+                isActivated: false,
+                userDataId: null
+        }), input.password, (err, user) => {
                 if(err){
                         return res.redirect(url.format({
                                 pathname:"/",
@@ -66,14 +72,21 @@ app.post('/register', (req,res) => {
 });
 app.post('/login', passport.authenticate('local',{
         successRedirect: '/',
-        failureRedirect: '/'
+        failureRedirect: url.format({
+                pathname:"/",
+                query: {
+                        errorTopic: 'Login Failed',
+                        errorDesc: 'Username / Password was invalid'
+                }
+        })
 }),(req,res)=>{
-        console.log(req.body);
+        
 });
 
 app.post('/logout', (req,res) => {
         req.logout();
         res.redirect('/');
+        if(req.user==undefined)console.log('User Logged-off');
 });
 
 app.get('/dashboard', (req,res) => {

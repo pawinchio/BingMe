@@ -129,7 +129,7 @@ app.post('/activate', (req,res) => {
                                 }
                         });
                 }).catch(err => {
-                        console.log('Code Saving Failed');
+                        console.log('Code Saving Failed'+err);
                 });     
         }
         res.redirect('/');
@@ -143,29 +143,31 @@ app.get('/activate', (req,res) => {
         //User click link in email to verify
         let receivedCode = req.query.code;
         UserActivation.findOne({code: receivedCode}, (err,entry) => {
-                if(err!=null){
-                        UserAuth.findOne({_id:entry.userId}, (err,user)=>{
-                                user.isActivated = true;
-                                user.save();
-                        });
-                        entry.remove(()=>{
-                                res.redirect(url.format({
-                                        pathname:"/",
-                                        query: {
-                                                errorTopic: 'Account Activated',
-                                                errorDesc: 'Account activation success!'
-                                        }
-                                }));
-                        });
-                }
-                else{
+                if(!entry){
                         res.redirect(url.format({
                                 pathname:"/",
                                 query: {
-                                        errorTopic: 'Account Activation Failed',
-                                        errorDesc: 'There\'s an error happened! Please contact our Customer Support team'
+                                        errorTopic: 'Activation Failed',
+                                        errorDesc: 'Your activation link is not exist or expired'
                                 }
                         }));
+                }
+                else{
+                        UserAuth.findOne({_id:entry.userId}, (err,user)=>{
+                                if(user){
+                                        user.isActivated = true;
+                                        user.save();
+                                        entry.remove(()=>{
+                                                res.redirect(url.format({
+                                                        pathname:"/",
+                                                        query: {
+                                                                errorTopic: 'Account Activated',
+                                                                errorDesc: 'Account activation success!'
+                                                        }
+                                                }));
+                                        });
+                                }
+                        });
                 }
         });
 });

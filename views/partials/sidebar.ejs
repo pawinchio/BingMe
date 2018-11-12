@@ -7,19 +7,17 @@
     </p>
         <form id="logoutForm" action="/logout" method="post">   
         </form>
-    <div id='logoutBtn' class="sidebar-element"><p onclick="logout()" display="none">ออกจากระบบ</p></div>
+    <%if(user){%>
+    <div id='logoutBtn' class="sidebar-element"><p onclick="logout()">ออกจากระบบ</p></div>
+    <%}else{%>
     <div id='registerBtn' class="sidebar-element" data-toggle="modal" data-target="#registerModal"><p>สมัครสมาชิก</p></div>
     <div id='loginBtn' class="sidebar-element" data-toggle="modal" data-target="#loginModal"><p>เข้าสู่ระบบ</p></div>
+    <%}%>
     <div class="sidebar-element"><p>ติดต่อเรา</p></div>
 </div>
 <div class="overlay"></div>
 
 <script>
-    <%if(user){%>
-        $('#logoutBtn').show();
-        $('#registerBtn').hide();
-        $('#loginBtn').hide();
-    <%}%>
     const logout = () =>{
         $('#logoutForm').submit();
     }

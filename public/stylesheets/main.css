@@ -173,6 +173,10 @@ body{
     margin: auto;
     padding-top: 30vh;
 }
+.modal.show#activateModal .modal-dialog{
+    width: 90vw;
+}
+
 
 .modal-dialog-login{
     max-width: 300px;

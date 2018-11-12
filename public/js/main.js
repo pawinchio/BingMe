@@ -41,10 +41,9 @@ $(document).ready(function () {
 
         initMap();
 
-        $('#searchchoice').addClass('up');
-        $('#searchArrow').addClass('up');
-        $('#upArrow').hide();
-        $('#downArrow').show();
+        $('#choiceContainer').removeClass('up');
+        $('#upArrow').show();
+        $('#downArrow').hide();
 
         killInteractBoard();
     });
@@ -74,14 +73,12 @@ $(document).ready(function () {
 
     $('#searchArrow').click(()=>{
         if ($(window).width() < 960) {
-            if($('#searchArrow')[0].className == 'up'){
-                $('#searchchoice').removeClass('up');
-                $('#searchArrow').removeClass('up');
+            if($('#choiceContainer')[0].className == 'up'){
+                $('#choiceContainer').removeClass('up');
                 $('#upArrow').show();
                 $('#downArrow').hide();
             }else{
-                $('#searchchoice').addClass('up');
-                $('#searchArrow').addClass('up');
+                $('#choiceContainer').addClass('up');
                 $('#upArrow').hide();
                 $('#downArrow').show();
             }

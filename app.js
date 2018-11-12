@@ -8,9 +8,12 @@ const   express = require('express'),
         passport = require('passport'),
         bodyParser = require('body-parser'),
         LocalStrategy = require('passport-local'),
-        passportLocalMongoose = require('passport-local-mongoose');
+        passportLocalMongoose = require('passport-local-mongoose'),
+        nodemailer = require('nodemailer'),
+        uuid = require('uuid/v1');;
 
 const   UserAuth = require('./models/userAuth');
+const   UserActivation = require('./models/userActivation');
 
 mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db',{ useNewUrlParser: true } );
 app.set('view engine','ejs');
@@ -29,10 +32,19 @@ passport.use(new LocalStrategy(UserAuth.authenticate()))
 passport.serializeUser(UserAuth.serializeUser());
 passport.deserializeUser(UserAuth.deserializeUser());
 
+let bingmeMail = 'htraexd@gmail.com'
+var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: bingmeMail,
+          pass: 'HTRAExd123'
+        }
+      });
+
 app.get('/', (req,res) => {
         let errSent = null;
         if(Object.keys(req.query).length > 0) errSent = req.query;
-        // console.log(req.user);
+        
         if(req.user){
                 res.render('index',{
                         user: req.user,
@@ -50,6 +62,8 @@ app.post('/register', (req,res) => {
         //Let the Passport.js handle the registration
         UserAuth.register(new UserAuth({
                 username: input.username,
+                email: input.registerEmail,
+                phone: input.registerPhone,
                 role: input.role,
                 isFirst: true,
                 isActivated: false,
@@ -87,6 +101,70 @@ app.post('/logout', (req,res) => {
         req.logout();
         res.redirect('/');
         if(req.user==undefined)console.log('User Logged-off');
+});
+
+app.post('/activate', (req,res) => {
+        //User request verification email
+        if(req.body.email.toLowerCase() == req.user.email.toLowerCase()){
+                var code = uuid();
+                var newActivation = new UserActivation({
+                        userId: req.user._id,
+                        code: code
+                });
+                newActivation.save().then(()=>{
+                        var mailOptions = {
+                                from: bingmeMail,
+                                to: req.body.email,
+                                subject: '[BINGME] Verification Email'
+                        };
+                        mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+code);
+                        transporter.sendMail(mailOptions, function(error, info){
+                                if (error) {
+                                  console.log(error);
+                                } else {
+                                  console.log('Email sent: ' + info.response);
+                                }
+                        });
+                }).catch(err => {
+                        console.log('Code Saving Failed');
+                });     
+        }
+        res.redirect('/');
+});
+
+const activateEmailTemplate_th = (name, link)=>{
+        return '<link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet"><div style="font-family:\'Kanit\'"><p>สวัสดี '+name+'</p><p style="text-indent: 50px;">ขอขอบคุณสำหรับการสมัครสมาชิกของคุณกับ BINGME เพื่อเริ่มต้นใช้งานบัญชีของคุณอย่างเต็มรูปแบบ โปรดคลิกที่ลิงก์ด้านล่างนี้เพื่อยืนยันอีเมลของคุณ</p><a href="'+link+'">'+link+'</a></div>'
+}
+
+app.get('/activate', (req,res) => {
+        //User click link in email to verify
+        let receivedCode = req.query.code;
+        UserActivation.findOne({code: receivedCode}, (err,entry) => {
+                if(err!=null){
+                        UserAuth.findOne({_id:entry.userId}, (err,user)=>{
+                                user.isActivated = true;
+                                user.save();
+                        });
+                        entry.remove(()=>{
+                                res.redirect(url.format({
+                                        pathname:"/",
+                                        query: {
+                                                errorTopic: 'Account Activated',
+                                                errorDesc: 'Account activation success!'
+                                        }
+                                }));
+                        });
+                }
+                else{
+                        res.redirect(url.format({
+                                pathname:"/",
+                                query: {
+                                        errorTopic: 'Account Activation Failed',
+                                        errorDesc: 'There\'s an error happened! Please contact our Customer Support team'
+                                }
+                        }));
+                }
+        });
 });
 
 app.get('/dashboard', (req,res) => {

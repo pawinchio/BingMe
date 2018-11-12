@@ -103,14 +103,8 @@ var displaySuggestions = function(predictions) {
       });
 
       templ.querySelector('.choice-fee').innerText = '0.00';
-      templ.querySelector('.choice').addEventListener('click', function(){
+      templ.querySelector('.choice').addEventListener('click', function(e){
         
-        if ($(window).width() < 960) {
-            $('#searchchoice').removeClass('up');
-            $('#searchArrow').removeClass('up');
-            $('#upArrow').show();
-            $('#downArrow').hide();
-        }
         $('.choice').css({
             "background":"white",
             "color": "unset",
@@ -122,6 +116,9 @@ var displaySuggestions = function(predictions) {
         calculateAndDisplayRoute(prediction.place_id);
       })
       target.appendChild(templ);
+      $('#choiceContainer').addClass('up');
+        $('#upArrow').hide();
+        $('#downArrow').show();
       feather.replace({'min-width': '50px','width': '50px','height': '50px','stroke-width': '3'});
     });
 };

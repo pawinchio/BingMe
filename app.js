@@ -7,7 +7,8 @@ const   express = require('express'),
         ejs = require('ejs'),
         passport = require('passport'),
         bodyParser = require('body-parser'),
-        Eater  = require("./models/eater"),
+        eater  = require("./models/eater"),
+        hunter  = require("./models/hunter"),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose');
 

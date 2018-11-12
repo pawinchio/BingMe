@@ -8,8 +8,7 @@ var myinitialLocation=null;
 var map = null;
 // Initialize and add the map
 function renderMap(position) {
-// The location of Uluru
-    console.log(position);
+    // console.log(position);
     myinitialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     
     // var uluru = {lat: -25.344, lng: 131.036};
@@ -24,7 +23,8 @@ function renderMap(position) {
             fullscreenControl: false,
             streetViewControl: false,
             zoomControl: false
-        });
+    });
+    map.panBy(0, 150)
     var marker = new google.maps.Marker({
         position: myinitialLocation,
         map: map,
@@ -104,12 +104,20 @@ var displaySuggestions = function(predictions) {
 
       templ.querySelector('.choice-fee').innerText = '0.00';
       templ.querySelector('.choice').addEventListener('click', function(){
+        
+        if ($(window).width() < 960) {
+            $('#searchchoice').removeClass('up');
+            $('#searchArrow').removeClass('up');
+            $('#upArrow').show();
+            $('#downArrow').hide();
+        }
         $('.choice').css({
-            "background":"unset",
-            "color": "unset"
+            "background":"white",
+            "color": "unset",
         });
         this.style.background="black";
         this.style.color="#00FF89";
+        $('#searchResult').scrollTo(this);
         showChoiceDetail(this);
         calculateAndDisplayRoute(prediction.place_id);
       })

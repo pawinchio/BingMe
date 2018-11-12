@@ -1,7 +1,7 @@
 $(document).ready(function () {
+    killInteractBoard();
     $('#dismiss, .overlay').on('click', function () {
         // hide sidebar
-        console.log("click");
         $('#sidebar').removeClass('active');
         // hide overlay
         $('.overlay').removeClass('active');
@@ -32,6 +32,21 @@ $(document).ready(function () {
         $('#searchCollapse').addClass('active');
         $('#searchInput').val('');
         $('#searchResult').html('');
+        $('#map + .choice-detail').hide();
+
+        if(directionsDisplay != null) {
+            directionsDisplay.setMap(null);
+            directionsDisplay = null;
+        }
+
+        initMap();
+
+        $('#searchchoice').addClass('up');
+        $('#searchArrow').addClass('up');
+        $('#upArrow').hide();
+        $('#downArrow').show();
+
+        killInteractBoard();
     });
 
     $('#searchCollapse').on('click', function () {
@@ -56,6 +71,24 @@ $(document).ready(function () {
             $('.search-load').css({"display":"none"});
         }, 700);
     });
-    
+
+    $('#searchArrow').click(()=>{
+        if ($(window).width() < 960) {
+            if($('#searchArrow')[0].className == 'up'){
+                $('#searchchoice').removeClass('up');
+                $('#searchArrow').removeClass('up');
+                $('#upArrow').show();
+                $('#downArrow').hide();
+            }else{
+                $('#searchchoice').addClass('up');
+                $('#searchArrow').addClass('up');
+                $('#upArrow').hide();
+                $('#downArrow').show();
+            }
+        }
+    });
+
 });
+
+
 

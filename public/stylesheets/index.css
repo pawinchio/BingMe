@@ -23,11 +23,10 @@
     padding-top: 5px;
     -webkit-overflow-scrolling: touch;
 }
-
 .scrollcard > .card > img{
     vertical-align: top;
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 120px;
     border-style: none;
     border-radius: 10px;
     filter: blur(1.5px);
@@ -41,29 +40,33 @@
 
 .scrollcard > .usercard > table{
     text-align: left;
+    width: 56%;
     position: absolute;
     top: 22%;
-    left: 35%;
+    left: 39%;
 }
 
 .scrollcard > .usercard > table > tbody > tr > th{
     font-size: small;
     white-space: normal;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-family: 'Gotham Rounded';
+    text-align: center;
 }
 
 .scrollcard > .usercard > table > tbody > tr > td{
     padding-top: 5%;
-    padding-right: 5%;
 }
 
 .scrollcard > .usercard > #usercard-pic{
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     filter: none;
     border-radius: 10px;
-    top: 19%;
+    top: 17%;
     position: absolute;
-    left: 8%;
+    left: 7%;
 }
 
 .scrollcard > .statcard{

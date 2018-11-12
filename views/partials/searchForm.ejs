@@ -5,7 +5,11 @@
                 <input type="search" class="form-control controls" id="searchInput" placeholder="ค้นหาร้านหรือเมนูที่คุณต้องการ" onkeydown="if (event.keyCode == 13) {return false;}">
                 <img class="search-load" src="/assets/images/loading.gif" alt="">
             </form>
-            <div id="searchchoice">
+            <div id="searchArrow" class="up">
+                    <i style="margin:auto;" id='upArrow' data-feather="chevron-up" display='none'></i>
+                    <i style="margin:auto;" id='downArrow' data-feather="chevron-down" display='block'></i>
+            </div>
+            <div id="searchchoice" class="up">
                 <div id="searchResult">
                     
                 </div>
@@ -26,7 +30,8 @@
 <template id="choice-template">
   <div class="choice d-flex" style="border-radius: 10px;
     margin: 15px 10px;
-    box-shadow: 0px 3px 7px grey;
+    background: white;
+    border: 1px solid darkgray;
     padding: 6px;">
     
     <div class="mr-auto p-2" style="width: 59%; text-overflow: ellipsis;
@@ -40,6 +45,6 @@
         <tr><th><span class="choice-fee"></span>$</th></tr>
         <tr><td>ค่าบริการ</td></tr>
     </table>
-    <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2"></i>
+    <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoard()"></i>
   </div>
 </template>

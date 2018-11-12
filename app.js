@@ -34,12 +34,12 @@ passport.use(new LocalStrategy(UserAuth.authenticate()))
 passport.serializeUser(UserAuth.serializeUser());
 passport.deserializeUser(UserAuth.deserializeUser());
 
-let bingmeMail = 'htraexd@gmail.com'
+let bingmeMail = 'bingmeinc@gmail.com'
 var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: bingmeMail,
-          pass: 'HTRAExd123'
+          pass: '11121150'
         }
       });
 

@@ -2,7 +2,6 @@ $(document).ready(function () {
     killInteractBoard();
     $('#dismiss, .overlay').on('click', function () {
         // hide sidebar
-        console.log("click");
         $('#sidebar').removeClass('active');
         // hide overlay
         $('.overlay').removeClass('active');

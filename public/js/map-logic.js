@@ -24,7 +24,8 @@ function renderMap(position) {
             fullscreenControl: false,
             streetViewControl: false,
             zoomControl: false
-        });
+    });
+    map.panBy(0, 150)
     var marker = new google.maps.Marker({
         position: myinitialLocation,
         map: map,
@@ -104,12 +105,17 @@ var displaySuggestions = function(predictions) {
 
       templ.querySelector('.choice-fee').innerText = '0.00';
       templ.querySelector('.choice').addEventListener('click', function(){
+        if ($(window).width() < 960) {
+            $('#searchchoice').css('bottom','-17%');
+            $('#searchArrow').css('top','71.6%');
+        }
         $('.choice').css({
-            "background":"unset",
-            "color": "unset"
+            "background":"white",
+            "color": "unset",
         });
         this.style.background="black";
         this.style.color="#00FF89";
+        $('#searchResult').scrollTo(this);
         showChoiceDetail(this);
         calculateAndDisplayRoute(prediction.place_id);
       })

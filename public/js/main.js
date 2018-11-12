@@ -59,6 +59,14 @@ $(document).ready(function () {
             $('.search-load').css({"display":"none"});
         }, 700);
     });
+
+    $('#searchArrow').click(()=>{
+        if ($(window).width() < 960) {
+            $('#searchchoice').css('bottom','6%');
+            $('#searchArrow').css('top','48.7%');
+        }
+    });
+    
 });
 
 

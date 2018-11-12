@@ -21,9 +21,11 @@
         
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
         
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="js/interact.js"></script>
         <script src="js/main.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
         
     </head>
     <body>
@@ -34,6 +36,6 @@
             <%- include sidebar %>
             <div id="content">
                 <%- include menubar %>
-                <%- include searchForm %>
                 <%- include interactBoard%>
+                <%- include searchForm %>
                 

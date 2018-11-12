@@ -6,6 +6,7 @@ const   express = require('express'),
         ejs = require('ejs'),
         passport = require('passport'),
         bodyParser = require('body-parser'),
+        Eater  = require("./models/eater"),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose');
 
@@ -34,6 +35,7 @@ app.get('/', (req,res) => {
         else res.render('index',{
                 user:null
         });
+        console.log(req.user);
 });
 
 app.get('/logout', (req,res) => {

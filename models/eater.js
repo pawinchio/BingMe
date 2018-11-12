@@ -1,6 +1,4 @@
 var mongoose    = require("mongoose");
-mongoose.connect("mongodb://localhost/Bingme", { useNewUrlParser: true });
-
 
 // SCHEMA SETUP
 var eaterSchema = new mongoose.Schema({
@@ -26,16 +24,16 @@ var eaterSchema = new mongoose.Schema({
     refPending: 
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "StoreHistory"
+        ref: "orderPool"
     },
     refHistory: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "StoreHistory"
+            ref: "orderPool"
         }
     ],
     costTotal : Number,
     discount : Number
 });
 
-module.exports = mongoose.model("Eater", eaterSchema);
+module.exports = mongoose.model("eater", eaterSchema);

@@ -2,7 +2,6 @@ $(document).ready(function () {
     killInteractBoard();
     $('#dismiss, .overlay').on('click', function () {
         // hide sidebar
-        console.log("click");
         $('#sidebar').removeClass('active');
         // hide overlay
         $('.overlay').removeClass('active');
@@ -33,6 +32,19 @@ $(document).ready(function () {
         $('#searchCollapse').addClass('active');
         $('#searchInput').val('');
         $('#searchResult').html('');
+        $('#map + .choice-detail').hide();
+
+        if(directionsDisplay != null) {
+            directionsDisplay.setMap(null);
+            directionsDisplay = null;
+        }
+
+        initMap();
+
+        $('#searchchoice').addClass('up');
+        $('#searchArrow').addClass('up');
+        $('#upArrow').hide();
+        $('#downArrow').show();
 
         killInteractBoard();
     });
@@ -62,11 +74,20 @@ $(document).ready(function () {
 
     $('#searchArrow').click(()=>{
         if ($(window).width() < 960) {
-            $('#searchchoice').css('bottom','6%');
-            $('#searchArrow').css('top','48.7%');
+            if($('#searchArrow')[0].className == 'up'){
+                $('#searchchoice').removeClass('up');
+                $('#searchArrow').removeClass('up');
+                $('#upArrow').show();
+                $('#downArrow').hide();
+            }else{
+                $('#searchchoice').addClass('up');
+                $('#searchArrow').addClass('up');
+                $('#upArrow').hide();
+                $('#downArrow').show();
+            }
         }
     });
-    
+
 });
 
 

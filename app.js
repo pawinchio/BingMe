@@ -7,6 +7,8 @@ const   express = require('express'),
         ejs = require('ejs'),
         passport = require('passport'),
         bodyParser = require('body-parser'),
+        eater  = require("./models/eater"),
+        hunter  = require("./models/hunter"),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
@@ -83,6 +85,7 @@ app.post('/register', (req,res) => {
                         res.redirect('/'); 
                 })
         });
+        console.log(req.user);
 });
 app.post('/login', passport.authenticate('local',{
         successRedirect: '/',

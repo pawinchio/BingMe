@@ -388,10 +388,14 @@
                         <label >ADDRESS</label></p>
                         <input style="border-radius: 200px; border: none;"  class="form-control" id="ADDRESS" name="ADDRESS" placeholder="ADDRESS" >
                         <h1>_________________________</h1>
-                        <label for="emailToVerify">Email address</label>
-                        <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
-                        <label> PASSWORD</label>
-                        <input style="border-radius: 20px; border: none;" type="password" id="pass" name="password" minlength="8" class="form-control" name="password" placeholder="Password Must Be 8 Char" required>
+                            <div >
+                                
+                                        <label for="emailToVerify">Email address</label>
+                                        <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
+                                        <label> PASSWORD</label>
+                                        <input style="border-radius: 20px; border: none;" type="password" id="pass" name="password" minlength="8" class="form-control" name="password" placeholder="Password Must Be 8 Char" required>
+                                
+                            </div>
                         <div>
                                 <button class="modal-footer" type="submit">
                                         <div><i data-feather="log-in" class="login-icon"></i>  SUBMIT PROFILE </div>

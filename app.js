@@ -192,35 +192,17 @@ interact.on('connection', function(client){
         });
 });
 
-// app.post('/dataUser', (req,res) => {
-//         let input = req.body;
-//         //Let the Passport.js handle the registration
-//         UserAuth.dataUser(new UserAuth({
-//                 username: input.username,
-//                 email: input.registerEmail,
-//                 phone: input.registerPhone,
-//                 role: input.role,
-//                 isFirst: true,
-//                 isActivated: false,
-//                 userDataId: null
-//         }), input.password, (err, user) => {
-//                 if(err){
-//                         return res.redirect(url.format({
-//                                 pathname:"/",
-//                                 query: {
-//                                         errorTopic: 'Registration Failed',
-//                                         errorDesc: err.message
-//                                 }
-//                         }));
-//                 }
-//                         //if there's no error log the user in
-//                 passport.authenticate('local')(req,res, ()=>{
-//                         res.redirect('/'); 
-//                 })
-//         });
-//         console.log(req.user);
-// });
-
+app.post('/Eater', (req,res) => {
+        //eaterdata
+                var newEater = new UserEater({
+                        userId: req.user._id,
+                        code: code
+                });
+                newEater.save().catch(err => {
+                        console.log('Code Saving Failed'+err);
+                });     
+        res.redirect('/Eater');
+});
 
 
 server.listen(5500, () => console.log('Server run on port 5500'));

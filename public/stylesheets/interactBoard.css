@@ -1,0 +1,13 @@
+#interactBoard {
+    background: black;
+    position: absolute;
+    z-index: 96;
+    bottom: 100vh;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    padding-top: 55px;
+    color: #00FF89;
+    transition: all ease-in-out 0.5s;
+}
+

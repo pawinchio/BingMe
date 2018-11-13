@@ -1,0 +1,28 @@
+<div class='modal show' id='activateModal' role='dialog'>
+    <div class='modal-dialog'>
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h5 class="modal-title">Account Activation</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form action="/activate" method="post">
+                <div class="modal-body" style="color: darkgray;">
+                    <p style="text-align: center;">Your account is not activated yet</p>
+                    <div class="form-group">
+                        <label for="emailToVerify">Email address</label>
+                        <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" style="margin: auto; padding:4px 0;">Send Verification Email</button>  
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#activateModal').modal('show');
+    });
+</script>

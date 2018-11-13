@@ -1,5 +1,7 @@
 let interactPipe = undefined;
 let orderId = 'thisIsOrderId';
+let user = undefined;
+
 const awakeInteractBoard = () => {
     let interactBoard = $('#interactBoard');
     interactBoard.css({

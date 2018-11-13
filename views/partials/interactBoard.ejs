@@ -1,3 +1,7 @@
 <div id="interactBoard">
-    
+    <%if(user){%>
+        <script>
+            user = <%- JSON.stringify(user) %>
+        </script>
+    <%}%>
 </div>

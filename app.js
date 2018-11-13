@@ -192,10 +192,4 @@ interact.on('connection', function(client){
         });
 });
 
-<<<<<<< HEAD
 server.listen(5500, () => console.log('Server run on port 5500'));
-=======
-
-
-server.listen(5500, () => console.log('Server run on port 5500'));
->>>>>>> dbb5454acd42631d049394d404cdaaad4e453936

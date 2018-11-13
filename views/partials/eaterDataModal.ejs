@@ -1,10 +1,49 @@
 <form action="/" method="post">
     <div class="modal-body" style="color: darkgray;">
         <p style="text-align: center;">Eater Data</p>
+        
         <div class="form-group">
-            <label for="emailToVerify">Email address</label>
-            <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
+            
+        <div>
+            <label >FIRSTNAME</label>
+            <input style="border-radius: 20px; border: none;"  class="form-control" id="name" name="name" placeholder="firstname" >
+            <label >LASTNAME</label>
+            <input style="border-radius: 20px; border: none;"  class="form-control" id="name" name="name" placeholder="lastname" >
+            <label >PHONE</label>
+            <input style="border-radius: 20px; border: none;"  class="form-control" id="emailToVerify" name="phone" name="phone" placeholder="phone">
+            <label >GENDER</label>
+            <input style="border-radius: 20px; border: none;"  class="form-control" id="emailToVerify" name="email" name="name" placeholder="gender">
+            <label >BIRTHDAY</label>
+            
+            <label >ADDRESS</label>
+
+            <h1>__________________________________</h1>
+            <label >EMAIL</label>
+
+            <label> PASSWORD</label>
         </div>
+
+        <div>
+            <label >CREDIT/DEBIT CARD NUMBER</label>
+            <input style="border-radius: 20px; border: none;"  class="form-control" id="CREDIT-NUMBER" name="CREDIT-NUMBER" placeholder="CREDIT-NUMBER" >
+            <label >HOLDER NAME</label>
+            <input style="border-radius: 20px; border: none;"  class="form-control" id="CREDIT-NAME" name="CREDIT-NAME" placeholder="CREDIT-NAME" >
+            <label >EXPIRATION</label>
+            <input style="border-radius: 20px; border: none;"  class="form-control" id="EXPIRATION" name="EXPIRATION"  >
+            <!-- //dropdown mm/yy -->
+            <label >CVV</label>
+
+            <h1>__________________________________</h1>
+            <label> BILLING ADDRESS</label>
+
+
+
+
+        </div>
+
+
+        </div>
+
     </div>
     <button class="modal-footer" type="submit">
         <div><i data-feather="log-in" class="login-icon"></i>  Submit</div>

@@ -3,17 +3,18 @@
         <p style="text-align: center;">Eater Data</p>
         
         <div class="form-group">
-            
+          
         <div>
             <label >FIRSTNAME</label>
             <input style="border-radius: 20px; border: none;"  class="form-control" id="name" name="name" placeholder="firstname" >
             <label >LASTNAME</label>
             <input style="border-radius: 20px; border: none;"  class="form-control" id="name" name="name" placeholder="lastname" >
             <label >PHONE</label>
-            <input style="border-radius: 20px; border: none;"  class="form-control" type="tel" id="emailToVerify" name="phone" name="phone" placeholder="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+            <input style="border-radius: 20px; border: none;"  class="form-control" type="number"  id="emailToVerify" name="phone" name="phone" placeholder="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+            <!-- phone must be 10 number -->
             <label >GENDER</label>
-            <input style="border-radius: 20px; border: none;"  class="form-control" id="emailToVerify" name="email" name="name" placeholder="gender">
-            <label >BIRTHDAY</label>
+            <input style="border-radius: 20px; border: none;"  class="form-control" id="gender" name="gender" name="name" placeholder="gender">
+            <p><label >BIRTHDAY</label></p>
             <select name="birth-day">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -177,23 +178,23 @@
                 <option value="1906">1906</option>
                 <option value="1905">1905</option>
             </select>
-
-            <label >ADDRESS</label>
-            <input style="border-radius: 20px; border: none;"  class="form-control" id="ADDRESS" name="ADDRESS" placeholder="ADDRESS" >
+            <p>
+            <label >ADDRESS</label></p>
+            <input style="border-radius: 200px; border: none;"  class="form-control" id="ADDRESS" name="ADDRESS" placeholder="ADDRESS" >
             <h1>_______________________________________</h1>
-            <label >EMAIL</label>
-
+            <label for="emailToVerify">Email address</label>
+            <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
             <label> PASSWORD</label>
+            <input style="border-radius: 20px; border: none;" type="password" id="pass" name="password" minlength="8" class="form-control" name="password" placeholder="Password Must Be 8 Char" required>
         </div>
-
+       
         <div>
             
             
             
             <label for="CREDIT-NUMBER">CREDIT/DEBIT CARD NUMBER</label>
-            <input style="border-radius: 20px; border: none;"  class="form-control" id="CREDIT-NUMBER" name="CREDIT-NUMBER" placeholder="CREDIT-NUMBER" >
-
-            <!-- number 16  -->
+            <input style="border-radius: 20px; border: none;" type="number"  class="form-control" id="CREDIT-NUMBER" name="CREDIT-NUMBER" placeholder="card must have number 16  number" >
+            <!-- card must have number 16  number -->
             <label >HOLDER NAME</label>
             <input style="border-radius: 20px; border: none;"  class="form-control" id="CREDIT-NAME" name="CREDIT-NAME" placeholder="CREDIT-NAME" >
             <label >EXPIRATION</label>

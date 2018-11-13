@@ -346,6 +346,7 @@ interact.on('connection', function(client){
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 app.post('/eaterDataForm', (req,res) => {
         //eaterdata
@@ -391,3 +392,8 @@ server.listen(5500, () => console.log('Server run on port 5500'));
 =======
 server.listen(5500, () => console.log('Server run on port 5500'));
 >>>>>>> change eaterDataModal by mark
+=======
+
+
+server.listen(5500, () => console.log('Server run on port 5500'));
+>>>>>>> Update app.js

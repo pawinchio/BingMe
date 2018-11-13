@@ -195,8 +195,19 @@ interact.on('connection', function(client){
 app.post('/Eater', (req,res) => {
         //eaterdata
                 var newEater = new UserEater({
-                        userId: req.user._id,
-                        code: code
+                        FirstName: req.user.name,
+                        LastName: String,
+                        PhoneNumber: String,
+                        Gender: String,
+                        Birthday: String,
+                        Picture : String,
+                        Address : String,
+                        c_dCardNumber : String,
+                        HolderName : String,
+                        Expiration : String,
+                        CVV : String,
+                        BillingAddress : String,
+                        Email : String,
                 });
                 newEater.save().catch(err => {
                         console.log('Code Saving Failed'+err);

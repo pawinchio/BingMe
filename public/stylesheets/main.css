@@ -178,7 +178,7 @@ body{
 }
 
 
-.modal-dialog-login{
+.modal-dialog-login, .modal-dialog-register{
     max-width: 300px;
 }
 

@@ -376,9 +376,13 @@ app.post('/eaterDataForm', (req,res) => {
                 });  
                 
 
+<<<<<<< HEAD
                
         
 });
 // search email in user Auth   ->>>  userDAta
+=======
+//pawinccccccc
+>>>>>>> test cimment
 
 server.listen(5500, () => console.log('Server run on port 5500'));

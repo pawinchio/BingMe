@@ -8,7 +8,7 @@
 	         <div class="row">
 	  			<div class="column">
                         <label >FIRSTNAME</label>
-                        <input style="border-radius: 20px; border: none;"  class="form-control" id="name" name="name" placeholder="firstname" >
+                        <input style="border-radius: 20px; border: none;color: darkgray;"  class="form-control" id="name" name="name" placeholder="firstname" >
                         <label >LASTNAME</label>
                         <input style="border-radius: 20px; border: none;"  class="form-control" id="name" name="name" placeholder="lastname" >
                         <label >PHONE</label>
@@ -195,38 +195,49 @@
                     <!-- card must have  16  number -->
                     <label >HOLDER NAME</label>
                     <input style="border-radius: 20px; border: none;"  class="form-control" id="CREDIT-NAME" name="CREDIT-NAME" placeholder="CREDIT-NAME" >
-                    <p><label >EXPIRATION</label></p>
-                    <p><select name="expire-month">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                          </select>
-                          <select name="expire-year">
-                            <option value="2025">2025</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
-                            <option value="2019">2019</option>
-                            <option value="2018">2018</option>
-                        </select></p>
-                        <p><label >CVV</label>
-                            <input style="border-radius: 20px; border: none;"  type="number" class="form-control" id="CVV" name="CVV" min="000" max="999" placeholder="cvv" ></p>
-                            <!-- edit number of cvv to under 999 -->
+                        <div class="row">
+                            <div class="column">
+                            <p><label >EXPIRATION</label></p>
+                            <p><select name="expire-month">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <select name="expire-year">
+                                    <option value="2025">2025</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2018">2018</option>
+                                </select></p></div>
+                                <div class="column">
+                                <p><label > CVV </label>
+                                    <input style="border-radius: 20px; border: none;"  type="number" class="form-control" id="CVV" name="CVV" min="000" max="999" placeholder="cvv" ></p>
+                                    <!-- edit number of cvv to under 999 -->
+                                </div>
+                        </div>
                             <h1>_________________________</h1>
-                            <label> BILLING ADDRESS</label>
-                            <!-- check  -->
-                            <input style="border-radius: 20px; border: none;"  class="form-control" id="BILLING-ADDRESS" name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" >
+                            <div class="row">
+                                <div class="column">
+                                    <label> BILLING ADDRESS         </label></div>
+                                <div class="column"></div>
+                                    <input type="checkbox" name="checkbox" value="checkbox"> SAME AS ADDRESS<br>
+                                </div>
+                                    <!-- check  -->
+                                    <input style="border-radius: 20px; border: none;"  class="form-control" id="BILLING-ADDRESS" name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" >
+                            </div>
 		      </div>  
 
 	        </div>

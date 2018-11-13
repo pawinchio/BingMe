@@ -1,0 +1,12 @@
+<form action="/" method="post">
+    <div class="modal-body" style="color: darkgray;">
+        <p style="text-align: center;">Eater Data</p>
+        <div class="form-group">
+            <label for="emailToVerify">Email address</label>
+            <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
+        </div>
+    </div>
+    <button class="modal-footer" type="submit">
+        <div><i data-feather="log-in" class="login-icon"></i>  Submit</div>
+    </button>
+</form>

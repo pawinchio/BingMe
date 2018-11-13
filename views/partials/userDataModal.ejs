@@ -1,31 +1,19 @@
 <div class='modal show' id='userDataModal' role='dialog'>
-    <div class='modal-dialog'>
+    <div class='modal-dialog' style="width: 90%; max-width: 90%">
         <div class="modal-content" >
             <div class="modal-header">
-                <h5 class="modal-title">MEMBER PROFILE</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <form action="/" method="post">
-                <div class="modal-body" style="color: darkgray;">
-                    <p style="text-align: center;">Please fill in this form</p>
-                    
-                    <div class="form-group">
-                        <label >FIRSTNAME</label>
-                        <input style="border-radius: 20px; border: none;"  class="form-control" id="name" name="name" placeholder="firstname" >
-                        <label >LASTNAME</label>
-                        <input style="border-radius: 20px; border: none;"  class="form-control" id="name" name="name" placeholder="lastname" >
-                        <label >PHONE</label>
-                        <input style="border-radius: 20px; border: none;"  class="form-control" id="emailToVerify" name="phone" name="phone" placeholder="phone">
-                        <label for="emailToVerify">GENDER</label>
-                        <input style="border-radius: 20px; border: none;"  class="form-control" id="emailToVerify" name="email" name="name" placeholder="gender">
-                    
-                    </div>
 
-                </div>
-                <button class="modal-footer" type="submit">
-                    <div><i data-feather="log-in" class="login-icon"></i>  Submit</div>
-                </button>
-            </form>
+                <h5 class="modal-title">User Information</h5>
+                <button type="button" class="close" data-dismiss="modal" style="right: unset; left: 83vw;">&times;</button>
+            </div>
+            <%if(user){%>
+                <%if(user.role=='Eater'){%>
+                    <% include eaterDataModal %>
+                <%} else if(user.role=='Hunter'){%>
+                    <% include hunterDataModal %>
+                <%}%>
+            <%}%>
+
         </div>
     </div>
 </div>

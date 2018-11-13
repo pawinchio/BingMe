@@ -1,6 +1,5 @@
 let interactPipe = undefined;
 let orderId = undefined;
-let user = undefined;
 
 const awakeInteractBoard = (e) => {
     let placeData = e.target.parentNode.getAttribute('data-place-detail');
@@ -9,7 +8,16 @@ const awakeInteractBoard = (e) => {
         "bottom":"0vh"
     });
 
+    interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div>');
     // show menu form and storeName from placeData
+    $("#inputFood").keypress(function(event){
+        if(event.which === 13){
+            addMenu();
+        }
+    });
+    $("#addBot").on("click",addMenu);
+
+
     // if form send create new order in db from data that currently got
     // call PendingInteract    
 }
@@ -66,10 +74,3 @@ const addMenu = () =>{
 }
     
 
-$("#inputFood").keypress(function(event){
-	if(event.which === 13){
-		addMenu();
-	}
-});
-
-$("#addBot").on("click",addMenu);

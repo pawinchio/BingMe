@@ -12,7 +12,7 @@
 }
 
 #createFood{
-    width: 386px;
+    width: 90%;
     background: white;
     border-radius: 15px;
     text-align: center;
@@ -43,9 +43,8 @@
 }
 
 #showFood{
-    padding-left: 30px;
-    margin: 8px 0px;
-    width: 330px;
+    margin: 8px auto;
+    width: 60%;
 }
 
 .countFood{
@@ -55,4 +54,15 @@
     width: 30px;
     text-align: center;
 
+}
+
+#sendMenu{
+    background: #00ff8900;
+    width: 90%;
+    margin: 20px auto;
+    padding: 5px;
+    text-align: center;
+    border-radius: 20px;
+    color: #00ff89;
+    border: 2px solid #00ff89;
 }

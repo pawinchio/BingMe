@@ -1,6 +1,5 @@
 let interactPipe = undefined;
 let orderId = undefined;
-let user = undefined;
 
 const awakeInteractBoard = (e) => {
     let placeData = e.target.parentNode.getAttribute('data-place-detail');
@@ -9,9 +8,52 @@ const awakeInteractBoard = (e) => {
         "bottom":"0vh"
     });
 
+    interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div><div id="sendMenu">ส่งรายการสั่งซื้อ</div>');
     // show menu form and storeName from placeData
+    $("#inputFood").keypress(function(event){
+        if(event.which === 13){
+            addMenu();
+        }
+    });
+    $("#addBot").on("click",addMenu);
+
     // if form send create new order in db from data that currently got
-    // call PendingInteract    
+    $("#sendMenu").on("click",()=>{
+        let eaterId = user._id;
+        let menuList = jQuery.makeArray($('#showFood').children());
+        let menuArray = [];
+        menuList.forEach((child) => {
+            let foodName = child.childNodes[0].innerText;
+            let foodAmount = child.childNodes[1].childNodes[0].value;
+            let menuObj = {
+                name: foodName,
+                amount: foodAmount
+            }
+            menuArray.push(menuObj);
+        });
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                let eaterLocation = {
+                    Latitude: position.coords.latitude,
+                    Longitude: position.coords.longitude
+                };
+                $.post('/createOrder',{
+                    eaterId: eaterId,
+                    storeData: JSON.parse(placeData),
+                    menu: menuArray,
+                    locationEater: eaterLocation
+                }, (data, status) => {
+                    if(status == 'success'){
+                        // call PendingInteract 
+                        pendingInteract(user.role);
+                    }
+                });
+            });
+        }
+    });
+
+       
 }
 
 const awakeInteractBoardByHunter = (e) => {
@@ -29,7 +71,7 @@ const awakeInteractBoardByHunter = (e) => {
 const pendingInteract = (role) => {
     //clear interactBoard's child
     //fetch Data from user's pendingOrder
-    //render current progress
+    //render current progress (role)
     //create pipeline
     interactPipe = io('/interact');
     interactPipe.on('connect', function(data){
@@ -66,10 +108,3 @@ const addMenu = () =>{
 }
     
 
-$("#inputFood").keypress(function(event){
-	if(event.which === 13){
-		addMenu();
-	}
-});
-
-$("#addBot").on("click",addMenu);

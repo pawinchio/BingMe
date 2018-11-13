@@ -4,6 +4,9 @@
     <% } %>
 
     <%if(user){%>
+        <script>
+            user = <%- JSON.stringify(user) %>
+        </script>
         <%if(user.userDataId == null){%>
             <%- include('partials/userDataModal', {user: user}); %>
         <%}else if(!user.isActivated){%>

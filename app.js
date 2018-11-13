@@ -172,6 +172,11 @@ app.get('/activate', (req,res) => {
         });
 });
 
+app.post('/createOrder', (req,res) => {
+        console.log(req.body);
+        res.send('request received by Backend');
+});
+
 app.get('/fetchFreeOrder', (req,res) => {
         res.send('Server copy check check!');
 });

@@ -89,7 +89,7 @@
         left: 85% !important;
     }
 }
-@media screen and (max-width: 960px){
+@media screen and (max-width: 800px){
     #searchForm > .row > #searchList > #searchbar{
         z-index: 96;
         background-color: #1d232821;

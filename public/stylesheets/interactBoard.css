@@ -11,3 +11,48 @@
     transition: all ease-in-out 0.5s;
 }
 
+#createFood{
+    width: 386px;
+    background: white;
+    border-radius: 15px;
+    text-align: center;
+    padding: 13px;
+}
+
+#createFood > div > #inputFood{
+    border-radius: 10px;
+    border: none;
+    background: #ebebeb;
+    width: 70%;
+}
+
+#addBot{
+    vertical-align: middle;
+    color: black;
+    margin-left: 10px;
+}
+
+#cancel{
+    vertical-align: middle;
+    color: black;
+    }
+
+#Food{
+    color: black;
+    text-align: left;
+}
+
+#showFood{
+    padding-left: 30px;
+    margin: 8px 0px;
+    width: 330px;
+}
+
+.countFood{
+    border-radius: 10px;
+    border: none;
+    background: #ebebeb;
+    width: 30px;
+    text-align: center;
+
+}

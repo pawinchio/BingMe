@@ -192,29 +192,6 @@ interact.on('connection', function(client){
         });
 });
 
-app.post('/Eater', (req,res) => {
-        //eaterdata
-                var newEater = new UserEater({
-                        FirstName: req.user.name,
-                        LastName: String,
-                        PhoneNumber: String,
-                        Gender: String,
-                        Birthday: String,
-                        Picture : String,
-                        Address : String,
-                        c_dCardNumber : String,
-                        HolderName : String,
-                        Expiration : String,
-                        CVV : String,
-                        BillingAddress : String,
-                        Email : String,
-                });
-                newEater.save().catch(err => {
-                        console.log('Code Saving Failed'+err);
-                });     
-        res.redirect('/Eater');
-});
 
-//pawinccccccc
 
 server.listen(5500, () => console.log('Server run on port 5500'));

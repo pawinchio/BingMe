@@ -90,16 +90,25 @@
     }
 }
 @media screen and (max-width: 960px){
+    #searchForm > .row > #searchList > #searchbar{
+        z-index: 96;
+        background-color: #1d232821;
+        position: absolute;
+    }
+    #searchForm > .row > #searchList > #searchbar > #searchInput{
+        background-color: #1d232800;
+        font-weight: bolder;
+    }
     #searchForm > .row > #searchMap{
         position: absolute;
         height: 50%;
-        top: 50px;
+        top: 0px;
         left: 0;
     }
     #searchForm > .row > #searchMap > #map{
         overflow: auto;
         width: auto;
-        height: 88vh;
+        height: 94vh;
     }
 
     #searchForm > .row > #searchList > #choiceContainer > #searchchoice{
@@ -110,24 +119,34 @@
     }
 
     #searchForm > .row > #searchList > #choiceContainer {
-        position: absolute;
+        position: fixed;
         z-index: 5;
-        bottom: -35.1%;
+        top: 96%;
         transition: all 0.3s ease-in-out
     }
     
     #searchForm > .row > #searchList > #choiceContainer.up{
-        bottom: 6%;
+        top: 55%;
     }
     #searchArrow{
         display: block!important;
     }
 
     #map + .choice-detail{
-        left: 34% !important;
-        top: 32%;
+        left: 115px !important;
+        top: 164px;
     }
     
+}
+
+@media screen and (min-height: 1000px){
+    #searchForm > .row > #searchList > #choiceContainer{
+        top: 97%;
+    }
+
+    #searchForm > .row > #searchMap > #map{
+        height: 95vh;
+    }
 }
 
 #map {

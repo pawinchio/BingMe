@@ -112,7 +112,7 @@
     #searchForm > .row > #searchList > #choiceContainer {
         position: absolute;
         z-index: 5;
-        bottom: -22%;
+        bottom: -35.1%;
         transition: all 0.3s ease-in-out
     }
     
@@ -136,14 +136,13 @@
 }
 
 #map + .choice-detail{
+    color: #00ff89;
     position: absolute;
     width: 200px;
-    height: 57px;
-    background-color: whitesmoke;
+    background-color: black;
     border-radius: 10px;
     left: 50%;
     margin: -100px;
-    box-shadow: 0 1px 1px #1b1e21;
 }
 
 .search-load{

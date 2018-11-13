@@ -2,28 +2,33 @@ var mongoose    = require("mongoose");
 
 // SCHEMA SETUP
 var orderPoolSchema = new mongoose.Schema({
-    locationStore: {Latitude : String,Longitude : String},
     locationEater: {Latitude : String,Longitude : String},
-    OrderID: String,
-    EaterID:
+    orderID: String,
+    eaterID:
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "EaterID"
+        ref: "Eater"
     },
-    HunterID:
+    menu: [{Menu: String,Count: Number}],
+    storeId:
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "HunterID"
+        ref: "storeHistory"
     },
+    fee: Number,
     isPickup: Boolean,
-    Menu: [{Menu: String,Count: Number}],
-    Fee: Number,
+    hunterID:
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hunter"
+    },
+    locationHunter: {Latitude : String,Longitude : String},
     isPaidFee: Boolean,
-    FeePaidTime: String,
+    feePaidTime: String,
     isFullFilled: Boolean,
-    Qr: String,
+    qr: String,
     isComplete: Boolean,
-    DateCreated: String    
+    dateCreated: String    
 });
 
 module.exports = mongoose.model("orderPool", orderPoolSchema);

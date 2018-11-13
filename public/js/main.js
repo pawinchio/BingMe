@@ -47,8 +47,13 @@ $(document).ready(function () {
 
         killInteractBoard();
     });
-
-    $('#searchCollapse').on('click', function () {
+    $('#searchCollapse.not-allow').on('click', () => {
+        alert('Your account is not fully activated! Please update your user data and activated your email first');
+    });
+    $('#searchCollapse.not-login').on('click', () => {
+        alert('Please login before using Bingme');
+    });
+    $('#searchCollapse.allow').on('click', function () {
         // open sidebar
         // console.log("click");
         $('.menubar').addClass('black');
@@ -58,16 +63,22 @@ $(document).ready(function () {
     });
 
     var timeout = null;
-    //searching mechanism
+    //user searching mechanism
     $('#searchInput').on('input',function(){
         clearTimeout(timeout);
         $('.search-load').css({"display":"block"});
         timeout = setTimeout(function () {
-            getPredictSearch($('#searchInput').val());
-            $('.choice-detail').css({
-                "display":"none"
-            });
-            $('.search-load').css({"display":"none"});
+            if(user.role == 'Eater'){
+                getPredictSearch($('#searchInput').val());
+                $('.choice-detail').css({
+                    "display":"none"
+                });
+                $('.search-load').css({"display":"none"});
+            }else if(user.role == 'Hunter'){
+                getFreeOrder();
+                $('.search-load').css({"display":"none"});
+            }
+            
         }, 700);
     });
 
@@ -87,5 +98,10 @@ $(document).ready(function () {
 
 });
 
+const getFreeOrder = () => {
+    $.get('/fetchFreeOrder', (data, status) => {
+        $
+    });
+}
 
 

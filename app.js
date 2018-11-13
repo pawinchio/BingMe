@@ -172,6 +172,10 @@ app.get('/activate', (req,res) => {
         });
 });
 
+app.get('/fetchFreeOrder', (req,res) => {
+        res.send('Server copy check check!');
+});
+
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });

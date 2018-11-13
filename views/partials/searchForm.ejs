@@ -1,4 +1,9 @@
 <div id="searchForm">
+    <%if(user){%>
+        <script>
+            user = <%- JSON.stringify(user) %>
+        </script>
+    <%}%>
     <div class="row">
         <div class="col-lg-4 col-md-12" id="searchList">
             <form id="searchbar">
@@ -47,6 +52,19 @@
         <tr><th><span class="choice-fee"></span>$</th></tr>
         <tr><td>ค่าบริการ</td></tr>
     </table>
-    <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoard()"></i>
+    <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="return awakeInteractBoard(event)"></i>
   </div>
+</template>
+
+<template id="hunter-choice-template">
+    <div class="choice d-flex" style="border-radius: 10px;
+    margin: 15px 10px;
+    background: white;
+    border: 1px solid darkgray;
+    padding: 6px;" data-orderid="">
+        <div class="orderStoreName"></div>
+        <div class="orderQuantity"></div>
+        <div class="orderFee"></div>
+        <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="return awakeInteractBoardByHunter(event)"></i>
+    </div>
 </template>

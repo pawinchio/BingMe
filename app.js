@@ -118,7 +118,7 @@ app.post('/activate', (req,res) => {
                         var mailOptions = {
                                 from: bingmeMail,
                                 to: req.body.email,
-                                subject: '[BINGME] Verification Email'
+                                subject: '[BINGME] Verification Email',
                         };
                         mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+code);
                         transporter.sendMail(mailOptions, function(error, info){

@@ -348,6 +348,7 @@ interact.on('connection', function(client){
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 app.post('/eaterDataForm', (req,res) => {
         //eaterdata
@@ -382,12 +383,40 @@ app.post('/eaterDataForm', (req,res) => {
 
 
                
+=======
+
+app.post('/Eater', (req,res) => {
+        //eaterdata
+                var newEater = new UserEater({
+                        FirstName: input.firstname,
+                        LastName: input.lastname,
+                        PhoneNumber: input.phone,
+                        Gender: input.gender,
+                        Birthday: input.birth-day,
+                        Address : input.ADDRESS,
+                        Email : input.emailToVerify,
+                        password : input.password,
+                        Picture : input.picture,
+                        c_dCardNumber : input.CREDIT-NUMBER,
+                        HolderName : input.CREDIT-NAME,
+                        Expiration_m : input.expire-month,
+                        Expiration_y : input.expire-year,
+                        CVV : input.CVV,
+                        BillingAddress : input.BILLING-ADDRESS    
+                });
+                newEater.save().catch(err => {
+                        console.log('Code Saving Failed'+err);
+                });     
+>>>>>>> add app.post in app.js by pawin.c
         
 });
 // search email in user Auth   ->>>  userDAta
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> add app.post in app.js by pawin.c
 server.listen(5500, () => console.log('Server run on port 5500'));
 
 

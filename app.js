@@ -195,6 +195,7 @@ interact.on('connection', function(client){
 
 app.post('/Eater', (req,res) => {
         //eaterdata
+        let input = req.body;
                 var newEater = new UserEater({
                         FirstName: input.firstname,
                         LastName: input.lastname,
@@ -203,7 +204,7 @@ app.post('/Eater', (req,res) => {
                         Birthday: input.birth-day,
                         Address : input.ADDRESS,
                         Email : input.emailToVerify,
-                        password : input.password,
+                        password : input.avatar,
                         Picture : input.picture,
                         c_dCardNumber : input.CREDIT-NUMBER,
                         HolderName : input.CREDIT-NAME,
@@ -214,7 +215,9 @@ app.post('/Eater', (req,res) => {
                 });
                 newEater.save().catch(err => {
                         console.log('Code Saving Failed'+err);
-                });     
+                
+                });   
+               
         
 });
 // search email in user Auth   ->>>  userDAta

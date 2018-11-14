@@ -1,15 +1,12 @@
 let interactPipe = undefined;
 let orderId = undefined;
+let interactBoard = $('#interactBoard');
 
 const awakeInteractBoard = (e) => {
     let placeData = e.target.parentNode.getAttribute('data-place-detail');
-    let interactBoard = $('#interactBoard');
-    interactBoard.css({
-        "bottom":"0vh"
-    });
-
+    showInteractBoard();
     interactBoard.empty();
-    interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div><div id="sendMenu">ส่งรายการสั่งซื้อ</div>');
+    interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div><div class="interactSubmit" id="sendMenu">ส่งรายการสั่งซื้อ</div>');
     // show menu form and storeName from placeData
     $("#inputFood").keypress(function(event){
         if(event.which === 13){
@@ -59,22 +56,31 @@ const awakeInteractBoard = (e) => {
 
 const awakeInteractBoardByHunter = (e) => {
     let orderId = e.target.parentNode.getAttribute('data-orderid');
-    let interactBoard = $('#interactBoard');
-    interactBoard.css({
-        "bottom":"0vh"
-    });
+    
+    showInteractBoard();
 
     // fetch Data from pendingOrder's orderId
     // show accept button
     // if click mark in DB and call PendingInteract
 }
 
-const pendingInteract = (user) => {
+const pendingInteract = () => {
+    let hunter_wait = false;
+    let eater_wait = false;
     //clear interactBoard's child
-    let interactBoard = $('#interactBoard');
+    $('.menubar').addClass('black');
+    $('#searchDismiss').addClass('active');
+    $('#searchCollapse').removeClass('active');
+
+    showInteractBoard();
     interactBoard.empty();
     //fetch Data from user's pendingOrder
+
     //render current progress (role)
+        //load template
+        var orderSummary = $('#order-summary').html();
+        interactBoard.append(orderSummary);
+
     //create pipeline
     interactPipe = io('/interact');
     interactPipe.on('connect', function(data){
@@ -96,7 +102,10 @@ const pendingInteract = (user) => {
 const killInteractBoard = () => {
     let interactBoard = $('#interactBoard');
     interactBoard.css({
-        "bottom":"100vh",
+        "bottom":"100vh"
+    });
+    $('#interact-footer').css({
+        "bottom":"100vh"
     });
     if(interactPipe!=undefined)interactPipe.emit("disconnectRoom", orderId);
 }
@@ -121,5 +130,14 @@ const addMenu = () =>{
         event.target.parentNode.remove();
     });
 }
-    
+
+const showInteractBoard = () => {
+    let interactBoard = $('#interactBoard');
+    interactBoard.css({
+        "bottom":"0vh"
+    });
+    $('#interact-footer').css({
+        "bottom":"0vh"
+    });
+}
 

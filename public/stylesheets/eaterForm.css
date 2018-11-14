@@ -1,0 +1,184 @@
+#searchForm{
+    background: white;
+    width: 100vw;
+    height: 100%;
+    position: fixed;
+    z-index: 95;
+    top: 0%;
+    left: 120vw;
+    margin-top: 3rem;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+#searchForm.active{
+    left: 0%;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+
+#searchDismiss,#searchCollapse{
+    display: none;
+}
+#searchDismiss.active,#searchCollapse.active{
+    display: block;
+}
+.row{
+    margin: 0;
+}
+#searchForm > .row > #searchList{
+    background: whitesmoke;
+    height: 100vh;
+    padding: 0;
+}
+#searchForm > .row > #searchList > #searchbar{
+    height: 50px;
+    background: white;
+    width: 100%;
+}
+
+#searchForm > .row > #searchList > #searchbar > #searchInput{
+    width: 90%;
+    margin: auto;
+    border: none;
+    padding-top: 10px;
+    border-bottom: 0.5px solid #00FF89;
+    border-radius: unset;
+}
+
+#searchForm > .row > #searchMap{
+    padding: 0;
+} 
+
+#searchForm > .row > #searchList > #choiceContainer > #searchchoice{
+    width: 100%;
+    height: 100%;
+    background: white;
+    overflow: auto;
+    white-space: nowrap;
+}
+#searchForm > .row > #searchList > #choiceContainer > #searchchoice > #seachResult > .choice:active{
+    border: 1px solid black;
+    background: black;
+    color: #00FF89;
+    border-radius: 10px;
+    margin: 10px 10px;
+    
+}
+@media screen and (orientation: landscape){
+    #searchForm > .row > #searchList{
+        flex: 0 0 33.333333% !important;
+        max-width: 33.333333% !important;
+    }
+    #searchForm > .row > #searchMap{
+        padding: 0;
+        position: unset !important;
+        height: unset !important;
+        flex: 0 0 66.666667% !important;
+        max-width: 66.666667% !important;
+    }
+    #map {
+        height: 96.5% !important;
+        width: 100% !important;
+    }
+    #searchForm > .row > #searchList > #choiceContainer > #searchchoice{
+        width: 100% !important;
+        height: 100% !important;
+        margin-top: unset !important;
+    }
+    #map + .choice-detail{
+        left: 85% !important;
+    }
+}
+@media screen and (max-width: 800px){
+    #searchForm > .row > #searchList > #searchbar{
+        z-index: 96;
+        background-color: #1d232821;
+        position: absolute;
+    }
+    #searchForm > .row > #searchList > #searchbar > #searchInput{
+        background-color: #1d232800;
+        font-weight: bolder;
+    }
+    #searchForm > .row > #searchMap{
+        position: absolute;
+        height: 50%;
+        top: 0px;
+        left: 0;
+    }
+    #searchForm > .row > #searchMap > #map{
+        overflow: auto;
+        width: auto;
+        height: 94vh;
+    }
+
+    #searchForm > .row > #searchList > #choiceContainer > #searchchoice{
+        background: white;
+        width: 100vw;
+        height: 41vh;
+        background-color: #1d232821;
+    }
+
+    #searchForm > .row > #searchList > #choiceContainer {
+        position: fixed;
+        z-index: 5;
+        top: 96%;
+        transition: all 0.3s ease-in-out
+    }
+    
+    #searchForm > .row > #searchList > #choiceContainer.up{
+        top: 55%;
+    }
+    #searchArrow{
+        display: block!important;
+    }
+
+    #map + .choice-detail{
+        left: 115px !important;
+        top: 164px;
+    }
+    
+}
+
+@media screen and (min-height: 1000px){
+    #searchForm > .row > #searchList > #choiceContainer{
+        top: 97%;
+    }
+
+    #searchForm > .row > #searchMap > #map{
+        height: 95vh;
+    }
+}
+
+#map {
+    height: 96.5%;
+    width: 100%;
+}
+
+#map + .choice-detail{
+    color: #00ff89;
+    position: absolute;
+    width: 200px;
+    background-color: black;
+    border-radius: 10px;
+    left: 50%;
+    margin: -100px;
+}
+
+.search-load{
+    position: absolute;
+    z-index: 1;
+    width: 2rem;
+    top: 8px;
+    left: 86vw;
+    display: none;
+}
+
+#searchArrow{
+    display: none;
+    background-color: #1d232821;
+    margin: 0 auto;
+    width: 15%;
+    text-align: center;
+    height: 32px;
+    border-radius: 10px 10px 0 0;
+}

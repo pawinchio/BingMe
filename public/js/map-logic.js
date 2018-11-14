@@ -24,6 +24,9 @@ function renderMap(position) {
             streetViewControl: false,
             zoomControl: false
     });
+    
+    if($('#searchForm').attr('class')=='active') waitMapLoaded(map);
+
     map.panBy(0, 150)
     var marker = new google.maps.Marker({
         position: myinitialLocation,
@@ -31,6 +34,17 @@ function renderMap(position) {
         title: "You're Here"
     });
 }
+
+const waitMapLoaded = (mapObj) => {
+    $('.loader').show();
+    $('#searchInput').prop('readonly', true);
+    mapObj.addListener('tilesloaded', function () {
+        console.log('Map loaded');
+        $('.loader').hide();
+        $('#searchInput').prop('readonly', false);
+    });
+}
+
 var directionsService =null;
 var directionsDisplay = null;
 

@@ -55,8 +55,7 @@ $(document).ready(function () {
         alert('Please login before using Bingme');
     });
     $('#searchCollapse.allow').on('click', function () {
-        // open sidebar
-        // console.log("click");
+        // open search form
         $('.menubar').addClass('black');
         $('#searchDismiss').addClass('active');
         $('#searchForm').addClass('active');

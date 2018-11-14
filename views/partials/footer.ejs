@@ -5,6 +5,11 @@
         <script>
             feather.replace({'width': '32px','height': '32px','stroke-width': '1'})
         </script> 
-        <script src="js/interact.js"></script>    
+        <script src="js/interact.js"></script>
+        <%if(user){%>
+        <script>
+            user = <%- JSON.stringify(user) %>
+        </script>
+        <% } %>    
     </body>
 </html>

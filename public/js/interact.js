@@ -8,11 +8,12 @@ const awakeInteractBoard = (e) => {
         "bottom":"0vh"
     });
 
+    interactBoard.empty();
     interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div><div id="sendMenu">ส่งรายการสั่งซื้อ</div>');
     // show menu form and storeName from placeData
     $("#inputFood").keypress(function(event){
         if(event.which === 13){
-            addMenu();
+            addMenu(event);
         }
     });
     $("#addBot").on("click",addMenu);
@@ -46,7 +47,7 @@ const awakeInteractBoard = (e) => {
                 }, (data, status) => {
                     if(status == 'success'){
                         // call PendingInteract 
-                        pendingInteract(user.role);
+                        pendingInteract(user);
                     }
                 });
             });
@@ -68,8 +69,10 @@ const awakeInteractBoardByHunter = (e) => {
     // if click mark in DB and call PendingInteract
 }
 
-const pendingInteract = (role) => {
+const pendingInteract = (user) => {
     //clear interactBoard's child
+    let interactBoard = $('#interactBoard');
+    interactBoard.empty();
     //fetch Data from user's pendingOrder
     //render current progress (role)
     //create pipeline
@@ -102,9 +105,21 @@ const addMenu = () =>{
     //grabbing new food text from input
     var Food = $("#inputFood").val();
     $("#inputFood").val("");
-    //create a new li and add to ul
-    $("#showFood").append("<div class=d-flex justify-content-between><div class= 'mr-auto p-2' id=Food>"+Food +"</div><div class= 'p-2'><input class=countFood type=text ></div><div class= 'p-2' style='color:black;'>X</div></div>");
-    $(".countFood").val("1");
+    var listOfMenu = $('#showFood').children();
+    let i;
+    for(i=0;i<listOfMenu.length;i++){
+        if((listOfMenu[i].childNodes[0].innerText)==Food){
+            listOfMenu[i].childNodes[1].childNodes[0].value++;
+            break;
+        }
+    }
+    if(i>=listOfMenu.length){
+        //create a new li and add to ul
+        $("#showFood").append("<div class=d-flex justify-content-between><div class= 'mr-auto p-2' id='Food'>"+Food +"</div><div class= 'p-2'><input class='countFood' type='number' value=1></div><div class='p-2 dismissMenu' style='color:black;'>X</div></div>");
+    }
+    $(".dismissMenu").click((event)=>{
+        event.target.parentNode.remove();
+    });
 }
     
 

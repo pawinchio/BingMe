@@ -3,13 +3,12 @@ var mongoose    = require("mongoose");
 // SCHEMA SETUP
 var orderPoolSchema = new mongoose.Schema({
     locationEater: {Latitude : String,Longitude : String},
-    orderID: String,
     eaterID:
     {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Eater"
     },
-    menu: [{Menu: String,Count: Number}],
+    menu: [{name: String,amount: Number}],
     storeId:
     {
         type: mongoose.Schema.Types.ObjectId,

@@ -14,7 +14,7 @@ var orderPoolSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "storeHistory"
     },
-    fee: Number,
+    fee: String,
     isPickup: Boolean,
     hunterID:
     {

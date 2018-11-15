@@ -66,3 +66,7 @@
     color: #00ff89;
     border: 2px solid #00ff89;
 }
+
+input {
+    outline:none;
+   }

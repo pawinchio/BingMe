@@ -7,7 +7,7 @@ const awakeInteractBoard = (e) => {
     interactBoard.css({
         "bottom":"0vh"
     });
-
+    
     interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div><div id="sendMenu">ส่งรายการสั่งซื้อ</div>');
     // show menu form and storeName from placeData
     $("#inputFood").keypress(function(event){
@@ -16,6 +16,14 @@ const awakeInteractBoard = (e) => {
         }
     });
     $("#addBot").on("click",addMenu);
+
+    //remove menu
+    $("div#showFood").on("click" ,"div#remove.p-2", function(event){
+        $(this).parent().fadeOut(500,function(){
+            $(this).remove();
+        });
+        event.stopPropagation();
+    });
 
     // if form send create new order in db from data that currently got
     $("#sendMenu").on("click",()=>{
@@ -44,6 +52,7 @@ const awakeInteractBoard = (e) => {
                     menu: menuArray,
                     locationEater: eaterLocation
                 }, (data, status) => {
+                    console.log(JSON.parse(placeData));
                     if(status == 'success'){
                         // call PendingInteract 
                         pendingInteract(user.role);
@@ -101,10 +110,12 @@ const killInteractBoard = () => {
 const addMenu = () =>{
     //grabbing new food text from input
     var Food = $("#inputFood").val();
-    $("#inputFood").val("");
-    //create a new li and add to ul
-    $("#showFood").append("<div class=d-flex justify-content-between><div class= 'mr-auto p-2' id=Food>"+Food +"</div><div class= 'p-2'><input class=countFood type=text ></div><div class= 'p-2' style='color:black;'>X</div></div>");
-    $(".countFood").val("1");
-}
+    if (Food) {
+        $("#inputFood").val("");
+        //create a new li and add to ul
+        $("#showFood").append("<div id='listMenu' class=d-flex justify-content-between><div class= 'mr-auto p-2' id=Food>"+Food +"</div><div class= 'p-2'><input class=countFood type=text ></div><div id='remove' class= 'p-2' style='color:black;'>X</div></div>");
+        $(".countFood").val("1");
+    }
     
+}
 

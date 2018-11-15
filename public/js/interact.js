@@ -19,6 +19,9 @@ const awakeInteractBoard = (source) => {
 
     // if form send create new order in db from data that currently got
     $("#sendMenu").on("click",()=>{
+        var loader = $('#loader').html();
+        interactBoard.append(loader);
+
         let eaterId = user._id;
         let menuList = jQuery.makeArray($('#showFood').children());
         let menuArray = [];
@@ -82,7 +85,10 @@ const pendingInteract = () => {
         //load template
         var orderSummary = $('#order-summary').html();
         var loader = $('#loader').html();
-        // interactBoard.append(loader);
+        var acceptBtn = $('#acceptBtn').html();
+        var payBtn = $('#payBtn').html();
+        var avatar = $('#avatar').html();
+        interactBoard.append(avatar);
 
     //create pipeline
     interactPipe = io('/interact');

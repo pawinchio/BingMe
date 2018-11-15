@@ -207,13 +207,15 @@
                     <!-- ******** -->
                     <p>
                     <label for="CREDIT-NUMBER" style="color: #00FF89">CREDIT/DEBIT CARD NUMBER</label>
-                    <input style="border-radius: 20px; border: none;" type="number"  class="form-control" id="CREDIT-NUMBER" name="CREDIT-NUMBER"min="16" placeholder="card must have  16  number" >                    <!-- card must have  16  number --></p>
+                    <input style="border-radius: 20px; border: none;" type="number"  class="form-control" id="CREDIT-NUMBER" name="CREDIT-NUMBER"min="16" placeholder="card must have  16  number"required >                    
+                    <!-- card must have  16  number --></p>
+                    <p id="errorArea"></p>
                     <label style="color: #00FF89">HOLDER NAME</label>
-                    <input style="border-radius: 20px; border: none;"  class="form-control" id="CREDIT-NAME" name="CREDIT-NAME" placeholder="CREDIT-NAME" >
-                            <div class="row">
+                    <input style="border-radius: 20px; border: none;"  class="form-control" id="CREDIT-NAME" name="CREDIT-NAME" placeholder="CREDIT-NAME" required>
+                            <div class="row"style ="border-style: solid;border-bottom-color: black">
                                 <div class="column">
                                         <p><label style="color: #00FF89">EXPIRATION</label></p>
-                                        <p><select name="expire-month">
+                                        <p><select name="expire-month"required>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -227,7 +229,7 @@
                                                 <option value="11">11</option>
                                                 <option value="12">12</option>
                                             </select>
-                                            <select name="expire-year">
+                                            <select name="expire-year"required>
                                                 <option value="2025">2025</option>
                                                 <option value="2024">2024</option>
                                                 <option value="2023">2023</option>
@@ -238,13 +240,13 @@
                                                 <option value="2018">2018</option>
                                             </select></p>
                                 </div>
-                                <div class="column">
+                                <div class="column" >
                                             <p><label style="color: #00FF89"> CVV </label>
-                                                <input style="border-radius: 20px; border: none;"  type="number" class="form-control" id="CVV" name="CVV" min="000" max="999" placeholder="cvv" ></p>
+                                                <input style="border-radius: 20px; border: none;"  type="number" class="form-control" id="CVV" name="CVV" min="000" max="999" placeholder="cvv" required></p>
                                                 <!-- edit number of cvv to under 999 -->
                                 </div>
                             </div>
-                            <h1>__________</h1>
+                            <!-- css under line -->
                             
                             <div class="row">
                                 <div class="column">
@@ -254,18 +256,18 @@
                                     <input type="checkbox" name="checkbox" value="checkbox"> SAME AS ADDRESS<br>
                                 </div>
                                     <!-- check  -->
-                                    <input style="border-radius: 20px; border: none;"  class="form-control" id="BILLING-ADDRESS" name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" >
+                                    <input style="border-radius: 20px; border: none;"  class="form-control" id="BILLING-ADDRESS" name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" required>
                             </div>
 		      </div>  
                     <div class="col-lg-8 col-sm-12">
                                 <div class="row">
                                     <div class="column">
                                         <label style="color: #00FF89">FIRSTNAME</label>
-                                        <input style="border-radius: 20px; border: none;" type="text" class="form-control" id="firstname" name="name" placeholder="firstname" >
+                                        <input style="border-radius: 20px; border: none;" type="text" class="form-control" id="firstname" name="name" placeholder="firstname" required>
                                     </div>
                                     <div class="column">
                                         <label style="color: #00FF89">LASTNAME</label>
-                                        <input style="border-radius: 20px; border: none;"  type="text"class="form-control" id="lastname" name="lastname" placeholder="lastname" >
+                                        <input style="border-radius: 20px; border: none;"  type="text"class="form-control" id="lastname" name="lastname" placeholder="lastname" required>
                                     </div>
                                 </div>
                                 <div>
@@ -276,24 +278,24 @@
                                 <div class="row">
                                     <div class="column">
                                         <label style="color: #00FF89">GENDER</label>
-                                        <input style="border-radius: 20px; border: none;"  class="form-control" id="gender" name="gender" name="name" placeholder="gender">
+                                        <input style="border-radius: 20px; border: none;"  class="form-control" id="gender" name="gender" name="name" placeholder="gender"required>
                                     </div>
                                     <div class="column">
                                         <p><label style="color: #00FF89">BIRTHDAY</label></p>
-                                        <input type="date" id="start" name="birth-daybr" value="2018-07-22"  min="1980-01-01" max="2018-12-31">
+                                        <input type="date" id="start" name="birth-daybr" value="2018-07-22"  min="1980-01-01" max="2018-12-31"required>
                                     </div>
                                 </div>
                                 <p>
                                 <label style="color: #00FF89">ADDRESS</label>
                                 </p>
-                                <input style="border-radius: 200px; border: none;"  class="form-control" id="ADDRESS" name="ADDRESS" placeholder="ADDRESS" >
-                                <div class="col-lg-3"><h1>____________</h1></div>
+                                <input style="border-radius: 200px; border: none;"  class="form-control" id="ADDRESS" name="ADDRESS" placeholder="ADDRESS" required>
+                                 <!-- css under line -->
                                 
-                                <div >
+                                <div  style ="border-style: solid;border-top-color: black">
                                             <label for="emailToVerify"style="color: #00FF89">Email address</label>
                                             <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
                                             <label style="color: #00FF89"> PASSWORD</label>
-                                            <input style="border-radius: 20px; border: none;" type="password" id="password" name="password" min="6" required class="form-control" name="password" > 
+                                            <input style="border-radius: 20px; border: none;" type="password" id="password" name="password" min="6" required class="form-control" name="password" required> 
                                 </div>
                                 <div>
                                     <button class="modal-footer" type="submit">

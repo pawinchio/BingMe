@@ -2,16 +2,6 @@ let interactPipe = undefined;
 let orderId = undefined;
 let interactBoard = $('#interactBoard');
 
-<<<<<<< HEAD
-const awakeInteractBoard = (e) => {
-    let placeData = e.target.parentNode.getAttribute('data-place-detail');
-    let interactBoard = $('#interactBoard');
-    interactBoard.css({
-        "bottom":"0vh"
-    });
-    
-    interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div><div id="sendMenu">ส่งรายการสั่งซื้อ</div>');
-=======
 const awakeInteractBoard = (source) => {
     let placeData = source.parentNode.getAttribute('data-place-detail');
     // console.log(source.parentNode);
@@ -19,7 +9,6 @@ const awakeInteractBoard = (source) => {
     showInteractBoard();
     interactBoard.empty();
     interactBoard.append($('#create-order').html());
->>>>>>> f7d18206571a229ddd4179fa4fb00a408f4795bb
     // show menu form and storeName from placeData
     $("#inputFood").keypress(function(event){
         if(event.which === 13){
@@ -142,15 +131,6 @@ const killInteractBoard = () => {
 const addMenu = () =>{
     //grabbing new food text from input
     var Food = $("#inputFood").val();
-<<<<<<< HEAD
-    if (Food) {
-        $("#inputFood").val("");
-        //create a new li and add to ul
-        $("#showFood").append("<div id='listMenu' class=d-flex justify-content-between><div class= 'mr-auto p-2' id=Food>"+Food +"</div><div class= 'p-2'><input class=countFood type=text ></div><div id='remove' class= 'p-2' style='color:black;'>X</div></div>");
-        $(".countFood").val("1");
-    }
-    
-=======
     $("#inputFood").val("");
     var listOfMenu = $('#showFood').children();
     let i;
@@ -180,6 +160,5 @@ const showInteractBoard = () => {
     $('#interact-footer').css({
         "bottom":"0vh"
     });
->>>>>>> f7d18206571a229ddd4179fa4fb00a408f4795bb
 }
 

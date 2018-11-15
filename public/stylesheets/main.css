@@ -7,6 +7,14 @@
     src: url('../assets/fonts/Gotham Rounded Bold.otf');
 }
 
+*:focus {
+    outline: none;
+}
+
+input{
+    padding-inline-start: 0.5em;
+}
+
 body{
     font-family: 'Kanit';
     background: white;

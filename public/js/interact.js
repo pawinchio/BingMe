@@ -2,11 +2,13 @@ let interactPipe = undefined;
 let orderId = undefined;
 let interactBoard = $('#interactBoard');
 
-const awakeInteractBoard = (e) => {
-    let placeData = e.target.parentNode.getAttribute('data-place-detail');
+const awakeInteractBoard = (source) => {
+    let placeData = source.parentNode.getAttribute('data-place-detail');
+    // console.log(source.parentNode);
+    // console.log(placeData);
     showInteractBoard();
     interactBoard.empty();
-    interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div><div class="interactSubmit" id="sendMenu">ส่งรายการสั่งซื้อ</div>');
+    interactBoard.append($('#create-order').html());
     // show menu form and storeName from placeData
     $("#inputFood").keypress(function(event){
         if(event.which === 13){
@@ -79,7 +81,8 @@ const pendingInteract = () => {
     //render current progress (role)
         //load template
         var orderSummary = $('#order-summary').html();
-        interactBoard.append(orderSummary);
+        var loader = $('#loader').html();
+        // interactBoard.append(loader);
 
     //create pipeline
     interactPipe = io('/interact');
@@ -117,14 +120,17 @@ const addMenu = () =>{
     var listOfMenu = $('#showFood').children();
     let i;
     for(i=0;i<listOfMenu.length;i++){
-        if((listOfMenu[i].childNodes[0].innerText)==Food){
-            listOfMenu[i].childNodes[1].childNodes[0].value++;
+        // console.log(listOfMenu[i].childNodes);
+        if((listOfMenu[i].childNodes[1].innerText)==Food){
+            listOfMenu[i].childNodes[3].childNodes[1].value++;
             break;
         }
     }
     if(i>=listOfMenu.length){
         //create a new li and add to ul
-        $("#showFood").append("<div class=d-flex justify-content-between><div class= 'mr-auto p-2' id='Food'>"+Food +"</div><div class= 'p-2'><input class='countFood' type='number' value=1></div><div class='p-2 dismissMenu' style='color:black;'>X</div></div>");
+        let listItem = jQuery.parseHTML($('#create-order-list').html())[1];
+        listItem.childNodes[1].innerText = Food;
+        $("#showFood").append(listItem);
     }
     $(".dismissMenu").click((event)=>{
         event.target.parentNode.remove();

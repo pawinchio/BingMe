@@ -206,13 +206,13 @@
                     <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"> -->
                     <!-- ******** -->
                     <p>
-                    <label for="CREDIT-NUMBER">CREDIT/DEBIT CARD NUMBER</label>
+                    <label for="CREDIT-NUMBER" style="color: #00FF89">CREDIT/DEBIT CARD NUMBER</label>
                     <input style="border-radius: 20px; border: none;" type="number"  class="form-control" id="CREDIT-NUMBER" name="CREDIT-NUMBER"min="16" placeholder="card must have  16  number" >                    <!-- card must have  16  number --></p>
-                    <label >HOLDER NAME</label>
+                    <label style="color: #00FF89">HOLDER NAME</label>
                     <input style="border-radius: 20px; border: none;"  class="form-control" id="CREDIT-NAME" name="CREDIT-NAME" placeholder="CREDIT-NAME" >
                             <div class="row">
                                 <div class="column">
-                                        <p><label >EXPIRATION</label></p>
+                                        <p><label style="color: #00FF89">EXPIRATION</label></p>
                                         <p><select name="expire-month">
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -239,7 +239,7 @@
                                             </select></p>
                                 </div>
                                 <div class="column">
-                                            <p><label > CVV </label>
+                                            <p><label style="color: #00FF89"> CVV </label>
                                                 <input style="border-radius: 20px; border: none;"  type="number" class="form-control" id="CVV" name="CVV" min="000" max="999" placeholder="cvv" ></p>
                                                 <!-- edit number of cvv to under 999 -->
                                 </div>
@@ -248,7 +248,7 @@
                             
                             <div class="row">
                                 <div class="column">
-                                        <label> BILLING ADDRESS         </label>
+                                        <label style="color: #00FF89"> BILLING ADDRESS         </label>
                                 </div>
                                 <div class="column">
                                     <input type="checkbox" name="checkbox" value="checkbox"> SAME AS ADDRESS<br>
@@ -260,39 +260,39 @@
                     <div class="col-lg-8 col-sm-12">
                                 <div class="row">
                                     <div class="column">
-                                        <label >FIRSTNAME</label>
+                                        <label style="color: #00FF89">FIRSTNAME</label>
                                         <input style="border-radius: 20px; border: none;" type="text" class="form-control" id="firstname" name="name" placeholder="firstname" >
                                     </div>
                                     <div class="column">
-                                        <label >LASTNAME</label>
+                                        <label style="color: #00FF89">LASTNAME</label>
                                         <input style="border-radius: 20px; border: none;"  type="text"class="form-control" id="lastname" name="lastname" placeholder="lastname" >
                                     </div>
                                 </div>
                                 <div>
-                                    <label >PHONE</label>
+                                    <label style="color: #00FF89">PHONE</label>
                                     <input style="border-radius: 20px; border: none;"  class="form-control" type="number"  id="phone" name="phone" placeholder="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
                                     <!-- phone must be 10 number -->
                                 </div>
                                 <div class="row">
                                     <div class="column">
-                                        <label >GENDER</label>
+                                        <label style="color: #00FF89">GENDER</label>
                                         <input style="border-radius: 20px; border: none;"  class="form-control" id="gender" name="gender" name="name" placeholder="gender">
                                     </div>
                                     <div class="column">
-                                        <p><label >BIRTHDAY</label></p>
+                                        <p><label style="color: #00FF89">BIRTHDAY</label></p>
                                         <input type="date" id="start" name="birth-daybr" value="2018-07-22"  min="1980-01-01" max="2018-12-31">
                                     </div>
                                 </div>
                                 <p>
-                                <label >ADDRESS</label>
+                                <label style="color: #00FF89">ADDRESS</label>
                                 </p>
                                 <input style="border-radius: 200px; border: none;"  class="form-control" id="ADDRESS" name="ADDRESS" placeholder="ADDRESS" >
                                 <div class="col-lg-3"><h1>____________</h1></div>
                                 
                                 <div >
-                                            <label for="emailToVerify">Email address</label>
+                                            <label for="emailToVerify"style="color: #00FF89">Email address</label>
                                             <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
-                                            <label> PASSWORD</label>
+                                            <label style="color: #00FF89"> PASSWORD</label>
                                             <input style="border-radius: 20px; border: none;" type="password" id="password" name="password" min="6" required class="form-control" name="password" > 
                                 </div>
                                 <div>

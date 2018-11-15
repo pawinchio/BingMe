@@ -1,6 +1,8 @@
 let interactPipe = undefined;
 let orderId = undefined;
+let interactBoard = $('#interactBoard');
 
+<<<<<<< HEAD
 const awakeInteractBoard = (e) => {
     let placeData = e.target.parentNode.getAttribute('data-place-detail');
     let interactBoard = $('#interactBoard');
@@ -9,10 +11,19 @@ const awakeInteractBoard = (e) => {
     });
     
     interactBoard.append('<div class="container" id="createFood"><h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5><div><input id="inputFood" type="text" ><span><i id="addBot" data-feather="plus-circle"></i></span></div><div id="showFood"></div></div><div id="sendMenu">ส่งรายการสั่งซื้อ</div>');
+=======
+const awakeInteractBoard = (source) => {
+    let placeData = source.parentNode.getAttribute('data-place-detail');
+    // console.log(source.parentNode);
+    // console.log(placeData);
+    showInteractBoard();
+    interactBoard.empty();
+    interactBoard.append($('#create-order').html());
+>>>>>>> f7d18206571a229ddd4179fa4fb00a408f4795bb
     // show menu form and storeName from placeData
     $("#inputFood").keypress(function(event){
         if(event.which === 13){
-            addMenu();
+            addMenu(event);
         }
     });
     $("#addBot").on("click",addMenu);
@@ -27,6 +38,9 @@ const awakeInteractBoard = (e) => {
 
     // if form send create new order in db from data that currently got
     $("#sendMenu").on("click",()=>{
+        var loader = $('#loader').html();
+        interactBoard.append(loader);
+
         let eaterId = user._id;
         let menuList = jQuery.makeArray($('#showFood').children());
         let menuArray = [];
@@ -55,7 +69,7 @@ const awakeInteractBoard = (e) => {
                     console.log(JSON.parse(placeData));
                     if(status == 'success'){
                         // call PendingInteract 
-                        pendingInteract(user.role);
+                        pendingInteract(user);
                     }
                 });
             });
@@ -67,20 +81,35 @@ const awakeInteractBoard = (e) => {
 
 const awakeInteractBoardByHunter = (e) => {
     let orderId = e.target.parentNode.getAttribute('data-orderid');
-    let interactBoard = $('#interactBoard');
-    interactBoard.css({
-        "bottom":"0vh"
-    });
+    
+    showInteractBoard();
 
     // fetch Data from pendingOrder's orderId
     // show accept button
     // if click mark in DB and call PendingInteract
 }
 
-const pendingInteract = (role) => {
+const pendingInteract = () => {
+    let hunter_wait = false;
+    let eater_wait = false;
     //clear interactBoard's child
+    $('.menubar').addClass('black');
+    $('#searchDismiss').addClass('active');
+    $('#searchCollapse').removeClass('active');
+
+    showInteractBoard();
+    interactBoard.empty();
     //fetch Data from user's pendingOrder
+
     //render current progress (role)
+        //load template
+        var orderSummary = $('#order-summary').html();
+        var loader = $('#loader').html();
+        var acceptBtn = $('#acceptBtn').html();
+        var payBtn = $('#payBtn').html();
+        var avatar = $('#avatar').html();
+        interactBoard.append(avatar);
+
     //create pipeline
     interactPipe = io('/interact');
     interactPipe.on('connect', function(data){
@@ -102,7 +131,10 @@ const pendingInteract = (role) => {
 const killInteractBoard = () => {
     let interactBoard = $('#interactBoard');
     interactBoard.css({
-        "bottom":"100vh",
+        "bottom":"100vh"
+    });
+    $('#interact-footer').css({
+        "bottom":"100vh"
     });
     if(interactPipe!=undefined)interactPipe.emit("disconnectRoom", orderId);
 }
@@ -110,6 +142,7 @@ const killInteractBoard = () => {
 const addMenu = () =>{
     //grabbing new food text from input
     var Food = $("#inputFood").val();
+<<<<<<< HEAD
     if (Food) {
         $("#inputFood").val("");
         //create a new li and add to ul
@@ -117,5 +150,36 @@ const addMenu = () =>{
         $(".countFood").val("1");
     }
     
+=======
+    $("#inputFood").val("");
+    var listOfMenu = $('#showFood').children();
+    let i;
+    for(i=0;i<listOfMenu.length;i++){
+        // console.log(listOfMenu[i].childNodes);
+        if((listOfMenu[i].childNodes[1].innerText)==Food){
+            listOfMenu[i].childNodes[3].childNodes[1].value++;
+            break;
+        }
+    }
+    if(i>=listOfMenu.length){
+        //create a new li and add to ul
+        let listItem = jQuery.parseHTML($('#create-order-list').html())[1];
+        listItem.childNodes[1].innerText = Food;
+        $("#showFood").append(listItem);
+    }
+    $(".dismissMenu").click((event)=>{
+        event.target.parentNode.remove();
+    });
+}
+
+const showInteractBoard = () => {
+    let interactBoard = $('#interactBoard');
+    interactBoard.css({
+        "bottom":"0vh"
+    });
+    $('#interact-footer').css({
+        "bottom":"0vh"
+    });
+>>>>>>> f7d18206571a229ddd4179fa4fb00a408f4795bb
 }
 

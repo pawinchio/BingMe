@@ -1,6 +1,6 @@
 #interactBoard {
     background: black;
-    position: absolute;
+    position: fixed;
     z-index: 96;
     bottom: 100vh;
     display: block;
@@ -8,11 +8,13 @@
     height: 100vh;
     padding-top: 55px;
     color: #00FF89;
-    transition: all ease-in-out 0.5s;
+    transition: all 0.5s ease-in-out ;
+    -webkit-transition: all 0.5s ease-in-out ;
 }
 
 #createFood{
     width: 90%;
+    max-width: 500px;
     background: white;
     border-radius: 15px;
     text-align: center;
@@ -20,6 +22,7 @@
 }
 
 #createFood > div > #inputFood{
+    
     border-radius: 10px;
     border: none;
     background: #ebebeb;
@@ -53,20 +56,69 @@
     background: #ebebeb;
     width: 30px;
     text-align: center;
-
+    padding: 2px;
 }
 
-#sendMenu{
+.interactSubmit{
     background: #00ff8900;
+    max-width: 500px;
     width: 90%;
     margin: 20px auto;
     padding: 5px;
     text-align: center;
     border-radius: 20px;
+    color: white;
+    border: 2px solid white;
+    transition: all 0.2s ease-in-out ;
+    -webkit-transition: all 0.2s ease-in-out ;
+}
+
+.interactSubmit:hover, .interactSubmit:focus{
+    background: #f8f9fab0;
+    font-weight: bolder;
+}
+
+#interact-footer{
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    z-index: 96;
+    bottom: 100vh;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+}
+
+.interact-button{
+    width: 70%;
+    height: 40px;
+    border: 1px solid #00ff89;
+    background-color: #00ff890f;
+    position: relative;
+    border-radius: 26px;
     color: #00ff89;
+    font-weight: bolder;
+    max-width: 500px;
+}
+
+.interact-general-nav{
+    color: #00ff89;
+<<<<<<< HEAD
     border: 2px solid #00ff89;
 }
 
 input {
     outline:none;
    }
+=======
+    width: fit-content;
+    padding: 10px;
+    margin: auto 2%;
+}
+
+#interactBoard > input{
+    background: #fafafa!important;
+    border: 2px solid!important;
+    border-radius: 15px!important;
+}
+>>>>>>> f7d18206571a229ddd4179fa4fb00a408f4795bb

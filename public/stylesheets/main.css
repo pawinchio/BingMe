@@ -7,6 +7,14 @@
     src: url('../assets/fonts/Gotham Rounded Bold.otf');
 }
 
+*:focus {
+    outline: none;
+}
+
+input{
+    padding-inline-start: 0.5em;
+}
+
 body{
     font-family: 'Kanit';
     background: white;
@@ -285,6 +293,29 @@ body{
 .btn-sm{
     padding: .05rem .5rem;
     width: 100%;
+}
+
+.pointing {
+    box-shadow: 0 0 4px 2px #00ff89;
+}
+
+.loader {
+    display: none;
+    position: fixed;
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #00ff89; /* Blue */
+    border-radius: 50%;
+    width: 25vw;
+    height: 25vw;
+    animation: spin 1s linear infinite;
+    z-index: 96;
+    top: calc(50vh - (25vw / 2));
+    left: calc(50vw - (25vw / 2));
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 

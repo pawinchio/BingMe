@@ -5,3 +5,165 @@
         </script>
     <%}%>
 </div>
+
+
+<div id="interact-footer">
+    <%if(user){ if(user.role=='Hunter'){%>
+    <button class="interact-button interact-map">
+        <i style="width: 23px;height: 23px; vertical-align: middle;" data-feather='map'></i>
+        <span style="vertical-align: top;padding-left: 7px;">เปิดดูเส้นทาง</span> 
+    </button>
+    <%}}%>
+    <div class="interact-general-nav"><i data-feather='chevrons-up'></i></div>
+</div>
+
+<template id='loader'>
+    <div class="loader" style="
+    display: block;
+    position: relative;
+    border: 5px solid #f3f3f338!important;
+    border-top: 5px solid #00ff89!important;
+    border-radius: 50%;
+    width: 25vw;
+    height: 25vw;
+    margin: 0 auto;
+    animation: spin 1s linear infinite;
+    top: unset;
+    left: unset;
+    "></div>
+</template>
+
+<template id='acceptBtn'>
+    <div class="interactSubmit" id="sendAccept" style='max-width: unset;width: 120px;margin: 20px 100px;'>ตอบรับลูกค้า</div>
+</template>
+
+<template id='payBtn'>
+    <div class="interactSubmit" id="sendPay" style='max-width: unset;width: 120px;margin-top: 20px;margin-right: 20px;'>ชำระค่าจัดส่ง</div>
+</template>
+
+<template id='avatar'>
+    <div style='
+        max-width: 200px;
+        min-width: 120px;
+        margin-top: 20px;
+        margin-left: 20px;
+        text-align: left;
+        padding: 12px;
+    ' class="interactSubmit user-avatar" style='max-width: unset;width: 120px;margin-top: 20px;margin-right: 20px;'>
+        <img style='
+                width: 50px;
+                height: 50px;
+                border-radius: 15px;
+                margin-right: 10px;
+        '
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSYMbFLuJaViJIiSspngmNo7uY6dJkmyik2zWGqxHv6_VGnRzv" alt="">
+        <span class='avatar-text'>Dummy</span>
+    </div>
+</template>
+
+<template id="order-summary">
+    <div class="container" style="
+    background: white;
+    width: 90%;
+    border-radius: 15px;">
+        <div class="d-flex justify-content-center" style="
+        padding: 10px 0;
+        border-bottom: 1px solid lightgray;
+        color: black;
+        font-size: larger;
+        ">
+            <span>รายการสั่งซื้อ: </span>
+            <span id="orderId" style="
+            color: #00ff89;
+            padding-left: 10px;">000000</span>
+        </div>
+        <div class="d-flex" style="color: black;">
+            <div class="mr-auto p-2" style="font-size: large">a</div>
+            <div class="p-2">
+                <input type="number" style="
+                background: #fafafa!important;
+                border: 2px solid!important;
+                border-radius: 15px!important;
+                
+                height: 32px;
+                margin: auto;
+                width: 50px;
+                " readonly></input>
+            </div>
+            <div class="p-2">
+                <input type="number" style="
+                background: #fafafa!important;
+                border: 2px solid!important;
+                border-radius: 15px!important;
+                
+                height: 32px;
+                margin: auto;
+                width: 50px;
+                " readonly></input>
+            </div>  
+        </div>
+        <div class="d-flex justify-content-center" style="
+        padding: 13px 0;
+        border-top: 1px solid lightgray;
+        color: black;
+        font-size: larger;
+        ">
+        </div>
+    </div>
+</template>
+
+<template id="list-item">
+    <div class="d-flex" style="color: black;">
+        <div class="mr-auto p-2" style="font-size: large">a</div>
+        <div class="p-2">
+            <input type="number" style="
+            background: #fafafa!important;
+            border: 2px solid!important;
+            border-radius: 15px!important;
+            
+            height: 32px;
+            margin: auto;
+            width: 50px;
+            " readonly></input>
+        </div>
+        <div class="p-2">
+            <input type="number" style="
+            background: #fafafa!important;
+            border: 2px solid!important;
+            border-radius: 15px!important;
+            
+            height: 32px;
+            margin: auto;
+            width: 50px;
+            " readonly></input>
+        </div>
+    </div>
+</template>
+
+<template id='create-order'>
+    <div class="container" id="createFood">
+        <h5 style="color:black">สร้างรายการคำสั่งซื้อ</h5>
+        <div>
+            <input id="inputFood" type="text" >
+            <span><i id="addBot" data-feather="plus-circle"></i></span>
+        </div>
+        <div id="showFood"></div>
+    </div>
+    <div class="interactSubmit" id="sendMenu">ส่งรายการสั่งซื้อ</div>
+</template>
+
+<template id='create-order-list'>
+    <div class=d-flex justify-content-between>
+        <div class= 'mr-auto p-2' id='food' style='color:black;'></div>
+        <div class= 'p-2'>
+            <input class='countFood' type='text' value=1 style='
+                border-radius: 10px;
+                border: none;
+                background: #ebebeb;
+                width: 30px;
+                text-align: center;
+                padding: 2px;'>
+        </div>
+        <div class='p-2 dismissMenu' style='color:black;'>X</div>
+    </div>
+</template>

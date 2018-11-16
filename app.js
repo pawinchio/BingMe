@@ -177,38 +177,47 @@ app.get('/activate', (req,res) => {
 
 app.post('/createOrder', (req,res) => {
         console.log(req.body);
-        var menuID = new Array();
+        let menuID = [];
+        let storeID ;
+        interect();
         
-        function addMenu() {
-                req.body.menu.forEach(menu => {
-                        Menu.find({Name: menu.name},(err,menuData)=>{
+        async function addMenu() {
+                for(const menu of req.body.menu) {
+                // req.body.menu.forEach(menu => {
+                        await Menu.find({Name: menu.name},async (err,menuData)=>{
                                 if(menuData[0]==null){
-                                        console.log("notfound"+menu.name);
+                                        console.log("notfound : "+menu.name);
                                         menuTemp = {
                                                 img: null,
                                                 Name: menu.name,
                                                 priceAvg: 0,
                                                 COPAvg: 0
                                         }
-                                        Menu.create(menuTemp,(err,Data)=>{
-                                                Data.save();
+                                        await Menu.create(menuTemp,async(err,Data)=>{
+                                                await Data.save(async ()=>{
+                                                        await Menu.find({Name: menu.name},async (err,menuData)=>{
+                                                                await menuID.push(menuData[0]._id);  
+                                                        })
+                                                });     
+                                                
                                         })
+                                        
                                 }
                                 else{
-                                        console.log("found"+menu.name);
-                                        menuID.push(menuData[0]._id);
-                                        console.log(menuID);
+                                        console.log("found : "+menu.name);
+                                        await menuID.push(menuData[0]._id);
+                                        
                                 }
-                        })
-                        console.log(menuID);
-                });    
+                        });
+                };
         }
         
-        function addStore() {
+        async function addStore() {
                 StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
+                        console.log("fromstore : "+menuID);
                         // console.log(store);
                         if(store[0]==null){
-                                console.log("notfound Store");
+                                console.log("notfound Store : "+req.body.storeData.name);
                                 storeData={
                                         img: null,
                                         locationStore:{
@@ -216,16 +225,25 @@ app.post('/createOrder', (req,res) => {
                                                 Longitude: req.body.storeData.geometry.location.lng
                                         },
                                         storeName: req.body.storeData.name,
-                                        historyMenu: req.body.menu,
+                                        historyMenu: menuID,
                                         priceAvg: null,
                                         COPAvg: null
-                                };
+                                }
                                 StoreHistory.create(storeData,(err,store)=>{
-                                        store.save();
+                                        store.save(()=>{
+                                                StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
+                                                        storeID = store[0]._id
+                                                })
+                                        });
                                 })
                         }
                         else{
-                                console.log("found");
+                                console.log("found : " + req.body.storeData.name);
+                                let temp = store[0].historyMenu;
+                                await menuID.forEach((menu)=>{
+                                        if (temp.indexOf(menu) === -1) temp.push(menu)
+                                })
+                                // await StoreHistory.findByIdAndUpdate(store[0]._id,)
                         }
                 }) 
         }
@@ -238,7 +256,7 @@ app.post('/createOrder', (req,res) => {
                         },
                         eaterID: req.body.eaterId,
                         menu: req.body.menu,
-                        storeId: null,
+                        storeId: storeID,
                         fee: req.body.storeData.fee,
                         isPickup: false,
                         hunterID: null,
@@ -254,10 +272,18 @@ app.post('/createOrder', (req,res) => {
                         order.save();
                 })   
         }
+
+        function sleep(ms){
+                return new Promise(resolve=>{
+                    setTimeout(resolve,ms)
+                })
+            }
         
-        async function main() {
-                const a = addMenu();
-                const b = await addStore(a);
+        async function interect(){
+                const first = await addMenu()
+                await sleep(3000)
+                const second = await addStore()
+                await sleep(3000)
                 const c = await addOrderPool(b);
 
         }

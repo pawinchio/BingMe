@@ -33,36 +33,49 @@ const awakeInteractBoard = (source) => {
         let eaterId = user._id;
         let menuList = jQuery.makeArray($('#showFood').children());
         let menuArray = [];
-        menuList.forEach((child) => {
-            let foodName = child.childNodes[0].innerText;
-            let foodAmount = child.childNodes[1].childNodes[0].value;
-            let menuObj = {
-                name: foodName,
-                amount: foodAmount
-            }
-            menuArray.push(menuObj);
-        });
+        call();
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                let eaterLocation = {
-                    Latitude: position.coords.latitude,
-                    Longitude: position.coords.longitude
-                };
-                $.post('/createOrder',{
-                    eaterId: eaterId,
-                    storeData: JSON.parse(placeData),
-                    menu: menuArray,
-                    locationEater: eaterLocation
-                }, (data, status) => {
-                    console.log(JSON.parse(placeData));
-                    if(status == 'success'){
-                        // call PendingInteract 
-                        pendingInteract(user);
-                    }
-                });
+        function getmenuData() {
+            menuList.forEach((child) => {
+                let foodName = child.children[0].innerText;
+                let foodAmount = child.children[1].children[0].value;
+                let menuObj = {
+                    name: foodName,
+                    amount: foodAmount
+                }
+                menuArray.push(menuObj);
             });
         }
+        
+        function sentData() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    let eaterLocation = {
+                        Latitude: position.coords.latitude,
+                        Longitude: position.coords.longitude
+                    };
+
+                    $.post('/createOrder',{
+                        eaterId: eaterId,
+                        storeData: JSON.parse(placeData),
+                        menu: menuArray,
+                        locationEater: eaterLocation
+                    }, (data, status) => {
+                        console.log(JSON.parse(placeData));
+                        if(status == 'success'){
+                            // call PendingInteract 
+                            pendingInteract(user);
+                        }
+                    });
+                });
+            }
+        }
+
+        async function call() {
+                const a = await getmenuData();
+                const b = await sentData(a);
+        }
+        
     });
 
        

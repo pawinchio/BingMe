@@ -196,16 +196,16 @@ interact.on('connection', function(client){
 app.post('/eaterDataForm', (req,res) => {
         //eaterdata
         let input = req.body;
-                console.log('input')
-                var newEater = new UserEater({
+        console.log("pass")
+                var newEater = new eater({
                         firstName: input.firstname,
                         lastName: input.lastname,
                         phoneNumber: input.phone,
                         gender: input.gender,
                         birthday: input.birth-day,
                         address : input.ADDRESS,
-                        email : input.emailToVerify,
-                        password : input.avatar,
+                        email : input.email,
+                        password : input.password,
                         picture : input.picture,
                         c_dCardNumber : input.CREDIT-NUMBER,
                         holderName : input.CREDIT-NAME,
@@ -215,10 +215,13 @@ app.post('/eaterDataForm', (req,res) => {
                         billingAddress : input.BILLING-ADDRESS
                 
                 });
+                
                 newEater.save().catch(err => {
                         console.log('Code Saving Failed'+err);
                 
-                });   
+                });  
+                
+a
                
         
 });

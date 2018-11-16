@@ -11,16 +11,9 @@ var storeHistorySchema = new mongoose.Schema({
     priceAvg: Number,
     COPAvg: Number,
     locationStore: {
-        type:{
-            type: String,
-            enum: ['Point'],
-            required: true
-        },
-        coordinates: {
-            type: [Number],
-            required: true
-        }
+        type: { type: String },
+        coordinates: []
     }
 });
-
+storeHistorySchema.index({locationStore: "2dsphere" });
 module.exports = mongoose.model("storeHistory", storeHistorySchema);

@@ -306,19 +306,19 @@ app.post('/fetchFreeOrder', (req,res) => {
                 console.log(order);
         });
         OrderPool.find({
-                storeLocation:{
-                        $near:{
-                                $geometry: {
-                                        type: 'Point',
-                                        coordinates: [req.body.h_lon, req.body.h_lat]
-                                },
-                                $maxDistance: 15000,
-                                $minDistance: 0
+                        storeLocation: {
+                                $near: {
+                                        $maxDistance: 1000000,
+                                        $geometry: {
+                                                type: "Point",
+                                                coordinates: [req.body.h_lon, req.body.h_lat]
+                                        }
+                                }
                         }
-                }
-        },null,(err, orders)=>{
-                console.log(orders)
-        });
+               }).find((error, results) => {
+                if (error) console.log(error);
+                console.log(JSON.stringify(results, 0, 2));
+               });
         
 });
 

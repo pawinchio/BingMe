@@ -124,11 +124,13 @@ const pendingInteract = () => {
         //fetch Data from user's pendingOrder
         $.get('/fetchData',(data,status)=>{
             dataGet = data;
+            console.log(dataGet);
         })
     }
     
     function renderTemplate() {
         //render current progress (role)
+        //avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
 
         //show

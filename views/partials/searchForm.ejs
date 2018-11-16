@@ -18,6 +18,7 @@
             </div>
         </div>
         <div class="col-lg-8 col-md-12" id="searchMap">
+        <div class="loader"></div>
         <div id="map"></div>
         <div class="choice-detail" style="padding:3px 6px; display:none;">
             <div style="border-bottom: 0.5px solid #00ff89;">ระยะทาง: <span id="choice-distance"></span></div>
@@ -47,6 +48,19 @@
         <tr><th><span class="choice-fee"></span>$</th></tr>
         <tr><td>ค่าบริการ</td></tr>
     </table>
-    <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoard()"></i>
+    <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoard(this)"></i>
   </div>
+</template>
+
+<template id="hunter-choice-template">
+    <div class="choice d-flex" style="border-radius: 10px;
+    margin: 15px 10px;
+    background: white;
+    border: 1px solid darkgray;
+    padding: 6px;" data-orderid="">
+        <div class="orderStoreName"></div>
+        <div class="orderQuantity"></div>
+        <div class="orderFee"></div>
+        <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoardByHunter(event)"></i>
+    </div>
 </template>

@@ -24,6 +24,9 @@ function renderMap(position) {
             streetViewControl: false,
             zoomControl: false
     });
+    
+    if($('#searchForm').attr('class')=='active') waitMapLoaded(map);
+
     map.panBy(0, 150)
     var marker = new google.maps.Marker({
         position: myinitialLocation,
@@ -31,6 +34,17 @@ function renderMap(position) {
         title: "You're Here"
     });
 }
+
+const waitMapLoaded = (mapObj) => {
+    $('.loader').show();
+    $('#searchInput').prop('readonly', true);
+    mapObj.addListener('tilesloaded', function () {
+        console.log('Map loaded');
+        $('.loader').hide();
+        $('#searchInput').prop('readonly', false);
+    });
+}
+
 var directionsService =null;
 var directionsDisplay = null;
 
@@ -142,4 +156,19 @@ function getPredictSearch (searchValue) {
     });
     // var autoCompleteService = new google.maps.places.AutocompleteService();
     // autoCompleteService.getPlacePredictions({ input: searchValue, location: myinitialLocation, radius: 25000 ,types:['establishment']}, displaySuggestions);
+}
+
+const getFreeOrder = (position) => {
+    let distance = 15000;
+    let hunterLat = position.coords.latitude;
+    let hunterLong = position.coords.longitude;
+    $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLong, dist:distance}, (data, status) => {
+        renderHunterChoice(data);
+    });
+    
+}
+
+const renderHunterChoice = (data) => {
+    let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
+
 }

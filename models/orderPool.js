@@ -2,28 +2,40 @@ var mongoose    = require("mongoose");
 
 // SCHEMA SETUP
 var orderPoolSchema = new mongoose.Schema({
-    locationStore: {Latitude : String,Longitude : String},
     locationEater: {Latitude : String,Longitude : String},
-    OrderID: String,
-    EaterID:
+    eaterID:
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "EaterID"
+        ref: "Eater"
     },
-    HunterID:
+    menu: [{name: String,amount: Number}],
+    storeId:
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "HunterID"
+        ref: "storeHistory"
     },
+    storeLocation: {
+        type: { 
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'] 
+        },
+        coordinates: [Number]
+    },
+    fee: String,
     isPickup: Boolean,
-    Menu: [{Menu: String,Count: Number}],
-    Fee: Number,
+    hunterID:
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hunter"
+    },
+    locationHunter: {Latitude : String,Longitude : String},
     isPaidFee: Boolean,
-    FeePaidTime: String,
+    feePaidTime: String,
     isFullFilled: Boolean,
-    Qr: String,
+    qr: String,
     isComplete: Boolean,
-    DateCreated: String    
+    dateCreated: String    
 });
 
+orderPoolSchema.index({storeLocation: "2dsphere" });
 module.exports = mongoose.model("orderPool", orderPoolSchema);

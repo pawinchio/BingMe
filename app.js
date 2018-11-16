@@ -7,15 +7,20 @@ const   express = require('express'),
         ejs = require('ejs'),
         passport = require('passport'),
         bodyParser = require('body-parser'),
-        eater  = require("./models/eater"),
-        hunter  = require("./models/hunter"),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
         uuid = require('uuid/v1');;
 
-const   UserAuth = require('./models/userAuth');
-const   UserActivation = require('./models/userActivation');
+var     Eater  = require("./models/eater"),
+        Hunter  = require("./models/hunter"),
+        Menu  = require("./models/menu"),
+        OrderPool  = require("./models/orderPool"),
+        StoreHistory  = require("./models/storeHistory"),
+        UserAuth = require('./models/userAuth'),
+        UserActivation = require('./models/userActivation');
+
+const   tools = require('./calculations.js');
 
 mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db',{ useNewUrlParser: true } );
 app.set('view engine','ejs');
@@ -170,6 +175,153 @@ app.get('/activate', (req,res) => {
                         });
                 }
         });
+});
+
+app.post('/createOrder', (req,res) => {
+        // console.log(req.body);
+        let menuID = [];
+        let storeID ;
+        let storeLocation;
+        interect();
+        
+        async function addMenu() {
+                for(const menu of req.body.menu) {
+                // req.body.menu.forEach(menu => {
+                        await Menu.find({Name: menu.name},async (err,menuData)=>{
+                                if(menuData[0]==null){
+                                        console.log("notfound : "+menu.name);
+                                        menuTemp = {
+                                                img: null,
+                                                Name: menu.name,
+                                                priceAvg: 0,
+                                                COPAvg: 0
+                                        }
+                                        await Menu.create(menuTemp,async(err,Data)=>{
+                                                await Data.save(async ()=>{
+                                                        await Menu.find({Name: menu.name},async (err,menuData)=>{
+                                                                await menuID.push(menuData[0]._id);  
+                                                        })
+                                                });     
+                                                
+                                        })
+                                        
+                                }
+                                else{
+                                        console.log("found : "+menu.name);
+                                        await menuID.push(menuData[0]._id);
+                                        
+                                }
+                        });
+                };
+        }
+        
+        async function addStore() {
+                StoreHistory.find({storeName: req.body.storeData.name}, async (err,store)=>{
+                        console.log("Menu ID : "+menuID);
+                        // console.log(store);
+                        // console.log(req.body.storeData.geometry.location.lng);
+
+                        if(store[0]==null){
+                                console.log("Add New Store : "+req.body.storeData.name);
+                                storeData={
+                                        img: null,
+                                        locationStore:{
+                                                type : 'Point',
+                                                coordinates: [
+                                                        req.body.storeData.geometry.location.lng,
+                                                        req.body.storeData.geometry.location.lat
+                                                ]
+                                        },
+                                        storeName: req.body.storeData.name,
+                                        historyMenu: menuID,
+                                        priceAvg: null,
+                                        COPAvg: null
+                                }
+                                StoreHistory.create(storeData,(err,store)=>{
+                                        // console.log(err);
+                                        store.save(()=>{
+                                                StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
+                                                        storeID = store[0]._id;
+                                                        storeLocation = store[0].locationStore;
+                                                })
+                                        });
+                                })
+                        }
+                        else{
+                                console.log("found : " + req.body.storeData.name);
+                                await menuID.forEach((menu)=>{
+                                        if (store[0].historyMenu.indexOf(menu) === -1) store[0].historyMenu.push(menu)
+                                })
+                                await StoreHistory.findByIdAndUpdate(store[0]._id,store[0])
+                                storeID = store[0]._id
+                        }
+                }) 
+        }
+
+        function addOrderPool() {
+                var orderPenData={
+                        locationEater:{
+                                Latitude: req.body.locationEater.Latitude,
+                                Longitude: req.body.locationEater.Longitude
+                        },
+                        eaterID: req.body.eaterId,
+                        menu: req.body.menu,
+                        storeId: storeID,
+                        storeLocation: storeLocation,
+                        fee: req.body.storeData.fee,
+                        isPickup: false,
+                        hunterID: null,
+                        locationHunter: {Latitude : null,Longitude : null},
+                        isPaidFee: false,
+                        feePaidTime: null,
+                        isFullFilled: false,
+                        qr: null,
+                        isComplete: false,
+                        dateCreated: Date()  
+                }
+                OrderPool.create(orderPenData,(err,order)=>{
+                        order.save();
+                        // console.log(order);
+                })   
+        }
+
+        function sleep(ms){
+                return new Promise(resolve=>{
+                    setTimeout(resolve,ms)
+                })
+            }
+        
+        async function interect(){
+                const first = await addMenu()
+                await sleep(3000)
+                const second = await addStore(first)
+                await sleep(3000)
+                const third = await addOrderPool(second);
+
+        }
+                
+        res.send('request received by Backend');
+});
+
+app.post('/fetchFreeOrder', (req,res) => {
+        // OrderPool.find(null,null,(err,order)=>{
+        //         console.log(order);
+        // });
+        OrderPool.find({
+                        storeLocation: {
+                                $near: {
+                                        $maxDistance: req.body.dist,
+                                        $geometry: {
+                                                type: "Point",
+                                                coordinates: [req.body.h_lon, req.body.h_lat]
+                                        }
+                                }
+                        }
+                }).find((error, results) => {
+                        if (error) console.log(error);
+                        res.send(results);
+                });
+        
 });
 
 app.get('/dashboard', (req,res) => {

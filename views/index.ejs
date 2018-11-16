@@ -4,6 +4,9 @@
     <% } %>
 
     <%if(user){%>
+        <script>
+            user = <%- JSON.stringify(user) %>
+        </script>
         <%if(user.userDataId == null){%>
             <%- include('partials/userDataModal', {user: user}); %>
         <%}else if(!user.isActivated){%>
@@ -37,7 +40,7 @@
                         <img src="../assets/images/Path_61.png" alt="">
                         <p>Statistic & History</p>
                     </div>
-                    <div class="card pendingcard">
+                    <div class="card pendingcard" onclick="pendingInteract()">
                         <div></div>
                         <i class="card-icon" id="eye" data-feather="eye"></i>
                         <i class="card-icon" id="package" data-feather="package"></i>

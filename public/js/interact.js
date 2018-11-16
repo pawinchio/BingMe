@@ -227,9 +227,12 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false) => {
 }
 
 const avatarRender = (Data,interactBoard) => {
-    avatar = document.getElementById('avatar').content.cloneNode(true);
-    avatar.querySelector('.avatar-text').innerText = Data.username;
-    avatar.querySelector('.user-avatar').querySelector('img#userIMG').src = Data.user.picture;
-    interactBoard.append(avatar);
+    if(Data&&Data.username&&Data.user)
+    {
+        avatar = document.getElementById('avatar').content.cloneNode(true);
+        avatar.querySelector('.avatar-text').innerText = Data.username;
+        avatar.querySelector('.user-avatar').querySelector('img#userIMG').src = Data.user.picture;
+        interactBoard.append(avatar);
+    }
 }
 

@@ -12,7 +12,7 @@ var storeHistorySchema = new mongoose.Schema({
     COPAvg: Number,
     locationStore: {
         type: { type: String },
-        coordinates: []
+        coordinates: [Number]
     }
 });
 storeHistorySchema.index({locationStore: "2dsphere" });

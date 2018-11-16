@@ -217,26 +217,28 @@ app.post('/createOrder', (req,res) => {
         
         async function addStore() {
                 StoreHistory.find({storeName: req.body.storeData.name}, async (err,store)=>{
-                        console.log("Menu ID : "+menuID);
+                        // console.log("Menu ID : "+menuID);
                         // console.log(store);
                         if(store[0]==null){
                                 console.log("Add New Store : "+req.body.storeData.name);
                                 storeData={
                                         img: null,
+                                        storeName: req.body.storeData.name,
+                                        historyMenu: menuID,
+                                        priceAvg: null,
+                                        COPAvg: null,
                                         locationStore:{
                                                 type : 'Point',
                                                 coordinates: [
                                                         req.body.storeData.geometry.location.lng,
                                                         req.body.storeData.geometry.location.lat
                                                 ]
-                                        },
-                                        storeName: req.body.storeData.name,
-                                        historyMenu: menuID,
-                                        priceAvg: null,
-                                        COPAvg: null
+                                        }
                                 }
                                 StoreHistory.create(storeData,(err,store)=>{
-                                        store.save(()=>{
+                                        if(err) console.log(err)
+                                        store.save((err)=>{
+                                                if(err) console.log(err)
                                                 StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
                                                         storeID = store[0]._id;
                                                         storeLocation = store[0].locationStore;
@@ -261,6 +263,7 @@ app.post('/createOrder', (req,res) => {
                                 Latitude: req.body.locationEater.Latitude,
                                 Longitude: req.body.locationEater.Longitude
                         },
+                        storeName: req.body.storeData.name,
                         eaterID: req.body.eaterId,
                         menu: req.body.menu,
                         storeId: storeID,
@@ -278,7 +281,6 @@ app.post('/createOrder', (req,res) => {
                 }
                 OrderPool.create(orderPenData,(err,order)=>{
                         order.save();
-                        // console.log(order);
                 })   
         }
 

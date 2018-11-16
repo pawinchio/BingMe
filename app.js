@@ -394,20 +394,19 @@ app.post('/eaterDataForm', (req,res) => {
                         lastName: input.lastname,
                         phoneNumber: input.phone,
                         gender: input.gender,
-                        birthday: input.birth-day,
+                        //birthday: input.birth-day
                         address : input.ADDRESS,
                         email : input.email,
-                        password : input.password,
-                        picture : input.picture,
-                        c_dCardNumber : input.CREDIT-NUMBER,
-                        holderName : input.CREDIT-NAME,
-                        expiration_m : input.expire-month,
-                        expiration_y : input.expire-year,
-                        cvv : input.CVV,
-                        billingAddress : input.BILLING-ADDRESS
-                
+                        // picture : input.picture
+                        //c_dCardNumber : input.CREDIT-NUMBER,
+                        //holderName : input.CREDIT-NAME,
+                        //expiration_m : input.expire-month,
+                        //expiration_y : input.expire-year,
+                         cvv : input.CVV,
+                        //billingAddress: input.BILLING-ADDRESS
+
                 });
-                
+                console.log(newEater)
                 newEater.save().catch(err => {
                         console.log('Code Saving Failed'+err);
 <<<<<<< HEAD
@@ -417,7 +416,7 @@ app.post('/eaterDataForm', (req,res) => {
                 
                 });  
                 
-a
+
                
 >>>>>>> install multer for upload file image by pawin.c
         

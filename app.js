@@ -213,7 +213,7 @@ app.post('/createOrder', (req,res) => {
         }
         
         async function addStore() {
-                StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
+                StoreHistory.find({storeName: req.body.storeData.name}, async (err,store)=>{
                         console.log("fromstore : "+menuID);
                         // console.log(store);
                         if(store[0]==null){

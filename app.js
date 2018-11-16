@@ -238,14 +238,9 @@ app.post('/createOrder', (req,res) => {
                                         }
                                 }
                                 StoreHistory.create(storeData,(err,store)=>{
-<<<<<<< HEAD
-                                        // console.log(err);
-                                        store.save(()=>{
-=======
                                         if(err) console.log(err)
                                         store.save((err)=>{
                                                 if(err) console.log(err)
->>>>>>> 2f7573e9235fdf6dcb936da3f10f7428c1fccf96
                                                 StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
                                                         storeID = store[0]._id;
                                                         storeLocation = store[0].locationStore;

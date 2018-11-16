@@ -242,7 +242,8 @@ app.post('/createOrder', (req,res) => {
                                 await menuID.forEach((menu)=>{
                                         if (store[0].historyMenu.indexOf(menu) === -1) store[0].historyMenu.push(menu)
                                 })
-                                await StoreHistory.findByIdAndUpdate(store[0]._id,store[0]);
+                                await StoreHistory.findByIdAndUpdate(store[0]._id,store[0])
+                                storeID = store[0]._id
                         }
                 }) 
         }

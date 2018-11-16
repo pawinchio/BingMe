@@ -2,6 +2,12 @@ let interactPipe = undefined;
 let orderId = undefined;
 let interactBoard = $('#interactBoard');
 
+function sleep(ms){
+    return new Promise(resolve=>{
+            setTimeout(resolve,ms)
+    })
+}
+
 const awakeInteractBoard = (source) => {
     let placeData = source.parentNode.getAttribute('data-place-detail');
     // console.log(source.parentNode);
@@ -92,20 +98,27 @@ const awakeInteractBoardByHunter = (e) => {
 }
 
 const pendingInteract = () => {
+    let dataGet;
     let hunter_wait = false;
     let eater_wait = false;
-    //clear interactBoard's child
-    $('.menubar').addClass('black');
-    $('#searchDismiss').addClass('active');
-    $('#searchCollapse').removeClass('active');
+    peding()
 
-    showInteractBoard();
-    interactBoard.empty();
-    //fetch Data from user's pendingOrder
-    $.get('/fetchData',(data,status)=>{
-        console.log(data);
-    })
-    //render current progress (role)
+    function init() {
+        //clear interactBoard's child
+        $('.menubar').addClass('black');
+        $('#searchDismiss').addClass('active');
+        $('#searchCollapse').removeClass('active');
+
+        showInteractBoard();
+        interactBoard.empty();
+        //fetch Data from user's pendingOrder
+        $.get('/fetchData',(data,status)=>{
+            dataGet = data;
+        })
+    }
+    
+    function renderTemplate() {
+        //render current progress (role)
         //load template
         var orderSummary = document.getElementById('order-summary').content.cloneNode(true);
         var loader = document.getElementById('loader').content.cloneNode(true);
@@ -115,23 +128,32 @@ const pendingInteract = () => {
         interactBoard.append(avatar);
         interactBoard.append(orderSummary);
         console.log(avatar);
-
-    //create pipeline
-    interactPipe = io('/interact');
-    interactPipe.on('connect', function(data){
-        interactPipe.emit("connectRoom", orderId);
-    })
-    interactPipe.on('ping', function(data){
-        console.log(data);
-    });
-    //determine next action from progress (use role)
-        //do or wait
-        //do -> sent action through pipeline 
-        //wait -> wait action from pipeline 
-
-        //action has some button to tricker Backend to update order in DB
+    }
     
+    function pipeline() {
+        //create pipeline
+        interactPipe = io('/interact');
+        interactPipe.on('connect', function(data){
+            interactPipe.emit("connectRoom", orderId);
+        })
+        interactPipe.on('ping', function(data){
+            console.log(data);
+        });
+        //determine next action from progress (use role)
+            //do or wait
+            //do -> sent action through pipeline 
+            //wait -> wait action from pipeline 
+
+            //action has some button to tricker Backend to update order in DB
+    }
     
+    async function peding() {
+        const a = await init()
+        await sleep(3000)
+        const b = await renderTemplate(a)
+        await sleep(3000)
+        const c = await pipeline(b)
+    }
 }
 
 const killInteractBoard = () => {

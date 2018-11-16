@@ -130,14 +130,17 @@ const pendingInteract = () => {
     }
     
     function renderTemplate() {
+        
         //render current progress (role)
         // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
-
+        console.log(dataGet.userDetail.eaterDetail)
+        avatarRender(dataGet.userDetail.eaterDetail,interactBoard)
+        renderOrder(dataGet.orderDetail,interactBoard)
         //show
-        interactBoard.append(avatar);
-        interactBoard.append(orderSummary);
-        console.log(avatar);
+        // interactBoard.append(avatar);
+        // interactBoard.append(orderSummary);
+        // console.log(avatar);
     }
     
     function pipeline() {
@@ -159,9 +162,9 @@ const pendingInteract = () => {
     
     async function pending() {
         const a = await init()
-        await sleep(1000)
+        await sleep(800)
         const b = await renderTemplate(a)
-        await sleep(1000)
+        await sleep(500)
         const c = await pipeline(b)
     }
 }
@@ -234,4 +237,14 @@ const getUserByOrderId = (orderId) => {
     })
 }
 
+
+const avatarRender = (Data,interactBoard) => {
+    if(Data&&Data.username&&Data.user)
+    {
+        avatar = document.getElementById('avatar').content.cloneNode(true);
+        avatar.querySelector('.avatar-text').innerText = Data.username;
+        avatar.querySelector('.user-avatar').querySelector('img#userIMG').src = Data.user.picture;
+        interactBoard.append(avatar);
+    }
+}
 

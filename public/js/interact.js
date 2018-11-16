@@ -2,6 +2,13 @@ let interactPipe = undefined;
 let orderId = undefined;
 let interactBoard = $('#interactBoard');
 
+//load template
+var orderSummary = document.getElementById('order-summary').content.cloneNode(true);
+var loader = document.getElementById('loader').content.cloneNode(true);
+var acceptBtn = document.getElementById('acceptBtn').content.cloneNode(true);
+var payBtn = document.getElementById('payBtn').content.cloneNode(true);
+var avatar = document.getElementById('avatar').content.cloneNode(true);
+
 const awakeInteractBoard = (source) => {
     let placeData = source.parentNode.getAttribute('data-place-detail');
     // console.log(source.parentNode);
@@ -82,12 +89,12 @@ const awakeInteractBoard = (source) => {
 }
 
 const awakeInteractBoardByHunter = (targetOrder) => {
-    let orderData = targetOrder.parentNode.getAttribute('data-order-detail');
-    
+    // fetch Data from pendingOrder's orderId
+    let orderData = JSON.parse(targetOrder.parentNode.getAttribute('data-order-detail'));
     showInteractBoard();
 
-    // fetch Data from pendingOrder's orderId
-    // show accept button
+    // show order detail and accept button
+    interactBoard.append(orderSummary)
     // if click mark in DB and call PendingInteract
 }
 
@@ -105,11 +112,8 @@ const pendingInteract = () => {
 
     //render current progress (role)
         //load template
-        var orderSummary = document.getElementById('order-summary').content.cloneNode(true);
-        var loader = document.getElementById('loader').content.cloneNode(true);
-        var acceptBtn = document.getElementById('acceptBtn').content.cloneNode(true);
-        var payBtn = document.getElementById('payBtn').content.cloneNode(true);
-        var avatar = document.getElementById('avatar').content.cloneNode(true);
+
+        //show
         interactBoard.append(avatar);
         interactBoard.append(orderSummary);
         console.log(avatar);

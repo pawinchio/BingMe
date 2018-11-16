@@ -11,8 +11,11 @@ var storeHistorySchema = new mongoose.Schema({
     priceAvg: Number,
     COPAvg: Number,
     locationStore: {
-        type: { type: String },
-        coordinates: []
+        type: { 
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'] 
+        },
+        coordinates: [Number]
     }
 });
 storeHistorySchema.index({locationStore: "2dsphere" });

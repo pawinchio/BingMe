@@ -157,3 +157,18 @@ function getPredictSearch (searchValue) {
     // var autoCompleteService = new google.maps.places.AutocompleteService();
     // autoCompleteService.getPlacePredictions({ input: searchValue, location: myinitialLocation, radius: 25000 ,types:['establishment']}, displaySuggestions);
 }
+
+const getFreeOrder = (position) => {
+    let distance = 15000;
+    let hunterLat = position.coords.latitude;
+    let hunterLong = position.coords.longitude;
+    $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLong, dist:distance}, (data, status) => {
+        renderHunterChoice(data);
+    });
+    
+}
+
+const renderHunterChoice = (data) => {
+    let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
+
+}

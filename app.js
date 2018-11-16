@@ -219,6 +219,8 @@ app.post('/createOrder', (req,res) => {
                 StoreHistory.find({storeName: req.body.storeData.name}, async (err,store)=>{
                         console.log("Menu ID : "+menuID);
                         // console.log(store);
+                        // console.log(req.body.storeData.geometry.location.lng);
+
                         if(store[0]==null){
                                 console.log("Add New Store : "+req.body.storeData.name);
                                 storeData={
@@ -236,6 +238,7 @@ app.post('/createOrder', (req,res) => {
                                         COPAvg: null
                                 }
                                 StoreHistory.create(storeData,(err,store)=>{
+                                        // console.log(err);
                                         store.save(()=>{
                                                 StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
                                                         storeID = store[0]._id;
@@ -301,24 +304,23 @@ app.post('/createOrder', (req,res) => {
 });
 
 app.post('/fetchFreeOrder', (req,res) => {
-        console.log(req.body);
-        OrderPool.find(null,null,(err,order)=>{
-                console.log(order);
-        });
+        // OrderPool.find(null,null,(err,order)=>{
+        //         console.log(order);
+        // });
         OrderPool.find({
                         storeLocation: {
                                 $near: {
-                                        $maxDistance: 1000000,
+                                        $maxDistance: req.body.dist,
                                         $geometry: {
                                                 type: "Point",
                                                 coordinates: [req.body.h_lon, req.body.h_lat]
                                         }
                                 }
                         }
-               }).find((error, results) => {
-                if (error) console.log(error);
-                console.log(JSON.stringify(results, 0, 2));
-               });
+                }).find((error, results) => {
+                        if (error) console.log(error);
+                        res.send(results);
+                });
         
 });
 

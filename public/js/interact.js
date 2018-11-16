@@ -90,15 +90,14 @@ const awakeInteractBoard = (source) => {
 }
 
 const awakeInteractBoardByHunter = (targetOrder) => {
+    interactBoard.empty();
     // fetch Data from pendingOrder's orderId
     let orderData = JSON.parse(targetOrder.parentNode.getAttribute('data-order-detail'));
     showInteractBoard();
-
+    console.log(orderData)
     // show order detail and accept button
-    let orderList = orderSummary.querySelector('.order-list-container');
-    listItem.querySelector('.list-name').innerText = 'test bitch!';
-    orderList.appendChild(listItem);
-    interactBoard.append(orderSummary);
+    renderOrder(orderData,interactBoard,false);
+
     // if click mark in DB and call PendingInteract
 }
 
@@ -183,5 +182,19 @@ const showInteractBoard = () => {
     $('#interact-footer').css({
         "bottom":"0vh"
     });
+}
+
+const renderOrder = (orderData,interactBoard,isDisplayPrice = false) => {
+    orderSummary = document.getElementById('order-summary').content.cloneNode(true);
+    orderSummary.querySelector('#orderId').innerText = orderData._id.slice(-6);
+    for(let i=0;i<orderData.menu.length;i++){
+        let orderList = orderSummary.querySelector('.order-list-container');
+        listItem = document.getElementById('list-item').content.cloneNode(true);
+        listItem.querySelector('.list-name').innerText = orderData.menu[i].name;
+        listItem.querySelector('.countFood').value = orderData.menu[i].amount;
+        if(!isDisplayPrice)listItem.querySelector('.priceFood').style.display = "none";
+        orderList.appendChild(listItem);
+    }
+    interactBoard.append(orderSummary);
 }
 

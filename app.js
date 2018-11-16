@@ -189,7 +189,7 @@ app.post('/createOrder', (req,res) => {
                 // req.body.menu.forEach(menu => {
                         await Menu.find({Name: menu.name},async (err,menuData)=>{
                                 if(menuData[0]==null){
-                                        console.log("notfound : "+menu.name);
+                                        console.log("Add New Food : "+menu.name);
                                         menuTemp = {
                                                 img: null,
                                                 Name: menu.name,
@@ -207,7 +207,7 @@ app.post('/createOrder', (req,res) => {
                                         
                                 }
                                 else{
-                                        console.log("found : "+menu.name);
+                                        console.log("Found Food : "+menu.name);
                                         await menuID.push(menuData[0]._id);
                                         
                                 }
@@ -247,7 +247,7 @@ app.post('/createOrder', (req,res) => {
                                 })
                         }
                         else{
-                                console.log("found : " + req.body.storeData.name);
+                                console.log("Found Store : " + req.body.storeData.name);
                                 await menuID.forEach((menu)=>{
                                         if (store[0].historyMenu.indexOf(menu) === -1) store[0].historyMenu.push(menu)
                                 })

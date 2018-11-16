@@ -239,11 +239,10 @@ app.post('/createOrder', (req,res) => {
                         }
                         else{
                                 console.log("found : " + req.body.storeData.name);
-                                let temp = store[0].historyMenu;
                                 await menuID.forEach((menu)=>{
-                                        if (temp.indexOf(menu) === -1) temp.push(menu)
+                                        if (store[0].historyMenu.indexOf(menu) === -1) store[0].historyMenu.push(menu)
                                 })
-                                await StoreHistory.findByIdAndUpdate(store[0]._id,)
+                                await StoreHistory.findByIdAndUpdate(store[0]._id,store[0]);
                         }
                 }) 
         }

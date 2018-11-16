@@ -342,7 +342,7 @@ app.get('/fetchPendingData',(req,res)=>{
                                 Eater.findById(req.user.userDataId,async (err,user)=>{
                                         if(err) console.log(err);
                                         poolRef = user.refPending;
-                                        userDetail.eaterDetail = user;
+                                        userDetail.eaterDetail = {user,username : req.user.username};
                                 })
                         }
                         else{
@@ -350,7 +350,7 @@ app.get('/fetchPendingData',(req,res)=>{
                                 Hunter.findById(req.user.userDataId,async (err,user)=>{
                                         if(err) console.log(err);
                                         poolRef = user.refPending;
-                                        userDetail.hunterDetail = user;
+                                        userDetail.hunterDetail = {user,username : req.user.username};
                                         
                                 })
                         }
@@ -364,19 +364,19 @@ app.get('/fetchPendingData',(req,res)=>{
                         if(err) console.log(err);
                         orderDetail = pool;
                         if(userDetail.hunterDetail==null){
-                                UserAuth.findById(pool.hunterID,(err,user)=>{
-                                        Hunter.findById(user.userDataId,async (err,user)=>{
+                                UserAuth.findById(pool.hunterID,(err,userF)=>{
+                                        Hunter.findById(userF.userDataId,async (err,user)=>{
                                                 if(err) console.log(err);
-                                                userDetail.hunterDetail = user;
+                                                userDetail.hunterDetail = {user,username : user.username};
                                         })
                                         
                                 })  
                         }
                         else{
-                                UserAuth.findById(pool.eaterID,(err,user)=>{
-                                        Eater.findById(user.userDataId,async (err,user)=>{
+                                UserAuth.findById(pool.eaterID,(err,userF)=>{
+                                        Eater.findById(userF.userDataId,async (err,user)=>{
                                                 if(err) console.log(err);
-                                                userDetail.eaterDetail = user;
+                                                userDetail.eaterDetail = {user,username : user.username};
                                         })
                                         
                                 })   
@@ -386,9 +386,9 @@ app.get('/fetchPendingData',(req,res)=>{
         
         async function fetchData(){
                 const first = await findOrderRef();
-                await sleep(3000)
+                await sleep(250)
                 const second = await getDetailPending(first); 
-                await sleep(3000)
+                await sleep(250)
                 await res.send({userDetail,orderDetail});
         }
 })

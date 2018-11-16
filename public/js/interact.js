@@ -110,7 +110,7 @@ const pendingInteract = () => {
     let dataGet;
     let hunter_wait = false;
     let eater_wait = false;
-    peding()
+    pending()
 
     function init() {
         //clear interactBoard's child
@@ -128,14 +128,17 @@ const pendingInteract = () => {
     }
     
     function renderTemplate() {
+        
         //render current progress (role)
         // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
-
+        console.log(dataGet.userDetail.eaterDetail)
+        avatarRender(dataGet.userDetail.eaterDetail,interactBoard)
+        renderOrder(dataGet.orderDetail,interactBoard)
         //show
-        interactBoard.append(avatar);
-        interactBoard.append(orderSummary);
-        console.log(avatar);
+        // interactBoard.append(avatar);
+        // interactBoard.append(orderSummary);
+        // console.log(avatar);
     }
     
     function pipeline() {
@@ -155,11 +158,11 @@ const pendingInteract = () => {
             //action has some button to tricker Backend to update order in DB
     }
     
-    async function peding() {
+    async function pending() {
         const a = await init()
-        await sleep(3000)
+        await sleep(800)
         const b = await renderTemplate(a)
-        await sleep(3000)
+        await sleep(500)
         const c = await pipeline(b)
     }
 }
@@ -221,5 +224,12 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false) => {
         orderList.appendChild(listItem);
     }
     interactBoard.append(orderSummary);
+}
+
+const avatarRender = (Data,interactBoard) => {
+    avatar = document.getElementById('avatar').content.cloneNode(true);
+    avatar.querySelector('.avatar-text').innerText = Data.username;
+    avatar.querySelector('.user-avatar').querySelector('img#userIMG').src = Data.user.picture;
+    interactBoard.append(avatar);
 }
 

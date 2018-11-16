@@ -277,14 +277,8 @@ app.post('/createOrder', (req,res) => {
                         dateCreated: Date()  
                 }
                 OrderPool.create(orderPenData,(err,order)=>{
-<<<<<<< HEAD
-                        order.save((orderData)=>{
-                                console.log(orderData);
-                        });
-=======
                         order.save();
                         // console.log(order);
->>>>>>> 2c4182df069358fec06eba368e27ad417213209f
                 })   
         }
 

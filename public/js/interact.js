@@ -111,13 +111,9 @@ const pendingInteract = () => {
         var payBtn = document.getElementById('payBtn').content.cloneNode(true);
         var avatar = document.getElementById('avatar').content.cloneNode(true);
         interactBoard.append(avatar);
-<<<<<<< HEAD
-    
-=======
         interactBoard.append(orderSummary);
         console.log(avatar);
 
->>>>>>> 2c4182df069358fec06eba368e27ad417213209f
     //create pipeline
     interactPipe = io('/interact');
     interactPipe.on('connect', function(data){

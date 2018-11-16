@@ -7,15 +7,18 @@ const   express = require('express'),
         ejs = require('ejs'),
         passport = require('passport'),
         bodyParser = require('body-parser'),
-        eater  = require("./models/eater"),
-        hunter  = require("./models/hunter"),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
         uuid = require('uuid/v1');;
 
-const   UserAuth = require('./models/userAuth');
-const   UserActivation = require('./models/userActivation');
+var     Eater  = require("./models/eater"),
+        Hunter  = require("./models/hunter"),
+        Menu  = require("./models/menu"),
+        OrderPool  = require("./models/orderPool"),
+        StoreHistory  = require("./models/storeHistory"),
+        UserAuth = require('./models/userAuth'),
+        UserActivation = require('./models/userActivation');
 
 mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db',{ useNewUrlParser: true } );
 app.set('view engine','ejs');
@@ -174,6 +177,117 @@ app.get('/activate', (req,res) => {
 
 app.post('/createOrder', (req,res) => {
         console.log(req.body);
+        let menuID = [];
+        let storeID ;
+        interect();
+        
+        async function addMenu() {
+                for(const menu of req.body.menu) {
+                // req.body.menu.forEach(menu => {
+                        await Menu.find({Name: menu.name},async (err,menuData)=>{
+                                if(menuData[0]==null){
+                                        console.log("notfound : "+menu.name);
+                                        menuTemp = {
+                                                img: null,
+                                                Name: menu.name,
+                                                priceAvg: 0,
+                                                COPAvg: 0
+                                        }
+                                        await Menu.create(menuTemp,async(err,Data)=>{
+                                                await Data.save(async ()=>{
+                                                        await Menu.find({Name: menu.name},async (err,menuData)=>{
+                                                                await menuID.push(menuData[0]._id);  
+                                                        })
+                                                });     
+                                                
+                                        })
+                                        
+                                }
+                                else{
+                                        console.log("found : "+menu.name);
+                                        await menuID.push(menuData[0]._id);
+                                        
+                                }
+                        });
+                };
+        }
+        
+        async function addStore() {
+                StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
+                        console.log("fromstore : "+menuID);
+                        // console.log(store);
+                        if(store[0]==null){
+                                console.log("notfound Store : "+req.body.storeData.name);
+                                storeData={
+                                        img: null,
+                                        locationStore:{
+                                                Latitude: req.body.storeData.geometry.location.lat,
+                                                Longitude: req.body.storeData.geometry.location.lng
+                                        },
+                                        storeName: req.body.storeData.name,
+                                        historyMenu: menuID,
+                                        priceAvg: null,
+                                        COPAvg: null
+                                }
+                                StoreHistory.create(storeData,(err,store)=>{
+                                        store.save(()=>{
+                                                StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
+                                                        storeID = store[0]._id
+                                                })
+                                        });
+                                })
+                        }
+                        else{
+                                console.log("found : " + req.body.storeData.name);
+                                let temp = store[0].historyMenu;
+                                await menuID.forEach((menu)=>{
+                                        if (temp.indexOf(menu) === -1) temp.push(menu)
+                                })
+                                await StoreHistory.findByIdAndUpdate(store[0]._id,)
+                        }
+                }) 
+        }
+
+        function addOrderPool() {
+                var orderPenData={
+                        locationEater:{
+                                Latitude: req.body.locationEater.Latitude,
+                                Longitude: req.body.locationEater.Longitude
+                        },
+                        eaterID: req.body.eaterId,
+                        menu: req.body.menu,
+                        storeId: storeID,
+                        fee: req.body.storeData.fee,
+                        isPickup: false,
+                        hunterID: null,
+                        locationHunter: {Latitude : null,Longitude : null},
+                        isPaidFee: false,
+                        feePaidTime: null,
+                        isFullFilled: false,
+                        qr: null,
+                        isComplete: false,
+                        dateCreated: Date()  
+                }
+                OrderPool.create(orderPenData,(err,order)=>{
+                        order.save();
+                })   
+        }
+
+        function sleep(ms){
+                return new Promise(resolve=>{
+                    setTimeout(resolve,ms)
+                })
+            }
+        
+        async function interect(){
+                const first = await addMenu()
+                await sleep(3000)
+                const second = await addStore(first)
+                await sleep(3000)
+                const third = await addOrderPool(second);
+
+        }
+                
         res.send('request received by Backend');
 });
 

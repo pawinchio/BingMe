@@ -61,7 +61,7 @@ const awakeInteractBoard = (source) => {
                         menu: menuArray,
                         locationEater: eaterLocation
                     }, (data, status) => {
-                        console.log(JSON.parse(placeData));
+                        console.log(data);
                         if(status == 'success'){
                             // call PendingInteract 
                             pendingInteract(user);
@@ -102,7 +102,9 @@ const pendingInteract = () => {
     showInteractBoard();
     interactBoard.empty();
     //fetch Data from user's pendingOrder
-
+    $.get('/fetchData',(data,status)=>{
+        console.log(data);
+    })
     //render current progress (role)
         //load template
         var orderSummary = document.getElementById('order-summary').content.cloneNode(true);

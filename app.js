@@ -48,6 +48,12 @@ var transporter = nodemailer.createTransport({
         }
       });
 
+function sleep(ms){
+        return new Promise(resolve=>{
+                setTimeout(resolve,ms)
+        })
+}
+
 app.get('/', (req,res) => {
         let errSent = null;
         if(Object.keys(req.query).length > 0) errSent = req.query;
@@ -182,6 +188,7 @@ app.post('/createOrder', (req,res) => {
         let menuID = [];
         let storeID ;
         let storeLocation;
+        let orderPoolId;
         interect();
         
         async function addMenu() {
@@ -280,26 +287,88 @@ app.post('/createOrder', (req,res) => {
                         dateCreated: Date()  
                 }
                 OrderPool.create(orderPenData,(err,order)=>{
-                        order.save();
+                        orderPoolId = order._id;
+                        order.save((err)=>{
+                                if(err) console.log(err);
+                        });
                 })   
         }
-
-        function sleep(ms){
-                return new Promise(resolve=>{
-                    setTimeout(resolve,ms)
+        function addPendingOrder() {
+                console.log("Update Eater Pending Order")
+                UserAuth.findById(req.user._id,(err,user)=>{
+                        Eater.findById(user.userDataId,async (err,user)=>{
+                                function updateData()
+                                {
+                                        if (user.refStoreHistory.indexOf(storeID) === -1) user.refStoreHistory.push(storeID);
+                                        if (user.refHistory.indexOf(orderPoolId) === -1) user.refHistory.push(orderPoolId);
+                                        user.refPending = orderPoolId;
+                                }
+                                await updateData();
+                                await Eater.findByIdAndUpdate(user._id,user);
+                        })
                 })
-            }
+                
+        }
+
         
         async function interect(){
                 const first = await addMenu()
                 await sleep(3000)
                 const second = await addStore(first)
                 await sleep(3000)
-                const third = await addOrderPool(second);
+                const third = await addOrderPool(second)
+                await sleep(3000)
+                const four = await addPendingOrder(third)
+                await res.send("A");
         }
-
-        res.send('request received by Backend');
 });
+
+app.get('/fetchData',(req,res)=>{
+        let poolRef;
+        let userDetail;
+        let orderDetail;
+
+        fetchData()
+
+        function findOrderRef() {
+                if(req.user){
+                        if(req.user.role == "Eater"){
+                                console.log("Eater")
+                                Eater.findById(req.user.userDataId,async (err,user)=>{
+                                        if(err) console.log(err);
+                                        poolRef = user.refPending;
+                                        userDetail = user;
+                                })
+                        }
+                        else{
+                                console.log("Hunter")
+                                Hunter.findById(req.user.userDataId,async (err,user)=>{
+                                        if(err) console.log(err);
+                                        poolRef = user.refPending;
+                                        userDetail = user;
+                                        
+                                })
+                        }
+                }
+                else{
+                        console.log("NULL")
+                }
+        }
+        function getDetailPending() {
+                OrderPool.findById(poolRef, (err,pool)=>{
+                        if(err) console.log(err);
+                        orderDetail = pool;
+                })
+        }
+        
+        async function fetchData(){
+                const first = await findOrderRef();
+                await sleep(3000)
+                const second = await getDetailPending(first); 
+                await sleep(3000)
+                await res.send({userDetail,orderDetail});
+        }
+})
 
 app.post('/fetchFreeOrder', (req,res) => {
         console.log(req.body);

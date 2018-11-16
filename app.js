@@ -385,25 +385,27 @@ app.post('/eaterDataForm', (req,res) => {
                
 =======
 
-app.post('/Eater', (req,res) => {
+app.post('/eaterDataForm', (req,res) => {
         //eaterdata
         let input = req.body;
+                console.log('input')
                 var newEater = new UserEater({
-                        FirstName: input.firstname,
-                        LastName: input.lastname,
-                        PhoneNumber: input.phone,
-                        Gender: input.gender,
-                        Birthday: input.birth-day,
-                        Address : input.ADDRESS,
-                        Email : input.emailToVerify,
+                        firstName: input.firstname,
+                        lastName: input.lastname,
+                        phoneNumber: input.phone,
+                        gender: input.gender,
+                        birthday: input.birth-day,
+                        address : input.ADDRESS,
+                        email : input.emailToVerify,
                         password : input.avatar,
-                        Picture : input.picture,
+                        picture : input.picture,
                         c_dCardNumber : input.CREDIT-NUMBER,
-                        HolderName : input.CREDIT-NAME,
-                        Expiration_m : input.expire-month,
-                        Expiration_y : input.expire-year,
-                        CVV : input.CVV,
-                        BillingAddress : input.BILLING-ADDRESS    
+                        holderName : input.CREDIT-NAME,
+                        expiration_m : input.expire-month,
+                        expiration_y : input.expire-year,
+                        cvv : input.CVV,
+                        billingAddress : input.BILLING-ADDRESS
+                
                 });
                 newEater.save().catch(err => {
                         console.log('Code Saving Failed'+err);

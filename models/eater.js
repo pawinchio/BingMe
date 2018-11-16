@@ -2,20 +2,20 @@ var mongoose    = require("mongoose");
 
 // SCHEMA SETUP
 var eaterSchema = new mongoose.Schema({
-    FirstName: String,
-    LastName: String,
-    PhoneNumber: String,
-    Gender: String,
-    Birthday: String,
-    Picture : String,
-    Address : String,
+    firstName: String,
+    lastName: String,
+    phoneNumber: String,
+    gender: String,
+    birthday: String,
+    picture : String,
+    address : String,
     c_dCardNumber : String,
-    HolderName : String,
-    Expiration_m : String,
-    Expiration_y : String,
-    CVV : String,
-    BillingAddress : String,
-    Email : String,
+    holderName : String,
+    expiration_m : String,
+    expiration_y : String,
+    cvv : String,
+    billingAddress : String,
+    email : String,
     refStoreHistory: [
         {
             type: mongoose.Schema.Types.ObjectId,

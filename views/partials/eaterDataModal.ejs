@@ -1,6 +1,7 @@
-<form action="/" method="post">
-    <div class="modal-body" style="color: darkgray;font-family: 'Kanit'">
-        <div id="header-form"><p style="text-align: center;font-size: 200%">Eater Data</p></div>
+<form action="/eaterDataForm" method="post">
+    <div class="modal-body" style="color: darkgray;font-family: 'Gotham Rounded Bold';font-weight: 100;">
+        <!-- <div id="header-form"><p style="text-align: center;font-size: 200%;background: #00ff89;
+            border-radius: 15px 15px 0 0;padding: 6px;border-bottom: 0;">Eater Data</p></div> -->
         
 
 
@@ -198,20 +199,34 @@
 	         <div class="row">
                 <div class="col-lg-4 col-sm-12">
                     <!-- insert image -->
-                    <img src="" height="200" alt="Image preview...">
-                    <p><input type="file" onchange="previewFile()"accept="image/png, image/jpeg"><br>
-                    <input class="favorite styled"type="button"value="delete photo"> </p>
+                    <img src="" height="200" alt="Image preview..." >
+                    <p><input type="file" onchange="previewFile()"accept="image/png, image/jpeg"style="background: whitesmoke;
+                        border: 0.5px solid lightgray;
+                        border-radius: 5px;
+                        text-transform: uppercase;
+                        font-size: smaller;
+                        padding: 5px 4px;
+                        margin: 10px 0;
+                        width: -webkit-fill-available;"><br>
+                    <input class="favorite styled"type="button"value="delete photo" 
+                    style="border: none;
+                    background: whitesmoke;
+                    border: 0.5px solid lightgray;
+                    border-radius: 5px;
+                    text-transform: uppercase;
+                    font-size: smaller;
+                    padding: 5px 4px;"> </p>
                     <!-- newwwww -->
                     <!-- <input class="favorite styled"type="button"value="delete photo">    
                     <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"> -->
                     <!-- ******** -->
                     <p>
                     <label for="CREDIT-NUMBER" style="font-weight: bold;color: #00FF89">CREDIT/DEBIT CARD NUMBER</label>
-                    <input  type="number"  class="form-control" id="eater" name="CREDIT-NUMBER"min="16" placeholder="card must have  16  number"required >                    
+                    <input  type="number"  class="form-control eaterInfo" name="CREDIT-NUMBER"min="16" placeholder="card must have  16  number"required >                    
                     <!-- card must have  16  number --></p>
                     
                     <label style="font-weight: bold;color: #00FF89">HOLDER NAME</label>
-                    <input  class="form-control" id="eater" name="CREDIT-NAME" placeholder="CREDIT-NAME" required>
+                    <input  class="form-control eaterInfo" name="CREDIT-NAME" placeholder="CREDIT-NAME" required>
                             <div class="row">
                                 <div class="column" style="padding:8px">
                                         <p><label style="font-weight: bold;color: #00FF89">EXPIRATION</label></p>
@@ -242,14 +257,14 @@
                                 </div>
                                 <div class="column"style="padding:8px" >
                                             <p><label style="font-weight: bold;color: #00FF89"> CVV </label>
-                                                <input  type="number" class="form-control" id="eater" name="CVV" min="000" max="999" placeholder="cvv" required></p>
+                                                <input  type="number" class="form-control eaterInfo" name="CVV" min="000" max="999" placeholder="cvv" required></p>
                                                 <!-- edit number of cvv to under 999 -->
                                 </div>
                             </div>
                             <!-- css under line -->
                             
                             
-                            <div class="row" id="billing">
+                            <div class="row" class="billing">
                                 <div class="column">
                                         <label style="font-weight: bold;color: #00FF89" > BILLING ADDRESS         </label>
                                 </div>
@@ -257,7 +272,7 @@
                                     <input type="checkbox" name="checkbox" value="checkbox"> SAME AS ADDRESS<br>
                                 </div>
                                     <!-- check  -->
-                                    <input   class="form-control" id="box" name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" required>
+                                    <input   class="form-control box"  name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" required>
                             </div>
                             
 		      </div>  
@@ -265,11 +280,11 @@
                                 <div class="row">
                                     <div class="column">
                                         <label style="font-weight: bold;color: #00FF89">FIRSTNAME</label>
-                                        <input  type="text" class="form-control" id="eater" name="name" placeholder="firstname" required>
+                                        <input  type="text" class="form-control eaterInfo" name="name" placeholder="firstname" required>
                                     </div>
                                     <div class="column">
                                         <label style="font-weight: bold;color: #00FF89">LASTNAME</label>
-                                        <input  type="text"class="form-control" id="eater" name="lastname" placeholder="lastname" required>
+                                        <input  type="text"class="form-control eaterInfo" name="lastname" placeholder="lastname" required>
                                     </div>
                                 </div>
                                 <div>
@@ -280,7 +295,7 @@
                                 <div class="row">
                                     <div class="column">
                                         <label style="font-weight: bold;color: #00FF89;">GENDER</label>
-                                        <input   class="form-control"  id="eater" name="gender" name="name" placeholder="gender"required>
+                                        <input   class="form-control eaterInfo" name="gender" name="name" placeholder="gender"required>
                                     </div>
                                     <div class="column">
                                         <p><label style="font-weight: bold;color: #00FF89">BIRTHDAY</label></p>
@@ -290,17 +305,17 @@
                                 <div style="margin-bottom: 10px">
                                 <label style="font-weight: bold;color: #00FF89">ADDRESS</label>
                                 
-                                <input   class="form-control" id="box" name="ADDRESS" placeholder="ADDRESS" required>
+                                <input   class="form-control box"  name="ADDRESS" placeholder="ADDRESS" required>
                                  <!-- css under line -->
                                 </div>
                                 <div id="mail-box">
                                             <label for="emailToVerify"style="color: #00FF89">Email address</label>
                                             <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
                                             <label style="font-weight: bold;color: #00FF89"> PASSWORD</label>
-                                            <input  type="password" id="eater" name="password" min="6" required class="form-control" name="password" required> 
+                                            <input  type="password eaterInfo" name="password" min="6" required class="form-control" name="password" required> 
                                 </div>
                                 <div>
-                                    <button class="modal-footer" type="submit">
+                                    <button class="modal-footer" type="submit" id="uData-foot" >
                                             <div><i data-feather="log-in" class="login-icon"></i>  SUBMIT PROFILE </div>
                                         </button>
                                 </div>

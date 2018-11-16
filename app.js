@@ -189,7 +189,7 @@ app.post('/createOrder', (req,res) => {
                 // req.body.menu.forEach(menu => {
                         await Menu.find({Name: menu.name},async (err,menuData)=>{
                                 if(menuData[0]==null){
-                                        console.log("notfound : "+menu.name);
+                                        console.log("Add New Food : "+menu.name);
                                         menuTemp = {
                                                 img: null,
                                                 Name: menu.name,
@@ -207,7 +207,7 @@ app.post('/createOrder', (req,res) => {
                                         
                                 }
                                 else{
-                                        console.log("found : "+menu.name);
+                                        console.log("Found Food : "+menu.name);
                                         await menuID.push(menuData[0]._id);
                                         
                                 }
@@ -217,7 +217,7 @@ app.post('/createOrder', (req,res) => {
         
         async function addStore() {
                 StoreHistory.find({storeName: req.body.storeData.name}, async (err,store)=>{
-                        console.log("Menu ID : "+menuID);
+                        // console.log("Menu ID : "+menuID);
                         // console.log(store);
                         // console.log(req.body.storeData.geometry.location.lng);
 
@@ -225,21 +225,27 @@ app.post('/createOrder', (req,res) => {
                                 console.log("Add New Store : "+req.body.storeData.name);
                                 storeData={
                                         img: null,
+                                        storeName: req.body.storeData.name,
+                                        historyMenu: menuID,
+                                        priceAvg: null,
+                                        COPAvg: null,
                                         locationStore:{
                                                 type : 'Point',
                                                 coordinates: [
                                                         req.body.storeData.geometry.location.lng,
                                                         req.body.storeData.geometry.location.lat
                                                 ]
-                                        },
-                                        storeName: req.body.storeData.name,
-                                        historyMenu: menuID,
-                                        priceAvg: null,
-                                        COPAvg: null
+                                        }
                                 }
                                 StoreHistory.create(storeData,(err,store)=>{
+<<<<<<< HEAD
                                         // console.log(err);
                                         store.save(()=>{
+=======
+                                        if(err) console.log(err)
+                                        store.save((err)=>{
+                                                if(err) console.log(err)
+>>>>>>> 2f7573e9235fdf6dcb936da3f10f7428c1fccf96
                                                 StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
                                                         storeID = store[0]._id;
                                                         storeLocation = store[0].locationStore;
@@ -248,7 +254,7 @@ app.post('/createOrder', (req,res) => {
                                 })
                         }
                         else{
-                                console.log("found : " + req.body.storeData.name);
+                                console.log("Found Store : " + req.body.storeData.name);
                                 await menuID.forEach((menu)=>{
                                         if (store[0].historyMenu.indexOf(menu) === -1) store[0].historyMenu.push(menu)
                                 })
@@ -264,6 +270,7 @@ app.post('/createOrder', (req,res) => {
                                 Latitude: req.body.locationEater.Latitude,
                                 Longitude: req.body.locationEater.Longitude
                         },
+                        storeName: req.body.storeData.name,
                         eaterID: req.body.eaterId,
                         menu: req.body.menu,
                         storeId: storeID,
@@ -281,7 +288,6 @@ app.post('/createOrder', (req,res) => {
                 }
                 OrderPool.create(orderPenData,(err,order)=>{
                         order.save();
-                        // console.log(order);
                 })   
         }
 
@@ -297,9 +303,8 @@ app.post('/createOrder', (req,res) => {
                 const second = await addStore(first)
                 await sleep(3000)
                 const third = await addOrderPool(second);
-
         }
-                
+
         res.send('request received by Backend');
 });
 

@@ -169,6 +169,9 @@ const getFreeOrder = (position) => {
 }
 
 const renderHunterChoice = (data) => {
+    console.log(data);
     let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
-
+    for(let i=0; i<data.length; i++){
+        console.log(data[i]);
+    }
 }

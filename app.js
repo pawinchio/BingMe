@@ -394,16 +394,16 @@ app.post('/eaterDataForm', (req,res) => {
                         lastName: input.lastname,
                         phoneNumber: input.phone,
                         gender: input.gender,
-                        //birthday: input.birth-day
+                        birthday: input.birthDay,
                         address : input.ADDRESS,
                         email : input.email,
-                        // picture : input.picture
-                        //c_dCardNumber : input.CREDIT-NUMBER,
-                        //holderName : input.CREDIT-NAME,
-                        //expiration_m : input.expire-month,
-                        //expiration_y : input.expire-year,
+                        //picture : input.picture
+                        c_dCardNumber : input.Cardnumber,
+                        holderName : input.CardName,
+                        expiration_m : input.expireMonth,
+                        expiration_y : input.expireYear,
                          cvv : input.CVV,
-                        //billingAddress: input.BILLING-ADDRESS
+                        billingAddress: input.BillingAddress
 
                 });
                 console.log(newEater)

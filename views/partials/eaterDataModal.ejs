@@ -205,18 +205,18 @@
                     <!-- newwwww -->
                     <!-- <input class="favorite styled"type="button"value="delete photo">    
                     <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"> -->
-                    <!-- ******** -->
+                    <!-- ********  ajax-->
                     <p>
                     <label for="CREDIT-NUMBER" style="font-weight: bold;color: #00FF89">CREDIT/DEBIT CARD NUMBER</label>
-                    <input  type="number"  class="form-control eaterInfo" name="CREDIT-NUMBER"min="16" placeholder="card must have  16  number"required >                    
+                    <input  type="number"  class="form-control eaterInfo" name="Cardnumber" placeholder="card must have  16  number"required >                    
                     <!-- card must have  16  number --></p>
                     
                     <label style="font-weight: bold;color: #00FF89">HOLDER NAME</label>
-                    <input  class="form-control eaterInfo" name="CREDIT-NAME" placeholder="CREDIT-NAME" required>
+                    <input  type="text" class="form-control eaterInfo" name="CardName" placeholder="CardName" required>
                             <div class="row" style="border-bottom: 1px solid lightgray;">
                                 <div class="column" style="padding:8px">
                                         <p><label style="font-weight: bold;color: #00FF89">EXPIRATION</label></p>
-                                        <p><select name="expire-month"required>
+                                        <p><select name="expireMonth"required>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -230,7 +230,7 @@
                                                 <option value="11">11</option>
                                                 <option value="12">12</option>
                                             </select>
-                                            <select name="expire-year"required>
+                                            <select name="expireYear"required>
                                                 <option value="2025">2025</option>
                                                 <option value="2024">2024</option>
                                                 <option value="2023">2023</option>
@@ -259,7 +259,7 @@
                                 </div>
                                     <!-- check  -->
                                     <!-- <input   class="form-control box"  name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" required> -->
-                                    <textarea class="form-control box"  name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" required></textarea>
+                                    <textarea class="form-control box"  name="BillingAddress" placeholder="BILLING-ADDRESS" required></textarea>
                             </div>
                             
 		      </div>  
@@ -286,7 +286,7 @@
                                     </div>
                                     <div class="column">
                                         <p><label style="font-weight: bold;color: #00FF89">BIRTHDAY</label></p>
-                                        <input type="date"  name="birth-day" value="2018-07-22"  min="1980-01-01" max="2018-12-31"required>
+                                        <input type="date"  name="birthDay" value="2018-07-22"  min="1980-01-01" max="2018-12-31"required>
                                     </div>
                                 </div>
                                 <div style="margin-bottom: 10px">

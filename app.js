@@ -20,6 +20,8 @@ var     Eater  = require("./models/eater"),
         UserAuth = require('./models/userAuth'),
         UserActivation = require('./models/userActivation');
 
+const   tools = require('./calculations.js');
+
 mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db',{ useNewUrlParser: true } );
 app.set('view engine','ejs');
 
@@ -176,9 +178,10 @@ app.get('/activate', (req,res) => {
 });
 
 app.post('/createOrder', (req,res) => {
-        console.log(req.body);
+        // console.log(req.body);
         let menuID = [];
         let storeID ;
+        let storeLocation;
         interect();
         
         async function addMenu() {
@@ -214,15 +217,18 @@ app.post('/createOrder', (req,res) => {
         
         async function addStore() {
                 StoreHistory.find({storeName: req.body.storeData.name}, async (err,store)=>{
-                        console.log("fromstore : "+menuID);
+                        console.log("Menu ID : "+menuID);
                         // console.log(store);
                         if(store[0]==null){
-                                console.log("notfound Store : "+req.body.storeData.name);
+                                console.log("Add New Store : "+req.body.storeData.name);
                                 storeData={
                                         img: null,
                                         locationStore:{
-                                                Latitude: req.body.storeData.geometry.location.lat,
-                                                Longitude: req.body.storeData.geometry.location.lng
+                                                type : 'Point',
+                                                coordinates: [
+                                                        req.body.storeData.geometry.location.lng,
+                                                        req.body.storeData.geometry.location.lat
+                                                ]
                                         },
                                         storeName: req.body.storeData.name,
                                         historyMenu: menuID,
@@ -232,7 +238,8 @@ app.post('/createOrder', (req,res) => {
                                 StoreHistory.create(storeData,(err,store)=>{
                                         store.save(()=>{
                                                 StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
-                                                        storeID = store[0]._id
+                                                        storeID = store[0]._id;
+                                                        storeLocation = store[0].locationStore;
                                                 })
                                         });
                                 })
@@ -257,6 +264,7 @@ app.post('/createOrder', (req,res) => {
                         eaterID: req.body.eaterId,
                         menu: req.body.menu,
                         storeId: storeID,
+                        storeLocation: storeLocation,
                         fee: req.body.storeData.fee,
                         isPickup: false,
                         hunterID: null,
@@ -269,9 +277,14 @@ app.post('/createOrder', (req,res) => {
                         dateCreated: Date()  
                 }
                 OrderPool.create(orderPenData,(err,order)=>{
+<<<<<<< HEAD
                         order.save((orderData)=>{
                                 console.log(orderData);
                         });
+=======
+                        order.save();
+                        // console.log(order);
+>>>>>>> 2c4182df069358fec06eba368e27ad417213209f
                 })   
         }
 
@@ -292,8 +305,26 @@ app.post('/createOrder', (req,res) => {
         res.send('request received by Backend');
 });
 
-app.get('/fetchFreeOrder', (req,res) => {
-        res.send('Server copy check check!');
+app.post('/fetchFreeOrder', (req,res) => {
+        console.log(req.body);
+        OrderPool.find(null,null,(err,order)=>{
+                console.log(order);
+        });
+        OrderPool.find({
+                        storeLocation: {
+                                $near: {
+                                        $maxDistance: 1000000,
+                                        $geometry: {
+                                                type: "Point",
+                                                coordinates: [req.body.h_lon, req.body.h_lat]
+                                        }
+                                }
+                        }
+               }).find((error, results) => {
+                if (error) console.log(error);
+                console.log(JSON.stringify(results, 0, 2));
+               });
+        
 });
 
 app.get('/dashboard', (req,res) => {

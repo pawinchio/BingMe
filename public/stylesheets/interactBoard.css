@@ -73,6 +73,20 @@
     -webkit-transition: all 0.2s ease-in-out ;
 }
 
+.user-avatar{
+    background: #00ff8900;
+    max-width: 500px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 5px;
+    text-align: center;
+    border-radius: 20px;
+    color: white;
+    border: 2px solid white;
+    transition: all 0.2s ease-in-out ;
+    -webkit-transition: all 0.2s ease-in-out ;
+}
+
 .interactSubmit:hover, .interactSubmit:focus{
     background: #f8f9fab0;
     font-weight: bolder;

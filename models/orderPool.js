@@ -14,6 +14,10 @@ var orderPoolSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "storeHistory"
     },
+    storeLocation: {
+        type: { type: String },
+        coordinates: []
+    },
     fee: String,
     isPickup: Boolean,
     hunterID:
@@ -30,4 +34,5 @@ var orderPoolSchema = new mongoose.Schema({
     dateCreated: String    
 });
 
+orderPoolSchema.index({storeLocation: "2dsphere" });
 module.exports = mongoose.model("orderPool", orderPoolSchema);

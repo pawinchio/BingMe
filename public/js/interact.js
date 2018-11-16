@@ -5,7 +5,7 @@ let interactBoard = $('#interactBoard');
 const awakeInteractBoard = (source) => {
     let placeData = source.parentNode.getAttribute('data-place-detail');
     // console.log(source.parentNode);
-    // console.log(placeData);
+     console.log(placeData);
     showInteractBoard();
     interactBoard.empty();
     interactBoard.append($('#create-order').html());
@@ -54,7 +54,7 @@ const awakeInteractBoard = (source) => {
                         Latitude: position.coords.latitude,
                         Longitude: position.coords.longitude
                     };
-
+                    console.log(menuArray);
                     $.post('/createOrder',{
                         eaterId: eaterId,
                         storeData: JSON.parse(placeData),
@@ -105,13 +105,19 @@ const pendingInteract = () => {
 
     //render current progress (role)
         //load template
-        var orderSummary = $('#order-summary').html();
-        var loader = $('#loader').html();
-        var acceptBtn = $('#acceptBtn').html();
-        var payBtn = $('#payBtn').html();
-        var avatar = $('#avatar').html();
+        var orderSummary = document.getElementById('order-summary').content.cloneNode(true);
+        var loader = document.getElementById('loader').content.cloneNode(true);
+        var acceptBtn = document.getElementById('acceptBtn').content.cloneNode(true);
+        var payBtn = document.getElementById('payBtn').content.cloneNode(true);
+        var avatar = document.getElementById('avatar').content.cloneNode(true);
         interactBoard.append(avatar);
+<<<<<<< HEAD
     
+=======
+        interactBoard.append(orderSummary);
+        console.log(avatar);
+
+>>>>>>> 2c4182df069358fec06eba368e27ad417213209f
     //create pipeline
     interactPipe = io('/interact');
     interactPipe.on('connect', function(data){

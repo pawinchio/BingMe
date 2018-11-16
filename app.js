@@ -345,7 +345,6 @@ interact.on('connection', function(client){
 });
 
 
-
 app.post('/eaterDataForm', (req,res) => {
         //eaterdata
         let input = req.body;
@@ -355,16 +354,16 @@ app.post('/eaterDataForm', (req,res) => {
                         lastName: input.lastname,
                         phoneNumber: input.phone,
                         gender: input.gender,
-                        // birthday: input.birthDay,
-                        // address : input.ADDRESS,
-                        // email : input.email,
-                        // //picture : input.picture
-                        // c_dCardNumber : input.Cardnumber,
-                        // holderName : input.CardName,
-                        // expiration_m : input.expireMonth,
-                        // expiration_y : input.expireYear,
-                        // cvv : input.CVV,
-                        // billingAddress: input.BillingAddress
+                        birthday: input.birthDay,
+                        address : input.ADDRESS,
+                        email : input.email,
+                        //picture : input.picture
+                        c_dCardNumber : input.Cardnumber,
+                        holderName : input.CardName,
+                        expiration_m : input.expireMonth,
+                        expiration_y : input.expireYear,
+                         cvv : input.CVV,
+                        billingAddress: input.BillingAddress
 
                 });
                 console.log(newEater)

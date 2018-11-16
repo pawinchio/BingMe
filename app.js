@@ -192,4 +192,41 @@ interact.on('connection', function(client){
         });
 });
 
+
+app.post('/eaterDataForm', (req,res) => {
+        //eaterdata
+        let input = req.body;
+        console.log("pass")
+                var newEater = new eater({
+                        firstName: input.firstname,
+                        lastName: input.lastname,
+                        phoneNumber: input.phone,
+                        gender: input.gender,
+                        birthday: input.birthDay,
+                        address : input.ADDRESS,
+                        email : input.email,
+                        //picture : input.picture
+                        c_dCardNumber : input.Cardnumber,
+                        holderName : input.CardName,
+                        expiration_m : input.expireMonth,
+                        expiration_y : input.expireYear,
+                         cvv : input.CVV,
+                        billingAddress: input.BillingAddress,
+                        code
+                        disco
+                        refpen
+
+                });
+                console.log(newEater)
+                newEater.save().catch(err => {
+                        console.log('Code Saving Failed'+err);
+                
+                });  
+                
+
+               
+        
+});
+// search email in user Auth   ->>>  userDAta
+
 server.listen(5500, () => console.log('Server run on port 5500'));

@@ -100,7 +100,9 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     let orderData = JSON.parse(targetOrder.parentNode.getAttribute('data-order-detail'));
     showInteractBoard();
     console.log(orderData)
+
     // show order detail and accept button
+    let userInvolved = getUserByOrderId(orderData._id);
     renderOrder(orderData,interactBoard,false);
 
     // if click mark in DB and call PendingInteract
@@ -110,7 +112,7 @@ const pendingInteract = () => {
     let dataGet;
     let hunter_wait = false;
     let eater_wait = false;
-    peding()
+    pending()
 
     function init() {
         //clear interactBoard's child
@@ -155,11 +157,11 @@ const pendingInteract = () => {
             //action has some button to tricker Backend to update order in DB
     }
     
-    async function peding() {
+    async function pending() {
         const a = await init()
-        await sleep(3000)
+        await sleep(1000)
         const b = await renderTemplate(a)
-        await sleep(3000)
+        await sleep(1000)
         const c = await pipeline(b)
     }
 }
@@ -222,4 +224,14 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false) => {
     }
     interactBoard.append(orderSummary);
 }
+
+const getUserByOrderId = (orderId) => {
+    $.post('/fetchUserByOrderId',{orderId: orderId},(data, status)=>{
+        if(status=='success'){
+            // return data;
+            console.log(data);
+        }else console.log(status);
+    })
+}
+
 

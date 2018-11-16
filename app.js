@@ -325,6 +325,34 @@ app.post('/createOrder', (req,res) => {
         }
 });
 
+app.post('/fetchUserByOrderId', (req,res) => {
+        OrderPool.findById(req.body.orderId, (err, order) => {
+                UserAuth.findById(order.eaterID, (err,eater) => {
+                        UserAuth.findById(order.hunterID, (err,hunter)=>{
+                                let eaterDataId = null;
+                                let hunterDataId = null;
+                                if(eater) eaterDataId = eater.userDataId;
+                                if(hunter) hunterDataId = hunter.userDataId;
+                                Eater.findById(eaterDataId, (err,eaterData)=>{
+                                        Hunter.findById(hunterDataId, (err, hunterData) => {
+                                                eaterData = {user: eaterData, username: null};
+                                                hunterData = {user: hunterData, username:null};
+                                                if(eater) eaterData = {
+                                                        ...eaterData,
+                                                        username: eater.username
+                                                }
+                                                if(hunter) hunterData = {
+                                                        ...hunterData,
+                                                        username: eater.username
+                                                }
+                                                res.send({eater: eaterData, hunter: hunterData});
+                                        })
+                                })
+                        })
+                })
+        });
+});
+
 app.get('/fetchPendingData',(req,res)=>{
         let poolRef;
         let userDetail = {

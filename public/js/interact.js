@@ -2,13 +2,11 @@ let interactPipe = undefined;
 let orderId = undefined;
 let interactBoard = $('#interactBoard');
 
-<<<<<<< HEAD
 function sleep(ms){
     return new Promise(resolve=>{
             setTimeout(resolve,ms)
     })
 }
-=======
 //load template
 var orderSummary = document.getElementById('order-summary').content.cloneNode(true);
 var listItem = document.getElementById('list-item').content.cloneNode(true);
@@ -16,7 +14,6 @@ var loader = document.getElementById('loader').content.cloneNode(true);
 var acceptBtn = document.getElementById('acceptBtn').content.cloneNode(true);
 var payBtn = document.getElementById('payBtn').content.cloneNode(true);
 var avatar = document.getElementById('avatar').content.cloneNode(true);
->>>>>>> 0c40575b8299e8cc629522224e2342bf5a7a0543
 
 const awakeInteractBoard = (source) => {
     let placeData = source.parentNode.getAttribute('data-place-detail');

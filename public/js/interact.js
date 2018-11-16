@@ -100,9 +100,10 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     showInteractBoard();
 
     // show order detail and accept button
-    orderList = orderSummary.querySelector('.order-list-container');
-
-    interactBoard.append(orderSummary)
+    let orderList = orderSummary.querySelector('.order-list-container');
+    listItem.querySelector('.list-name').innerText = 'test bitch!';
+    orderList.appendChild(listItem);
+    interactBoard.append(orderSummary);
     // if click mark in DB and call PendingInteract
 }
 

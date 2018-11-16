@@ -5,7 +5,7 @@ let interactBoard = $('#interactBoard');
 const awakeInteractBoard = (source) => {
     let placeData = source.parentNode.getAttribute('data-place-detail');
     // console.log(source.parentNode);
-    // console.log(placeData);
+     console.log(placeData);
     showInteractBoard();
     interactBoard.empty();
     interactBoard.append($('#create-order').html());

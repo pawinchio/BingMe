@@ -349,7 +349,7 @@ app.post('/eaterDataForm', (req,res) => {
         //eaterdata
         let input = req.body;
         console.log("pass")
-                var newEater = new eater({
+                var newEater = new Eater({
                         firstName: input.firstname,
                         lastName: input.lastname,
                         phoneNumber: input.phone,

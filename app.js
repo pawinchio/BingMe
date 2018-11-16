@@ -362,15 +362,19 @@ app.post('/eaterDataForm', (req,res) => {
                         holderName : input.CardName,
                         expiration_m : input.expireMonth,
                         expiration_y : input.expireYear,
-                         cvv : input.CVV,
-                        billingAddress: input.BillingAddress
+                        cvv : input.CVV,
+                        billingAddress: input.BillingAddress,
+                        refPending : null,
+                        costTotal : 0,
+                        discount : 100
 
                 });
                 console.log(newEater)
                 newEater.save().catch(err => {
                         console.log('Code Saving Failed'+err);
                 
-                });  
+                });
+                console.log("save!!!!")  
                 
 
                

@@ -11,6 +11,7 @@ function sleep(ms){
 =======
 //load template
 var orderSummary = document.getElementById('order-summary').content.cloneNode(true);
+var listItem = document.getElementById('list-item').content.cloneNode(true);
 var loader = document.getElementById('loader').content.cloneNode(true);
 var acceptBtn = document.getElementById('acceptBtn').content.cloneNode(true);
 var payBtn = document.getElementById('payBtn').content.cloneNode(true);
@@ -102,6 +103,8 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     showInteractBoard();
 
     // show order detail and accept button
+    orderList = orderSummary.querySelector('.order-list-container');
+
     interactBoard.append(orderSummary)
     // if click mark in DB and call PendingInteract
 }

@@ -358,7 +358,7 @@ app.post('/eaterDataForm', (req,res) => {
                         birthday: input.birthDay,
                         address : input.ADDRESS,
                         email : input.email,
-                        //picture : input.picture
+                        picture : input.imagename,
                         c_dCardNumber : input.Cardnumber,
                         holderName : input.CardName,
                         expiration_m : input.expireMonth,
@@ -375,36 +375,31 @@ app.post('/eaterDataForm', (req,res) => {
                         console.log('Code Saving Failed'+err);
                 
                 });
-                console.log("save!!!!")        
+                console.log("save!!!!")
+                //res.redirect("/")      
 });
 
 // ajax with jquery
 
-var storage =   multer.diskStorage({
-        destination: function (req, file, callback) {
-          callback(null, './uploads');
-        },
-        filename: function (req, file, callback) {
-          callback(null, file.fieldname + '-' + Date.now());
-        }
-      });
+// ------------------------------------------------------
+//var multer = require("multer");
+var storage = multer.diskStorage({
+    destination: function(req, file, callback){
+        callback(null, './public/uploads'); // set the destination
+    },
+    filename: function(req, file, callback){
+        callback(null, Date.now() + '.jpg'); // set the file name and extension
+    }
+});
+var upload = multer({storage: storage});
+app.post('/add', upload.single('imagename'), function(req, res, next) {
+    var image = req.file.filename;
+   /** rest */ 
+});
 
-      var upload = multer({ storage : storage}).single('userPhoto');
-      
-      app.get('/',function(req,res){
-            res.sendFile(__dirname + "/");
-            console.log("sent")
-      });
-      
-      app.post('/api/photo',function(req,res){
-          upload(req,res,function(err) {
-              if(err) {
-                  return res.end("Error uploading file.");
-              }
-              res.end("File is uploaded");
-          });
-      });
 
+
+//-----------------------------------------------------------
 
 
 server.listen(5500, () => console.log('Server run on port 5500'));

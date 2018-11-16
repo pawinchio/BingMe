@@ -273,7 +273,7 @@ app.post('/createOrder', (req,res) => {
                                 Longitude: req.body.locationEater.Longitude
                         },
                         storeName: req.body.storeData.name,
-                        eaterID: req.body.eaterId,
+                        eaterID: req.user._id,
                         menu: req.body.menu,
                         storeId: storeID,
                         storeLocation: storeLocation,
@@ -388,11 +388,11 @@ app.get('/fetchPendingData',(req,res)=>{
                 }
         }
         function getDetailPending() {
+                //add poolRef in order ID
                 OrderPool.findById(poolRef, (err,pool)=>{
                         if(err) console.log(err);
                         orderDetail = pool;
                         if(userDetail.hunterDetail==null){
-                                console.log("A")
                                 UserAuth.findById(pool.hunterID,(err,userF)=>{
                                         Hunter.findById(userF.userDataId,async (err,user)=>{
                                                 if(err) console.log(err);
@@ -402,7 +402,6 @@ app.get('/fetchPendingData',(req,res)=>{
                                 })  
                         }
                         else{
-                                console.log("B")
                                 UserAuth.findById(pool.eaterID,(err,userF)=>{
                                         Eater.findById(userF.userDataId,async (err,user)=>{
                                                 if(err) console.log(err);

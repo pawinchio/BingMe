@@ -75,7 +75,9 @@ $(document).ready(function () {
                 });
                 $('.search-load').css({"display":"none"});
             }else if(user.role == 'Hunter'){
-                getFreeOrder();
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(getFreeOrder);
+                }else alert('Please allow position service');
                 $('.search-load').css({"display":"none"});
             }
             
@@ -98,9 +100,12 @@ $(document).ready(function () {
 
 });
 
-const getFreeOrder = () => {
-    $.get('/fetchFreeOrder', (data, status) => {
-        $
+const getFreeOrder = (position) => {
+    console.log('REQUESTING');
+    let hunterLat = position.coords.latitude;
+    let hunterLong = position.coords.longitude;
+    $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLong}, (data, status) => {
+        console.log(data);
     });
 }
 

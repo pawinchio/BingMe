@@ -14,6 +14,17 @@ var orderPoolSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "storeHistory"
     },
+    storeLocation: {
+        type:{
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     fee: String,
     isPickup: Boolean,
     hunterID:

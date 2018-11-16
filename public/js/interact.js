@@ -54,7 +54,7 @@ const awakeInteractBoard = (source) => {
                         Latitude: position.coords.latitude,
                         Longitude: position.coords.longitude
                     };
-
+                    console.log(menuArray);
                     $.post('/createOrder',{
                         eaterId: eaterId,
                         storeData: JSON.parse(placeData),
@@ -113,7 +113,6 @@ const pendingInteract = () => {
         interactBoard.append(avatar);
         interactBoard.append(orderSummary);
         console.log(avatar);
-        interactBoard.append(hunter);
 
     //create pipeline
     interactPipe = io('/interact');

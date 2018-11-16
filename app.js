@@ -269,7 +269,9 @@ app.post('/createOrder', (req,res) => {
                         dateCreated: Date()  
                 }
                 OrderPool.create(orderPenData,(err,order)=>{
-                        order.save();
+                        order.save((orderData)=>{
+                                console.log(orderData);
+                        });
                 })   
         }
 
@@ -285,9 +287,8 @@ app.post('/createOrder', (req,res) => {
                 const second = await addStore(first)
                 await sleep(3000)
                 const third = await addOrderPool(second);
-
         }
-                
+
         res.send('request received by Backend');
 });
 

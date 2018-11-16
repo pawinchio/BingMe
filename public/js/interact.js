@@ -111,7 +111,7 @@ const pendingInteract = () => {
         var payBtn = $('#payBtn').html();
         var avatar = $('#avatar').html();
         interactBoard.append(avatar);
-
+    
     //create pipeline
     interactPipe = io('/interact');
     interactPipe.on('connect', function(data){

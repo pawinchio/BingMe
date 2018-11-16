@@ -1,0 +1,53 @@
+#header-form{
+    background:#00FF89;
+    color: white;
+    font-family: 'Kanit';
+}
+#mail-box{
+    border-style: solid;
+    border-width: 5px;
+    border-top-color: darkgray;
+    border-right-color: white;
+    border-bottom-color: white;
+    border-left-color: white;
+    width: 50%;
+  margin: 0 auto;
+}
+
+#billing{
+    border-style: solid;
+    border-width: 5px;
+    border-top-color: darkgray;
+    border-right-color: white;
+    border-bottom-color: white;
+    border-left-color: white;
+}
+
+#box{
+    padding:8px;
+    display:block;
+    /* border:none; */
+    /* border-bottom:1px; */
+    border-color: darkgray;
+    solid #ccc;
+    width:80%;
+    border-radius: 5px;
+}
+
+
+
+
+#eater {
+    padding:8px;
+    display:block;
+    /* border:none;
+    border-bottom:1px  */
+    border-color: darkgray;
+    solid #ccc;
+    width:80%
+    }
+    
+
+
+        
+    

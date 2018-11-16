@@ -8,14 +8,23 @@
         <div class="form-group">
 	         <div class="row">
                 <div class="col-lg-4 col-sm-12">
-                    <!-- insert image -->
-                    <img src="" height="200" alt="Image preview..." >
-                    <p><input type="file" onchange="previewFile()"accept="image/png, image/jpeg" id="importImg"> 
-                    <input class="favorite styled"type="button"value="delete photo" id="deleteImg"> </p>
-                    <!-- newwwww -->
-                    <!-- <input class="favorite styled"type="button"value="delete photo">    
-                    <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"> -->
-                    <!-- ********  ajax-->
+                    <!-- insert image 
+                        <img src="" height="200" alt="Image preview..." >
+                        <p><input type="file" onchange="previewFile()"accept="image/png, image/jpeg" id="importImg"> 
+                        <input class="favorite styled"type="button"value="delete photo" id="deleteImg"> </p>
+                        
+                        <input class="favorite styled"type="button"value="delete photo">    
+                        <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
+                        ********  ajax -->
+
+                      <form id="uploadForm"enctype="multipart/form-data"action="/api/photo"method="post">
+                     <input type="file" name="userPhoto" />
+                     <input type="submit" value="Upload Image" name="submit">
+                     <span id = "status"></span>
+                   </form> 
+                    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+                    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+                    <!--input cerdit-card  -->
                     <p>
                     <label for="CREDIT-NUMBER" style="font-weight: bold;color: #00FF89">CREDIT/DEBIT CARD NUMBER</label>
                     <input  type="number"  class="form-control eaterInfo" name="Cardnumber" placeholder="card must have  16  number"required >                    

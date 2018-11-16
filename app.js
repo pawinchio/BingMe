@@ -325,9 +325,12 @@ app.post('/createOrder', (req,res) => {
         }
 });
 
-app.get('/fetchData',(req,res)=>{
+app.get('/fetchPendingData',(req,res)=>{
         let poolRef;
-        let userDetail;
+        let userDetail = {
+                eaterDetail: null,
+                hunterDetail: null
+        }
         let orderDetail;
 
         fetchData()
@@ -339,7 +342,7 @@ app.get('/fetchData',(req,res)=>{
                                 Eater.findById(req.user.userDataId,async (err,user)=>{
                                         if(err) console.log(err);
                                         poolRef = user.refPending;
-                                        userDetail = user;
+                                        userDetail.eaterDetail = user;
                                 })
                         }
                         else{
@@ -347,7 +350,7 @@ app.get('/fetchData',(req,res)=>{
                                 Hunter.findById(req.user.userDataId,async (err,user)=>{
                                         if(err) console.log(err);
                                         poolRef = user.refPending;
-                                        userDetail = user;
+                                        userDetail.hunterDetail = user;
                                         
                                 })
                         }
@@ -360,6 +363,24 @@ app.get('/fetchData',(req,res)=>{
                 OrderPool.findById(poolRef, (err,pool)=>{
                         if(err) console.log(err);
                         orderDetail = pool;
+                        if(userDetail.hunterDetail==null){
+                                UserAuth.findById(pool.hunterID,(err,user)=>{
+                                        Hunter.findById(user.userDataId,async (err,user)=>{
+                                                if(err) console.log(err);
+                                                userDetail.hunterDetail = user;
+                                        })
+                                        
+                                })  
+                        }
+                        else{
+                                UserAuth.findById(pool.eaterID,(err,user)=>{
+                                        Eater.findById(user.userDataId,async (err,user)=>{
+                                                if(err) console.log(err);
+                                                userDetail.eaterDetail = user;
+                                        })
+                                        
+                                })   
+                        }
                 })
         }
         

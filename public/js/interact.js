@@ -122,7 +122,7 @@ const pendingInteract = () => {
         showInteractBoard();
         interactBoard.empty();
         //fetch Data from user's pendingOrder
-        $.get('/fetchData',(data,status)=>{
+        $.get('/fetchPendingData',(data,status)=>{
             dataGet = data;
             console.log(dataGet);
         })
@@ -130,7 +130,7 @@ const pendingInteract = () => {
     
     function renderTemplate() {
         //render current progress (role)
-        //avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
+        // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
 
         //show

@@ -81,8 +81,8 @@ const awakeInteractBoard = (source) => {
        
 }
 
-const awakeInteractBoardByHunter = (e) => {
-    let orderId = e.target.parentNode.getAttribute('data-orderid');
+const awakeInteractBoardByHunter = (targetOrder) => {
+    let orderData = targetOrder.parentNode.getAttribute('data-order-detail');
     
     showInteractBoard();
 

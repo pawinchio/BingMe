@@ -131,8 +131,8 @@ var displaySuggestions = function(predictions) {
       })
       target.appendChild(templ);
       $('#choiceContainer').addClass('up');
-        $('#upArrow').hide();
-        $('#downArrow').show();
+      $('#upArrow').hide();
+      $('#downArrow').show();
       feather.replace({'min-width': '50px','width': '50px','height': '50px','stroke-width': '3'});
     });
 };
@@ -161,18 +161,75 @@ function getPredictSearch (searchValue) {
 const getFreeOrder = (position) => {
     let distance = 15000;
     let hunterLat = position.coords.latitude;
-    let hunterLong = position.coords.longitude;
-    $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLong, dist:distance}, (data, status) => {
-        renderHunterChoice(data);
+    let hunterLng = position.coords.longitude;
+    $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLng, dist:distance}, (data, status) => {
+        renderHunterChoice(data,hunterLat,hunterLng);
     });
     
 }
 
-const renderHunterChoice = (data) => {
+const renderHunterChoice = (data,hunterLat,hunterLng) => {
     console.log(data);
-    let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
-    for(let i=0; i<data.length; i++){
-        
-        console.log(data[i]);
+    $('#choiceContainer').addClass('up');
+    $('#upArrow').hide();
+    $('#downArrow').show();
+    var target = document.getElementById('searchResult');
+    target.innerHTML ='';
+    while (target.firstChild) {
+        target.removeChild(target.firstChild);
     }
+    for(let i=0; i<data.length; i++){
+        // console.log(templ);
+        let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
+        templ.querySelector('.orderStoreName').innerText = data[i].storeName;
+        templ.querySelector('.orderQuantity').innerText = data[i].menu.length;
+        templ.querySelector('.orderFee').innerText = data[i].fee;
+
+        templ.querySelector('.choice').addEventListener('click', function(e){
+            $('.choice').css({
+                "background":"white",
+                "color": "unset",
+            });
+            this.style.background="black";
+            this.style.color="#00FF89";
+
+            //send hunterLat/Long to plotHunterDirection
+            plotHunterDirection(data[i], hunterLat, hunterLng);
+            // $('#searchResult').scrollTo(this);
+            // showChoiceDetail(this);
+            // calculateAndDisplayRoute(prediction.place_id);
+        });
+
+        target.appendChild(templ);
+        feather.replace({'min-width': '40px','width': '40px','height': '40px','stroke-width': '3', 'padding-right': '0!important'});
+    }
+}
+
+const plotHunterDirection = (targetOrder, hunterLat, hunterLng) => {
+    if(directionsDisplay != null) {
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
+    }
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsDisplay.setMap(map);
+    let hunterOrigin = new google.maps.LatLng(hunterLat, hunterLng);
+    let storeLocation = new google.maps.LatLng(targetOrder.storeLocation.coordinates[1],targetOrder.storeLocation.coordinates[0]);
+    let eaterLocation = new google.maps.LatLng(targetOrder.locationEater.Latitude, targetOrder.locationEater.Longitude);
+    let directionRequest = {
+        origin: hunterOrigin,
+        destination: eaterLocation,
+        waypoints: [{
+            location: storeLocation,
+            stopover: true
+        }],
+        optimizeWaypoints: false,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+    directionsService.route(directionRequest, (response, status) => {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+            var route = response.routes[0];
+        }else console.log(status);
+    });
 }

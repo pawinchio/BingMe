@@ -31,7 +31,7 @@
     border-color: darkgray;
     solid #ccc;
     width:80%;
-    border-radius: 5px;
+    border-radius: 15px;
 }
 
 
@@ -42,11 +42,24 @@
     display:block;
     /* border:none;
     border-bottom:1px  */
+    border-radius: 15px;
     border-color: darkgray;
     solid #ccc;
-    width:80%
+    width:80%;
     }
     
+#eater-phone {
+    padding:8px;
+    display:block;
+    /* border:none;
+    border-bottom:1px  */
+    border-radius: 15px;
+    border-color: darkgray;
+    solid #ccc;
+    width:50%;
+    }
+    
+        
 
 
         

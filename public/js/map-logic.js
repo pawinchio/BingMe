@@ -181,6 +181,8 @@ const renderHunterChoice = (data,hunterLat,hunterLng) => {
     for(let i=0; i<data.length; i++){
         // console.log(templ);
         let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
+        let thisChoice = templ.querySelector('.choice');
+        thisChoice.dataset.orderDetail = JSON.stringify(data[i]);
         templ.querySelector('.orderStoreName').innerText = data[i].storeName;
         templ.querySelector('.orderQuantity').innerText = data[i].menu.length;
         templ.querySelector('.orderFee').innerText = data[i].fee;
@@ -195,9 +197,7 @@ const renderHunterChoice = (data,hunterLat,hunterLng) => {
 
             //send hunterLat/Long to plotHunterDirection
             plotHunterDirection(data[i], hunterLat, hunterLng);
-            // $('#searchResult').scrollTo(this);
-            // showChoiceDetail(this);
-            // calculateAndDisplayRoute(prediction.place_id);
+            
         });
 
         target.appendChild(templ);

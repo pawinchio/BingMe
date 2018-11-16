@@ -243,7 +243,7 @@ app.post('/createOrder', (req,res) => {
                                 await menuID.forEach((menu)=>{
                                         if (temp.indexOf(menu) === -1) temp.push(menu)
                                 })
-                                // await StoreHistory.findByIdAndUpdate(store[0]._id,)
+                                await StoreHistory.findByIdAndUpdate(store[0]._id,)
                         }
                 }) 
         }
@@ -282,9 +282,9 @@ app.post('/createOrder', (req,res) => {
         async function interect(){
                 const first = await addMenu()
                 await sleep(3000)
-                const second = await addStore()
+                const second = await addStore(first)
                 await sleep(3000)
-                const c = await addOrderPool(b);
+                const third = await addOrderPool(second);
 
         }
                 

@@ -78,30 +78,8 @@
             color: #00ff89;
             padding-left: 10px;">000000</span>
         </div>
-        <div class="d-flex" style="">
-            <div class="mr-auto p-2" style="font-size: large">a</div>
-            <div class="p-2">
-                <input type="number" style="
-                background: #fafafa!important;
-                border: 2px solid!important;
-                border-radius: 15px!important;
-                
-                height: 32px;
-                margin: auto;
-                width: 50px;
-                " readonly></input>
-            </div>
-            <div class="p-2">
-                <input type="number" style="
-                background: #fafafa!important;
-                border: 2px solid!important;
-                border-radius: 15px!important;
-                
-                height: 32px;
-                margin: auto;
-                width: 50px;
-                " readonly></input>
-            </div>  
+        <div class="d-flex order-list-container" style="">
+            // append #list-tem here
         </div>
         <div class="d-flex justify-content-center" style="
         padding: 13px 0;
@@ -115,7 +93,7 @@
 
 <template id="list-item">
     <div class="d-flex" style="color: black;">
-        <div class="mr-auto p-2" style="font-size: large">a</div>
+        <div class="mr-auto p-2 list-name" style="font-size: large">a</div>
         <div class="p-2">
             <input type="number" style="
             background: #fafafa!important;
@@ -125,10 +103,10 @@
             height: 32px;
             margin: auto;
             width: 50px;
-            " readonly></input>
+            " class='countFood' readonly></input>
         </div>
         <div class="p-2">
-            <input type="number" style="
+            <input class='priceFood' type="number" style="
             background: #fafafa!important;
             border: 2px solid!important;
             border-radius: 15px!important;

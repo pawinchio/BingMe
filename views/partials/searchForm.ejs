@@ -57,10 +57,15 @@
     margin: 15px 10px;
     background: white;
     border: 1px solid darkgray;
-    padding: 6px;" data-orderid="">
-        <div class="orderStoreName"></div>
-        <div class="orderQuantity"></div>
-        <div class="orderFee"></div>
-        <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoardByHunter(event)"></i>
+    padding: 6px;">
+        <i style="margin:auto;" data-feather="map-pin" class="choice-button p-2"></i>
+        <div class="orderStoreName mr-auto p-2" style="width: 45%; max-height: 50px; text-overflow: ellipsis;
+    overflow-x: hidden; font-size: smaller; margin: auto; white-space: initial;">
+        </div>
+        <i style="margin:auto;" data-feather="package" class="choice-button p-2" style=""></i>
+        <div class="orderQuantity p-2"></div>
+        <i style="margin:auto;" data-feather="dollar-sign" class="choice-button p-2"></i>
+        <div class="orderFee p-2" style='width:56px; padding-left: 0!important;'></div>
+        <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoardByHunter(this)"></i>
     </div>
 </template>

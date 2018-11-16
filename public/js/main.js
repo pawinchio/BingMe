@@ -100,13 +100,6 @@ $(document).ready(function () {
 
 });
 
-const getFreeOrder = (position) => {
-    console.log('REQUESTING');
-    let hunterLat = position.coords.latitude;
-    let hunterLong = position.coords.longitude;
-    $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLong}, (data, status) => {
-        console.log(data);
-    });
-}
+
 
 

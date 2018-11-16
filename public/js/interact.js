@@ -2,11 +2,20 @@ let interactPipe = undefined;
 let orderId = undefined;
 let interactBoard = $('#interactBoard');
 
+<<<<<<< HEAD
 function sleep(ms){
     return new Promise(resolve=>{
             setTimeout(resolve,ms)
     })
 }
+=======
+//load template
+var orderSummary = document.getElementById('order-summary').content.cloneNode(true);
+var loader = document.getElementById('loader').content.cloneNode(true);
+var acceptBtn = document.getElementById('acceptBtn').content.cloneNode(true);
+var payBtn = document.getElementById('payBtn').content.cloneNode(true);
+var avatar = document.getElementById('avatar').content.cloneNode(true);
+>>>>>>> 0c40575b8299e8cc629522224e2342bf5a7a0543
 
 const awakeInteractBoard = (source) => {
     let placeData = source.parentNode.getAttribute('data-place-detail');
@@ -87,13 +96,13 @@ const awakeInteractBoard = (source) => {
        
 }
 
-const awakeInteractBoardByHunter = (e) => {
-    let orderId = e.target.parentNode.getAttribute('data-orderid');
-    
+const awakeInteractBoardByHunter = (targetOrder) => {
+    // fetch Data from pendingOrder's orderId
+    let orderData = JSON.parse(targetOrder.parentNode.getAttribute('data-order-detail'));
     showInteractBoard();
 
-    // fetch Data from pendingOrder's orderId
-    // show accept button
+    // show order detail and accept button
+    interactBoard.append(orderSummary)
     // if click mark in DB and call PendingInteract
 }
 
@@ -120,11 +129,8 @@ const pendingInteract = () => {
     function renderTemplate() {
         //render current progress (role)
         //load template
-        var orderSummary = document.getElementById('order-summary').content.cloneNode(true);
-        var loader = document.getElementById('loader').content.cloneNode(true);
-        var acceptBtn = document.getElementById('acceptBtn').content.cloneNode(true);
-        var payBtn = document.getElementById('payBtn').content.cloneNode(true);
-        var avatar = document.getElementById('avatar').content.cloneNode(true);
+
+        //show
         interactBoard.append(avatar);
         interactBoard.append(orderSummary);
         console.log(avatar);

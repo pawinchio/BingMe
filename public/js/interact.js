@@ -268,8 +268,8 @@ const avatarRender = (Data,interactBoard) => {
         console.log(user);
         avatar = document.getElementById('avatar').content.cloneNode(true);
         avatar.querySelector('.avatar-text').innerText = Data.username;
-        avatar.querySelector('.user-avatar').querySelector('img#userIMG').src = Data.user.picture;
-        if(Data.role!=user.role) avatar.querySelector('div#avatarStyle').style.setProperty('float','right');
+        avatar.querySelector('#userIMG').src = Data.user.picture;
+        if(Data.role!=user.role) avatar.querySelector('#avatarStyle').style.setProperty('float','right');
         interactBoard.append(avatar);
     }
 }

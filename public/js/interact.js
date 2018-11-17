@@ -14,6 +14,7 @@ var loader = document.getElementById('loader').content.cloneNode(true);
 var acceptBtn = document.getElementById('acceptBtn').content.cloneNode(true);
 var payBtn = document.getElementById('payBtn').content.cloneNode(true);
 var avatar = document.getElementById('avatar').content.cloneNode(true);
+var text = document.getElementById('text').content.cloneNode(true);
 
 const awakeInteractBoard = (source) => {
     let placeData = source.parentNode.getAttribute('data-place-detail');
@@ -142,19 +143,28 @@ const pendingInteract = () => {
         //fetch Data from user's pendingOrder
         $.get('/fetchPendingData',(data,status)=>{
             dataGet = data;
-            console.log(dataGet);
+            // console.log(dataGet);
         })
         loaderRender(interactBoard)
     }
     
     function renderTemplate() {
         interactBoard.empty()
+        console.log(dataGet);
+        let state = checkstate(dataGet);
+        console.log(state);
         //render current progress (role)
         // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
-        avatarRender(dataGet.userDetail.eaterDetail,interactBoard)
-        renderOrder(dataGet.orderDetail,interactBoard,user.role=="Hunter")
-        avatarRender(dataGet.userDetail.hunterDetail,interactBoard)
+        if(state>=1){
+            avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
+            renderOrder(dataGet.orderDetail,interactBoard);
+            textRender("ผู้จัดส่งตอบรับคุณแล้ว",'color: white',"margin-right: 20px;text-align: right;",interactBoard);
+            avatarRender(dataGet.userDetail.hunterDetail,interactBoard);
+            textRender("*ผู้จัดส่งจะยืนยันราคาอาหารในเมนูของคุณอีกครั้ง",'color: #00ff89; font-weight: bolder; font-size: 15px;',"margin-right: 20px;text-align: right;",interactBoard);
+            textRender("เพื่อให้คุณชำระเงินค่าสินค้า",'color: #00ff89; font-weight: bolder; font-size: 15px;',"margin-right: 20px;text-align: right;",interactBoard);
+        }
+        
         //show
         // interactBoard.append(avatar);
         // interactBoard.append(orderSummary);
@@ -280,10 +290,19 @@ const loaderRender = (interactBoard) =>{
     interactBoard.append(loader);
 }
 
+const textRender = (inputText,styleText,styleDiv,interactBoard) =>{
+    text = document.getElementById('text').content.cloneNode(true);
+    text.querySelector('#textAppend').innerText = inputText;
+    text.querySelector('#textAppend').style.cssText = styleText;
+    text.querySelector('#divStyle').style.cssText = styleDiv;
+    interactBoard.append(text);
+
+}
+
 const checkstate = (Data) => {
     if(Data.orderDetail.isComplete) return 4;
     else if(Data.orderDetail.isFullFilled) return 3;
     else if(Data.orderDetail.isPaidFee)return 2;
-    else if(Data.orderDatail.isPickup)return 1
+    else if(Data.orderDetail.isPickup)return 1
     else return 0;
 }

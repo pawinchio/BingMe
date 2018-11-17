@@ -5,6 +5,7 @@ var hunterSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     birthday: String,
+    address : String,
     phoneNumber: String,
     gender: String,
     birthday: String,

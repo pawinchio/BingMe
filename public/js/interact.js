@@ -54,7 +54,8 @@ const awakeInteractBoard = (source) => {
                 let foodAmount = child.children[1].children[0].value;
                 let menuObj = {
                     name: foodName,
-                    amount: foodAmount
+                    amount: foodAmount,
+                    price: null
                 }
                 menuArray.push(menuObj);
             });
@@ -152,7 +153,7 @@ const pendingInteract = () => {
         // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
         avatarRender(dataGet.userDetail.eaterDetail,interactBoard)
-        renderOrder(dataGet.orderDetail,interactBoard)
+        renderOrder(dataGet.orderDetail,interactBoard,user.role=="Hunter")
         avatarRender(dataGet.userDetail.hunterDetail,interactBoard)
         //show
         // interactBoard.append(avatar);

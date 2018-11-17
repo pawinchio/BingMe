@@ -1,4 +1,5 @@
 #interactBoard {
+    overflow-y: scroll;
     background: black;
     position: fixed;
     z-index: 96;
@@ -75,11 +76,11 @@
 
 .user-avatar{
     background: #00ff8900;
-    max-width: 500px;
+    max-width: 200px;
     width: 90%;
     margin: 20px auto;
     padding: 5px;
-    text-align: center;
+    text-align: left;
     border-radius: 20px;
     color: white;
     border: 2px solid white;
@@ -101,6 +102,8 @@
     text-align: center;
     transition: all 0.5s ease-in-out;
     -webkit-transition: all 0.5s ease-in-out;
+    background: black;
+    box-shadow: 0 0 20px 16px black;
 }
 
 .interact-button{

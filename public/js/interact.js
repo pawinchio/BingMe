@@ -102,16 +102,16 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     console.log(orderData)
     // show order detail and accept button
     getUserByOrderId(orderData._id, (userInvolved) => {
-        console.log(userInvolved);
         avatarRender(userInvolved.eater, interactBoard);
         renderOrder(orderData,interactBoard,false);
         if(userInvolved.hunter.user == null){
             //render acceptBtn
             getUserBySession((userData) => {
-                console.log(userData);
+                avatarRender(userData, interactBoard);
+                acceptBtn.querySelector('.interactSubmit').style.cssText = 'margin-left: 0; margin-right:20px;';
+                interactBoard.append(acceptBtn);
             })
-            acceptBtn.querySelector('.interactSubmit').style.cssText = 'margin-left: 0; margin-right:20px;';
-            interactBoard.append(acceptBtn);
+            
         }else{
             alert('Something went wrong this order has been picked by other hunter!');
         } 
@@ -268,8 +268,8 @@ const avatarRender = (Data,interactBoard) => {
         avatar = document.getElementById('avatar').content.cloneNode(true);
         avatar.querySelector('.avatar-text').innerText = Data.username;
         avatar.querySelector('#userIMG').src = Data.user.picture;
-        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 20px margin-left: : 0px';
-        else avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 0px margin-left: : 20px';
+        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-left: 20px!important';
+        else avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 20px!important';
         interactBoard.append(avatar);
     }
 }

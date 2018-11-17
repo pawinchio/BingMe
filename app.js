@@ -370,7 +370,7 @@ app.get('/fetchPendingData',(req,res)=>{
                                 Eater.findById(req.user.userDataId,async (err,user)=>{
                                         if(err) console.log(err);
                                         poolRef = user.refPending;
-                                        userDetail.eaterDetail = {user,username : req.user.username};
+                                        userDetail.eaterDetail = {user,username : req.user.username,role : req.user.role};
                                 })
                         }
                         else{
@@ -378,7 +378,7 @@ app.get('/fetchPendingData',(req,res)=>{
                                 Hunter.findById(req.user.userDataId,async (err,user)=>{
                                         if(err) console.log(err);
                                         poolRef = user.refPending;
-                                        userDetail.hunterDetail = {user,username : req.user.username};
+                                        userDetail.hunterDetail = {user,username : req.user.username,role : req.user.role};
                                         
                                 })
                         }
@@ -396,7 +396,7 @@ app.get('/fetchPendingData',(req,res)=>{
                                 UserAuth.findById(pool.hunterID,(err,userF)=>{
                                         Hunter.findById(userF.userDataId,async (err,user)=>{
                                                 if(err) console.log(err);
-                                                userDetail.hunterDetail = {user,username : userF.username};
+                                                userDetail.hunterDetail = {user,username : userF.username,role : userF.role};
                                         })
                                         
                                 })  
@@ -405,7 +405,7 @@ app.get('/fetchPendingData',(req,res)=>{
                                 UserAuth.findById(pool.eaterID,(err,userF)=>{
                                         Eater.findById(userF.userDataId,async (err,user)=>{
                                                 if(err) console.log(err);
-                                                userDetail.eaterDetail = {user,username : userF.username};
+                                                userDetail.eaterDetail = {user,username : userF.username,role : userF.role};
                                         })
                                         
                                 })   

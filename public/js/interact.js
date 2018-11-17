@@ -135,6 +135,7 @@ const pendingInteract = () => {
         console.log(dataGet.userDetail.eaterDetail)
         avatarRender(dataGet.userDetail.eaterDetail,interactBoard)
         renderOrder(dataGet.orderDetail,interactBoard)
+        avatarRender(dataGet.userDetail.hunterDetail,interactBoard)
         //show
         // interactBoard.append(avatar);
         // interactBoard.append(orderSummary);
@@ -229,9 +230,11 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false) => {
 const avatarRender = (Data,interactBoard) => {
     if(Data&&Data.username&&Data.user)
     {
+        console.log(user);
         avatar = document.getElementById('avatar').content.cloneNode(true);
         avatar.querySelector('.avatar-text').innerText = Data.username;
         avatar.querySelector('.user-avatar').querySelector('img#userIMG').src = Data.user.picture;
+        if(Data.role!=user.role) avatar.querySelector('div#avatarStyle').style.setProperty('float','right');
         interactBoard.append(avatar);
     }
 }

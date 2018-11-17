@@ -268,7 +268,7 @@ const avatarRender = (Data,interactBoard) => {
         avatar = document.getElementById('avatar').content.cloneNode(true);
         avatar.querySelector('.avatar-text').innerText = Data.username;
         avatar.querySelector('#userIMG').src = Data.user.picture;
-        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-left: 20px!important';
+        if(Data.role != user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-left: 20px!important';
         else avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 20px!important';
         interactBoard.append(avatar);
     }
@@ -279,6 +279,10 @@ const loaderRender = (interactBoard) =>{
     interactBoard.append(loader);
 }
 
-// const checkstate = (Data) => {
-//     if(Data.orderDetail.isPickup) 
-// }
+const checkstate = (Data) => {
+    if(Data.orderDetail.isComplete) return 4;
+    else if(Data.orderDetail.isFullFilled) return 3;
+    else if(Data.orderDetail.isPaidFee)return 2;
+    else if(Data.orderDatail.isPickup)return 1
+    else return 0;
+}

@@ -58,7 +58,8 @@
 
 #searchForm > .row > #searchList > #choiceContainer > #searchchoice{
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    padding-bottom: 200px;
     background: white;
     overflow: auto;
     white-space: nowrap;
@@ -99,7 +100,7 @@
 @media screen and (max-width: 800px){
     #searchForm > .row > #searchList > #searchbar{
         z-index: 96;
-        background-color: #1d232821;
+        background-color: #f8f9fac2;
         position: absolute;
     }
     #searchForm > .row > #searchList > #searchbar > #searchInput{
@@ -144,7 +145,7 @@
     }
 
     .range-detail{
-        left: 8% !important;
+        left: 5% !important;
         right: unset !important;
         top: 164px;
     }
@@ -212,7 +213,7 @@
     display: block;
     left: unset;
     right: 8%;
-    top: 110px;
+    top: 120px;
     position: fixed;
     background: black;
     color: #00ff89;

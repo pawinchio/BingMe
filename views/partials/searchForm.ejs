@@ -17,8 +17,8 @@
             </form>
             <div id="choiceContainer">
                 <div id="searchArrow">
-                    <i style="margin:auto;" id='upArrow' data-feather="chevron-up" display='block'></i>
-                    <i style="margin:auto;" id='downArrow' data-feather="chevron-down" display='none'></i>
+                    <i style="margin:auto; stroke-width: 2px;" id='upArrow' data-feather="chevron-up" display='block'></i>
+                    <i style="margin:auto; stroke-width: 2px;" id='downArrow' data-feather="chevron-down" display='none'></i>
                 </div>
                 <div id="searchchoice">
                     <div id="searchResult">
@@ -45,11 +45,13 @@
 </div>
 
 <template id="choice-template">
-  <div class="choice d-flex" style="border-radius: 10px;
+  <div class="choice d-flex" style="
+    border-radius: 20px;
     margin: 15px 10px;
     background: white;
     border: 1px solid darkgray;
-    padding: 6px;">
+    padding: 6px;
+    box-shadow: grey 0px 0px 10px;">
     
     <div class="mr-auto p-2" style="width: 59%; text-overflow: ellipsis;
     overflow-x: hidden; font-size: smaller; margin: auto; white-space: initial;">

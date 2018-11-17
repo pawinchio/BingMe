@@ -10,7 +10,7 @@ const   express = require('express'),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
-        uuid = require('uuid/v1');;
+        uuid = require('uuid/v1');
 
 var     Eater  = require("./models/eater"),
         Hunter  = require("./models/hunter"),

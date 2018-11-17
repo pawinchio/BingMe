@@ -9,7 +9,7 @@ var orderPoolSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Eater"
     },
-    menu: [{name: String,amount: Number}],
+    menu: [{name: String,amount: Number,price: Number}],
     storeId:
     {
         type: mongoose.Schema.Types.ObjectId,

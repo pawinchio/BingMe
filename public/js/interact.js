@@ -54,7 +54,8 @@ const awakeInteractBoard = (source) => {
                 let foodAmount = child.children[1].children[0].value;
                 let menuObj = {
                     name: foodName,
-                    amount: foodAmount
+                    amount: foodAmount,
+                    price: null
                 }
                 menuArray.push(menuObj);
             });
@@ -147,16 +148,16 @@ const pendingInteract = () => {
             dataGet = data;
             console.log(dataGet);
         })
+        loaderRender(interactBoard)
     }
     
     function renderTemplate() {
-        
+        interactBoard.empty()
         //render current progress (role)
         // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
-        console.log(dataGet.userDetail.eaterDetail)
         avatarRender(dataGet.userDetail.eaterDetail,interactBoard)
-        renderOrder(dataGet.orderDetail,interactBoard)
+        renderOrder(dataGet.orderDetail,interactBoard,user.role=="Hunter")
         avatarRender(dataGet.userDetail.hunterDetail,interactBoard)
         //show
         // interactBoard.append(avatar);
@@ -269,13 +270,24 @@ const getUserBySession = (callback) => {
 const avatarRender = (Data,interactBoard) => {
     if(Data&&Data.username&&Data.user)
     {
-        console.log(user);
         avatar = document.getElementById('avatar').content.cloneNode(true);
         avatar.querySelector('.avatar-text').innerText = Data.username;
         avatar.querySelector('#userIMG').src = Data.user.picture;
-        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-left: 20px!important';
+        if(Data.role != user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-left: 20px!important';
         else avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 20px!important';
         interactBoard.append(avatar);
     }
 }
 
+const loaderRender = (interactBoard) =>{
+    loader = $('#loader').html();
+    interactBoard.append(loader);
+}
+
+const checkstate = (Data) => {
+    if(Data.orderDetail.isComplete) return 4;
+    else if(Data.orderDetail.isFullFilled) return 3;
+    else if(Data.orderDetail.isPaidFee)return 2;
+    else if(Data.orderDatail.isPickup)return 1
+    else return 0;
+}

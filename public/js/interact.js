@@ -143,14 +143,14 @@ const pendingInteract = () => {
             dataGet = data;
             console.log(dataGet);
         })
+        loaderRender(interactBoard)
     }
     
     function renderTemplate() {
-        
+        interactBoard.empty()
         //render current progress (role)
         // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
-        console.log(dataGet.userDetail.eaterDetail)
         avatarRender(dataGet.userDetail.eaterDetail,interactBoard)
         renderOrder(dataGet.orderDetail,interactBoard)
         avatarRender(dataGet.userDetail.hunterDetail,interactBoard)
@@ -265,13 +265,20 @@ const getUserBySession = (callback) => {
 const avatarRender = (Data,interactBoard) => {
     if(Data&&Data.username&&Data.user)
     {
-        console.log(user);
         avatar = document.getElementById('avatar').content.cloneNode(true);
         avatar.querySelector('.avatar-text').innerText = Data.username;
         avatar.querySelector('#userIMG').src = Data.user.picture;
-        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 20px','margin-left: : 0px';
-        else avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 0px','margin-left: : 20px';
+        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 20px margin-left: : 0px';
+        else avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 0px margin-left: : 20px';
         interactBoard.append(avatar);
     }
 }
 
+const loaderRender = (interactBoard) =>{
+    loader = $('#loader').html();
+    interactBoard.append(loader);
+}
+
+// const checkstate = (Data) => {
+//     if(Data.orderDetail.isPickup) 
+// }

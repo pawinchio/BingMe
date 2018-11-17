@@ -101,9 +101,6 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     showInteractBoard();
     console.log(orderData)
     // show order detail and accept button
-<<<<<<< HEAD
-    renderOrder(orderData,interactBoard,false);
-=======
     getUserByOrderId(orderData._id, (userInvolved) => {
         console.log(userInvolved);
         avatarRender(userInvolved.eater, interactBoard);
@@ -123,7 +120,6 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     // avatarRender(userInvolved.eater, interactBoard);
     
     // avatarRender(userInvolved.hunter, interactBoard);
->>>>>>> 5297cb0a87e8b14632177c8bd6fd94245ea73d0f
 
     // if click mark in DB and call PendingInteract
 }
@@ -249,8 +245,6 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false) => {
     interactBoard.append(orderSummary);
 }
 
-<<<<<<< HEAD
-=======
 const getUserByOrderId = (orderId, callback) => {
     $.post('/fetchUserByOrderId',{orderId: orderId},(data, status)=>{
         if(status=='success'){
@@ -268,7 +262,6 @@ const getUserBySession = (callback) => {
 }
 
 
->>>>>>> 5297cb0a87e8b14632177c8bd6fd94245ea73d0f
 const avatarRender = (Data,interactBoard) => {
     if(Data&&Data.username&&Data.user)
     {

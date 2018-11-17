@@ -102,16 +102,21 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     console.log(orderData)
     // show order detail and accept button
     getUserByOrderId(orderData._id, (userInvolved) => {
-        console.log(userInvolved);
         avatarRender(userInvolved.eater, interactBoard);
         renderOrder(orderData,interactBoard,false);
+        renderOrder(orderData,interactBoard,false);
+        renderOrder(orderData,interactBoard,false);
+        renderOrder(orderData,interactBoard,false);
+        renderOrder(orderData,interactBoard,false);
+        
         if(userInvolved.hunter.user == null){
             //render acceptBtn
             getUserBySession((userData) => {
-                console.log(userData);
+                avatarRender(userData, interactBoard);
+                acceptBtn.querySelector('.interactSubmit').style.cssText = 'margin-left: 0; margin-right:20px;';
+                interactBoard.append(acceptBtn);
             })
-            acceptBtn.querySelector('.interactSubmit').style.cssText = 'margin-left: 0; margin-right:20px;';
-            interactBoard.append(acceptBtn);
+            
         }else{
             alert('Something went wrong this order has been picked by other hunter!');
         } 

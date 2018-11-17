@@ -118,7 +118,12 @@ const awakeInteractBoardByHunter = (targetOrder) => {
                     orderData.hunterID = user._id;
                     $.post('/updateOrder',{orderId: orderData._id, updateObj: orderData}, (data, status)=>{
                         if(status == 'success'){
-                            pendingInteract();
+                            userData.user.refPending = orderData._id;
+                            $.post('/updateUser',userData, (data, status)=>{
+                                if(status == 'success'){
+                                    pendingInteract();
+                                }
+                            });
                         }
                     });
                 });

@@ -158,26 +158,28 @@ function getPredictSearch (searchValue) {
     // autoCompleteService.getPlacePredictions({ input: searchValue, location: myinitialLocation, radius: 25000 ,types:['establishment']}, displaySuggestions);
 }
 
-const getFreeOrder = (position) => {
-    let distance = 15000;
+const getFreeOrder = (position, range) => {
+    $('#choiceContainer').removeClass('up');
+    $('#upArrow').show();
+    $('#downArrow').hide();
+    $('.loader').show();
+    let distance = range;
     let hunterLat = position.coords.latitude;
     let hunterLng = position.coords.longitude;
     $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLng, dist:distance}, (data, status) => {
         renderHunterChoice(data,hunterLat,hunterLng);
+        $('.loader').hide();
     });
     
 }
 
 const renderHunterChoice = (data,hunterLat,hunterLng) => {
-    console.log(data);
-    $('#choiceContainer').addClass('up');
-    $('#upArrow').hide();
-    $('#downArrow').show();
     var target = document.getElementById('searchResult');
     target.innerHTML ='';
     while (target.firstChild) {
         target.removeChild(target.firstChild);
     }
+    showRangeDetail(data.length);
     for(let i=0; i<data.length; i++){
         // console.log(templ);
         let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
@@ -203,6 +205,10 @@ const renderHunterChoice = (data,hunterLat,hunterLng) => {
         target.appendChild(templ);
         feather.replace({'min-width': '40px','width': '40px','height': '40px','stroke-width': '3', 'padding-right': '0!important'});
     }
+
+    $('#choiceContainer').addClass('up');
+    $('#upArrow').hide();
+    $('#downArrow').show();
 }
 
 const plotHunterDirection = (targetOrder, hunterLat, hunterLng) => {
@@ -232,4 +238,12 @@ const plotHunterDirection = (targetOrder, hunterLat, hunterLng) => {
             var route = response.routes[0];
         }else console.log(status);
     });
+}
+
+function showRangeDetail (numberResult){
+    $('.range-detail').css({
+        "display":"block"
+    });
+    $('#choice-range').text($('#searchRange').val() + ' KM');
+    $('#choice-number').text(numberResult);
 }

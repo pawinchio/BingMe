@@ -437,7 +437,7 @@ app.post('/fetchFreeOrder', (req,res) => {
                                                 coordinates: [req.body.h_lon, req.body.h_lat]
                                         }
                                 }
-                        }
+                        }, isPickup: false
                 }).find((error, results) => {
                         if (error) console.log(error);
                         res.send(results);
@@ -469,10 +469,26 @@ app.get('/fetchUserBySession', (req,res) => {
 });
 
 app.post('/updateOrder', (req,res) => {
-        console.log(req.body);
+        // console.log(req.body);
         OrderPool.findByIdAndUpdate(req.body.orderId,req.body.updateObj, (err, order)=> {
                 if(!order) console.log(err);
+                else res.send('Acquire Success!');
         });
+});
+
+app.post('/updateUser', (req,res) => {
+        console.log(req.body);
+        if(req.body.role == 'Eater'){
+                Eater.findByIdAndUpdate(req.body.user._id, req.body.user, (err, userData)=> {
+                        if(!userData) console.log(err);
+                        else res.send('Update Success!');
+                });
+        }else if(req.body.role == 'Hunter'){
+                Hunter.findByIdAndUpdate(req.body.user._id, req.body.user, (err, userData)=> {
+                        if(!userData) console.log(err);
+                        else res.send('Update Success!');
+                });
+        }
 });
 
 app.get('/dashboard', (req,res) => {

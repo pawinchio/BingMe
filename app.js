@@ -335,15 +335,17 @@ app.post('/fetchUserByOrderId', (req,res) => {
                                 if(hunter) hunterDataId = hunter.userDataId;
                                 Eater.findById(eaterDataId, (err,eaterData)=>{
                                         Hunter.findById(hunterDataId, (err, hunterData) => {
-                                                eaterData = {user: eaterData, username: null};
-                                                hunterData = {user: hunterData, username:null};
+                                                eaterData = {user: eaterData, username: null, role:null};
+                                                hunterData = {user: hunterData, username:null, role:null};
                                                 if(eater) eaterData = {
                                                         ...eaterData,
-                                                        username: eater.username
+                                                        username: eater.username,
+                                                        role: eater.role
                                                 }
                                                 if(hunter) hunterData = {
                                                         ...hunterData,
-                                                        username: eater.username
+                                                        username: hunter.username,
+                                                        role: hunter.role
                                                 }
                                                 res.send({eater: eaterData, hunter: hunterData});
                                         })
@@ -449,7 +451,8 @@ app.get('/fetchUserBySession', (req,res) => {
                         Eater.findById(req.user.userDataId, (err, eater) => {
                                 res.send({
                                         user: eater,
-                                        username: req.user.username
+                                        username: req.user.username,
+                                        role: req.user.role
                                 })
                         })
                 }else if(req.user.role == 'Hunter'){
@@ -457,7 +460,8 @@ app.get('/fetchUserBySession', (req,res) => {
                         Hunter.findById(req.user.userDataId, (err, hunter) => {
                                 res.send({
                                         user: hunter,
-                                        username: req.user.username
+                                        username: req.user.username,
+                                        role: req.user.role
                                 })
                         })
                 }

@@ -108,7 +108,7 @@ const awakeInteractBoardByHunter = (targetOrder) => {
             //render acceptBtn
             getUserBySession((userData) => {
                 avatarRender(userData, interactBoard);
-                acceptBtn.querySelector('.interactSubmit').style.cssText = 'margin-left: 0; margin-right:20px;';
+                acceptBtn.querySelector('.interactSubmit').style.cssText = 'max-width: 120px; margin-right:20px;';
                 interactBoard.append(acceptBtn);
             })
             

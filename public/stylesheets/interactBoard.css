@@ -11,6 +11,7 @@
     color: #00FF89;
     transition: all 0.5s ease-in-out ;
     -webkit-transition: all 0.5s ease-in-out ;
+    padding-bottom: 200px;
 }
 
 #createFood{

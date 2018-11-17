@@ -469,8 +469,9 @@ app.get('/fetchUserBySession', (req,res) => {
 });
 
 app.post('/updateOrder', (req,res) => {
-        OrderPool.findOneAndUpdate({_id: req.body.orderId},req.body.updateObj, (err, order)=> {
-                res.send(order);
+        console.log(req.body);
+        OrderPool.findByIdAndUpdate(req.body.orderId,req.body.updateObj, (err, order)=> {
+                if(!order) console.log(err);
         });
 });
 

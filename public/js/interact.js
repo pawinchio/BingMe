@@ -111,7 +111,17 @@ const awakeInteractBoardByHunter = (targetOrder) => {
                 avatarRender(userInvolved.eater, interactBoard);
                 renderOrder(orderData,interactBoard,false);
                 avatarRender(userData, interactBoard);
+                acceptBtn.querySelector('.interactSubmit').dataset.orderId = orderData._id;
                 acceptBtn.querySelector('.interactSubmit').style.cssText = 'max-width: 120px; margin-right:20px;';
+                acceptBtn.querySelector('.interactSubmit').addEventListener('click', (e)=>{
+                    orderData.isPickup = true;
+                    orderData.hunterID = user._id;
+                    $.post('/updateOrder',{orderId: orderData._id, updateObj: orderData}, (data, status)=>{
+                        if(status == 'success'){
+                            pendingInteract();
+                        }
+                    });
+                });
                 interactBoard.append(acceptBtn);
                 $('.loader').remove();
                 

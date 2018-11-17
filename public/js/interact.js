@@ -104,11 +104,6 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     getUserByOrderId(orderData._id, (userInvolved) => {
         avatarRender(userInvolved.eater, interactBoard);
         renderOrder(orderData,interactBoard,false);
-        renderOrder(orderData,interactBoard,false);
-        renderOrder(orderData,interactBoard,false);
-        renderOrder(orderData,interactBoard,false);
-        renderOrder(orderData,interactBoard,false);
-        
         if(userInvolved.hunter.user == null){
             //render acceptBtn
             getUserBySession((userData) => {
@@ -274,8 +269,8 @@ const avatarRender = (Data,interactBoard) => {
         avatar = document.getElementById('avatar').content.cloneNode(true);
         avatar.querySelector('.avatar-text').innerText = Data.username;
         avatar.querySelector('#userIMG').src = Data.user.picture;
-        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 20px','margin-left: : 0px';
-        else avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 0px','margin-left: : 20px';
+        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-left: 20px!important';
+        else avatar.querySelector('.user-avatar').style.cssText = 'margin-right: 20px!important';
         interactBoard.append(avatar);
     }
 }

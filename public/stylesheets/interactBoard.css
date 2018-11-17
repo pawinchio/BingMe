@@ -76,11 +76,11 @@
 
 .user-avatar{
     background: #00ff8900;
-    max-width: 500px;
+    max-width: 200px;
     width: 90%;
     margin: 20px auto;
     padding: 5px;
-    text-align: center;
+    text-align: left;
     border-radius: 20px;
     color: white;
     border: 2px solid white;

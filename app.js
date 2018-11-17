@@ -11,9 +11,11 @@ const   express = require('express'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
         multer = require('multer'),
+        
         uuid = require('uuid/v1');;
 
 var     Eater  = require("./models/eater"),
+        eaterPic =require("./models/eaterPicture")
         Hunter  = require("./models/hunter"),
         Menu  = require("./models/menu"),
         OrderPool  = require("./models/orderPool"),
@@ -382,23 +384,29 @@ app.post('/eaterDataForm', (req,res) => {
 // ajax with jquery
 
 // ------------------------------------------------------
-//var multer = require("multer");
-var storage = multer.diskStorage({
-    destination: function(req, file, callback){
-        callback(null, './public/uploads'); // set the destination
-    },
-    filename: function(req, file, callback){
-        callback(null, Date.now() + '.jpg'); // set the file name and extension
-    }
-});
-var upload = multer({storage: storage});
-app.post('/add', upload.single('imagename'), function(req, res, next) {
-    var image = req.file.filename;
-   /** rest */ 
-});
-
-
-
+var storage =   multer.diskStorage({
+        destination: function (req, file, callback) {
+          callback(null, './uploads');
+        },
+        filename: function (req, file, callback) {
+          callback(null, file.fieldname + '-' + Date.now());
+        }
+      });
+      var upload = multer({ storage : storage}).single('eaterPic');
+      
+      app.get('/',function(req,res){
+            res.sendFile(__dirname + "/");
+      });
+      
+      app.post('/api/photo',function(req,res){
+          upload(req,res,function(err) {
+              if(err) {
+                  return res.end("Error uploading file.");
+              }
+              res.end("File is uploaded");
+          });
+      });
+      
 //-----------------------------------------------------------
 
 

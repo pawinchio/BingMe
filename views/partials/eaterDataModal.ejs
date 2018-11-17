@@ -1,3 +1,31 @@
+<form id="uploadForm" enctype="multipart/form-data" action="/api/photo" method="post">
+    <input type="file" name="eaterPic" />
+    <input type="submit" value="Upload Image" name="submit">
+    <span id = "status"></span>
+    </form>
+    <!-- <script>
+        $(document).ready(function() {
+      
+           $('#uploadForm').submit(function() {
+              $("#status").empty().text("File is uploading...");
+              $(this).ajaxSubmit({
+      
+                  error: function(xhr) {
+              status('Error: ' + xhr.status);
+              console('error')
+                  },
+      
+                  success: function(response) {
+              $("#status").empty().text(response);
+                      console.log(response);
+                  }
+          });
+              //Very important line, it disable the page refresh.
+          return false;
+          });    
+      });
+      </script> -->
+<!-- _________________________________________________________________________________________________ -->
 <form action="/eaterDataForm" method="post">
     <div class="modal-body" style="color: darkgray;font-family: 'Gotham Rounded Bold';font-weight: 100;">
         <!-- <div id="header-form"><p style="text-align: center;font-size: 200%;background: #00ff89;
@@ -15,28 +43,10 @@
                         ********  ajax -->
                         <!--_________________________________________________________________________________________ -->
 
-                        <form class="uploadImage" enctype="multipart/form-data" action="/add" method="POST">
-                            <input type="file" name="imagename" id="imagename">
-                            <input type="submit" name="appove" value="appove">
-                         </form>
+                        
                          <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  -->
                           <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>  -->
-                         <script>
-                            $('.uploadImage').submit(function(e){
-                              e.preventDefault();
-                              
-                              var title = $('#title').val(); 
-                              
-                              $(this).ajaxSubmit({
-                                data: {title: title},
-                                contentType: 'application/json',
-                                success: function(response){
-                                  console.log('image uploaded and form submitted');     
-                                }
-                            });
-                              return false;
-                         });
-                         </script>
+                          
                     <!-- _________________________________________________________________________________________________ -->
                     <!--input cerdit-card  -->
                     <p>

@@ -1,6 +1,20 @@
-    <!-- ________________________________________________________________________________________ -->
-       
+  <!-- ________________________________________________________________________________________ -->
+  <!-- <form action="/upload" method="POST" enctype="multipart/form-data">
+    <div class="col-lg-4 col-sm-12">
+      <div class="btn grey"id="mail-box">
+        <span>File</span>
+        <input name="myImage" type="file">
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text">
+      </div>
+      <button type="submit" class="btn">Submit</button>
+      <button type="submit" class="btn">delete</button>
+    </div>
+    
+  </form> -->
 <!-- _________________________________________________________________________________________________ -->
+
 <form action="/eaterDataForm" method="post" enctype="multipart/form-data">
     <div class="modal-body" style="color: darkgray;font-family: 'Gotham Rounded Bold';font-weight: 100;">
         <!-- <div id="header-form"><p style="text-align: center;font-size: 200%;background: #00ff89;
@@ -8,16 +22,32 @@
         <div class="form-group">
 	         <div class="row">
                 <div class="col-lg-4 col-sm-12">
-                    <div class="file-field input-field">
-                    <div class="btn grey">
-                      <!-- <span>File</span> -->
-                      <input name="myImage" type="file">
-                    </div>
-                    <div class="file-path-wrapper">
-                      <input class="file-path validate" type="text">
-                    </div>
-                  </div>
-                          
+                          <!-- ________________________________________________________________________________________ -->
+                    <!-- <input name="myImage" type="file" id="img"> -->
+                    <form id="photoForm" action="/upload" method="POST" enctype="multipart/form-data">
+                        <div class="" style="width: 100%">
+                            <div class="file-path-wrapper">
+                                    <input style="
+                                    border: 2px solid #00ff89;
+                                    padding: 0;
+                                    border-radius: 15px;
+                                    width: 200px;
+                                    height: 200px;
+                                    margin: 10px auto;
+                                    " class="file-path validate" type="text">
+                            </div>
+                    
+                            <div class="btn btn-defaut"id="">
+                                <input id="photoInput" name="myImage" type="file" style='
+                                width:100%;
+                                margin: 10px auto;
+                                '>
+                            </div>
+                            
+                            <div  class="btn btn-success" id="sendPhoto" style="margin: 0 8%;">Submit</div>
+                            <div  class="btn btn-danger">delete</div>
+                        </div>  
+                    </form>
                     <!-- _________________________________________________________________________________________________ -->
                     <!--input cerdit-card  -->
                     <p>
@@ -136,3 +166,48 @@
     
 </form>
 
+
+<script>
+
+    //  ตัวอย่าง object ที่ต้องใส่เพื่อส่งไฟล์
+    // {                         
+    //     route: '/upload',  <---- route ที่ต้องการส่ง post request ไป
+    //     triggerElementId: 'sendPhoto', <---- id ของ element ที่เมื่อกดจะเริ่มส่งไฟล์ เช่น ปุ่ม upload
+    //     inputElementId: 'photoInput', <---- id ของ <input type="file"> ที่ต้องการอัปโหลด
+    //     path: './userSrc/photos/', <---- ตำแหน่งที่ตั้งใน server ที่ต้องการเอาไฟล์ไปเก็บไว้
+    //     fileNameWithFormat: 'myfile.jpg' <---- ชื่อไฟล์ที่จะถูก save ใน server ที่ตำแหน่ง path
+    // }
+
+    const uploadFile = (requestObj, callback) => {
+        $('#'+requestObj.triggerElementId).on('click', () => {
+            let formData =new FormData();
+            let fileInputElement = document.getElementById(requestObj.inputElementId);
+            formData.append('fileUpload', fileInputElement.files[0]);
+            $.ajax({
+                url: requestObj.route+'?'+'fileName='+requestObj.fileNameWithFormat+'&filePath='+requestObj.path,
+                type: 'POST',
+                async: false,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                data: formData,
+                success: callback
+            });
+        });
+    }
+
+    // ตัวอย่าง
+    let myRequest = {
+        route: '/upload',
+        triggerElementId: 'sendPhoto', //ไม่ต้องใส่ #
+        inputElementId: 'photoInput',
+        path: './userSrc/photos/',
+        fileNameWithFormat: 'myExample2.jpg'
+    }
+
+    uploadFile(myRequest, (data) => {
+        // fuunction รับ data กลับ
+        console.log(data); //print ข้อความ string ที่ server ส่งกลับมาถ้าสำเร็จ
+    });
+
+</script>

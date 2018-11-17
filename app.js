@@ -27,7 +27,8 @@ const   tools = require('./calculations.js');
 
 mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db',{ useNewUrlParser: true } );
 app.set('view engine','ejs');
-
+// app.use(expressSanitizer());
+//app.use(methodOverride('_method'));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(require('express-session')({
@@ -348,85 +349,9 @@ interact.on('connection', function(client){
 });
 
 
-// app.post('/eaterDataForm', (req,res) => {
-//         //eaterdata
-//         let input = req.body;
-//         console.log("pass")
-//                 var newEater = new Eater({
-//                         firstName: input.firstname,
-//                         lastName: input.lastname,
-//                         phoneNumber: input.phone,
-//                         gender: input.gender,
-//                         birthday: input.birthDay,
-//                         address : input.ADDRESS,
-//                         email : input.email,
-//                         //picture : input.imagename,
-//                         c_dCardNumber : input.Cardnumber,
-//                         holderName : input.CardName,
-//                         expiration_m : input.expireMonth,
-//                         expiration_y : input.expireYear,
-//                         cvv : input.CVV,
-//                         billingAddress: input.BillingAddress,
-//                         refPending : null,
-//                         costTotal : 0,
-//                         discount : 100
-
-//                 });
-//                 console.log(newEater)
-//                 newEater.save().catch(err => {
-//                         console.log('Code Saving Failed'+err);
-                
-//                 });
-//                 console.log("save!!!!")
-//                 //res.redirect("/")      
-// });
-
-// ajax with jquery
-
-// ------------------------------------------------------
-// Set The Storage Engine
-const storage = multer.diskStorage({
-        destination: './public/uploads/',
-        filename: function(req, file, cb){
-          cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-        }
-      });
-      
-      // Init Upload
-      const upload = multer({
-        storage: storage,
-        limits:{fileSize: 100000000000000},
-        fileFilter: function(req, file, cb){
-          checkFileType(file, cb);
-        }
-      }).single('myImage');
-      
-      // Check File Type
-      function checkFileType(file, cb){
-        // Allowed ext
-        const filetypes = /jpeg|jpg|png|gif/;
-        // Check ext
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-        // Check mime
-        const mimetype = filetypes.test(file.mimetype);
-      
-        if(mimetype && extname){
-          return cb(null,true);
-        } else {
-          cb('Error: Images Only!');
-        }
-      }
-
-      app.post('/eaterDataForm', (req, res) => {
-        upload(req,res,function(err) {
-                if(err) {
-                    return res.end("Error uploading file.");
-                }
-                //show img
-                //res.end("File is uploaded");
-                console.log("save pic!!!!")
-                console.log(req.file)
-                let input = req.body;
+app.post('/eaterDataForm', (req,res) => {
+        //eaterdata
+        let input = req.body;
         console.log("pass")
                 var newEater = new Eater({
                         firstName: input.firstname,
@@ -436,7 +361,7 @@ const storage = multer.diskStorage({
                         birthday: input.birthDay,
                         address : input.ADDRESS,
                         email : input.email,
-                        picture : req.file.path,
+                        //picture : input.imagename,
                         c_dCardNumber : input.Cardnumber,
                         holderName : input.CardName,
                         expiration_m : input.expireMonth,
@@ -454,11 +379,70 @@ const storage = multer.diskStorage({
                 
                 });
                 console.log("save!!!!")
-                //res.redirect("/")       
-            });
-        });
+                //res.redirect("/")      
+});
+
+// ajax with jquery
+
+// ------------------------------------------------------
+// Set The Storage Engine
+const storage = multer.diskStorage({
+        destination: './public/uploads/',
+        filename: function(req, file, cb){
+          cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        }
+});
+      
+// Init Upload
+const upload = multer({
+        storage: storage,
+        limits:{fileSize: 100000000000000},
+        fileFilter: function(req, file, cb){
+                checkFileType(file, cb);
+        }
+}).single('myImage');
+      
+      // Check File Type
+function checkFileType(file, cb){
+        // Allowed ext
+        const filetypes = /jpeg|jpg|png|gif/;
+        // Check ext
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        // Check mime
+        const mimetype = filetypes.test(file.mimetype);
+
+        if(mimetype && extname){
+                return cb(null,true);
+        } else {
+                cb('Error: Images Only!');
+        }
+}
+
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
+
+app.post('/upload', (req, res) => {
+        uploadHandler(req,res);
+});
       
 //-----------------------------------------------------------
-
+const uploadHandler = (req, res) => {
+        if(req.files){
+                let fileUploaded = req.files.fileUpload;
+                let fileName = req.query.fileName;
+                let filePath = req.query.filePath;
+                console.log(req.query);
+                console.log('Files named '+fileName+' was uploaded!')
+                fileUploaded.mv(filePath+fileName, (err) =>{
+                        if(err) {
+                                console.log("Can't save file recieved");
+                                res.status(500).send(err);
+                        }
+                });
+        }
+        res.send('Okay');
+        // ส่งข้อมูลกลับ
+}
+//-----------------------------------------------------------
 
 server.listen(5500, () => console.log('Server run on port 5500'));

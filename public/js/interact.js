@@ -299,6 +299,11 @@ const textRender = (inputText,styleText,styleDiv,interactBoard) =>{
 
 }
 
+const bottomRender = (interactBoard) =>{
+    payBtn = document.getElementById('payBtn').content.cloneNode(true);
+    interactBoard.append(payBtn);
+} 
+
 const checkstate = (Data) => {
     if(Data.orderDetail.isComplete) return 4;
     else if(Data.orderDetail.isFullFilled) return 3;

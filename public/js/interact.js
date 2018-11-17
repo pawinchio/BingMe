@@ -102,8 +102,25 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     console.log(orderData)
 
     // show order detail and accept button
-    let userInvolved = getUserByOrderId(orderData._id);
-    renderOrder(orderData,interactBoard,false);
+    getUserByOrderId(orderData._id, (userInvolved) => {
+        console.log(userInvolved);
+        avatarRender(userInvolved.eater, interactBoard);
+        renderOrder(orderData,interactBoard,false);
+        if(userInvolved.hunter.user == null){
+            //render acceptBtn
+            getUserBySession((userData) => {
+                console.log(userData);
+            })
+            acceptBtn.querySelector('.interactSubmit').style.setProperty('float','right');
+            interactBoard.append(acceptBtn);
+        }else{
+            alert('Something went wrong this order has been picked by other hunter!');
+        } 
+    });
+    
+    // avatarRender(userInvolved.eater, interactBoard);
+    
+    // avatarRender(userInvolved.hunter, interactBoard);
 
     // if click mark in DB and call PendingInteract
 }
@@ -228,13 +245,20 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false) => {
     interactBoard.append(orderSummary);
 }
 
-const getUserByOrderId = (orderId) => {
+const getUserByOrderId = (orderId, callback) => {
     $.post('/fetchUserByOrderId',{orderId: orderId},(data, status)=>{
         if(status=='success'){
-            // return data;
-            console.log(data);
+            callback(data);
         }else console.log(status);
     })
+}
+
+const getUserBySession = (callback) => {
+    $.get('/fetchUserBySession', (data, status) => {
+        if(status=='success'){
+            callback(data);
+        }
+    });
 }
 
 

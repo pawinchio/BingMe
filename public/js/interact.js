@@ -110,7 +110,7 @@ const awakeInteractBoardByHunter = (targetOrder) => {
             getUserBySession((userData) => {
                 console.log(userData);
             })
-            acceptBtn.querySelector('.interactSubmit').style.setProperty('float','right');
+            acceptBtn.querySelector('.interactSubmit').style.cssText = 'margin-left: 0; margin-right:20px;';
             interactBoard.append(acceptBtn);
         }else{
             alert('Something went wrong this order has been picked by other hunter!');
@@ -268,8 +268,8 @@ const avatarRender = (Data,interactBoard) => {
         console.log(user);
         avatar = document.getElementById('avatar').content.cloneNode(true);
         avatar.querySelector('.avatar-text').innerText = Data.username;
-        avatar.querySelector('.user-avatar').querySelector('img#userIMG').src = Data.user.picture;
-        if(Data.role!=user.role) avatar.querySelector('div#avatarStyle').style.setProperty('float','right');
+        avatar.querySelector('#userIMG').src = Data.user.picture;
+        if(Data.role!=user.role) avatar.querySelector('.user-avatar').style.setProperty('float','right');
         interactBoard.append(avatar);
     }
 }

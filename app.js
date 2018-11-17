@@ -443,6 +443,27 @@ app.post('/fetchFreeOrder', (req,res) => {
         
 });
 
+app.get('/fetchUserBySession', (req,res) => {
+        if(req.user){
+                if(req.user.role == 'Eater'){
+                        Eater.findById(req.user.userDataId, (err, eater) => {
+                                res.send({
+                                        user: eater,
+                                        username: req.user.username
+                                })
+                        })
+                }else if(req.user.role == 'Hunter'){
+                        console.log('find hunter');
+                        Hunter.findById(req.user.userDataId, (err, hunter) => {
+                                res.send({
+                                        user: hunter,
+                                        username: req.user.username
+                                })
+                        })
+                }
+        }
+});
+
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });

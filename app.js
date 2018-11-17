@@ -468,6 +468,12 @@ app.get('/fetchUserBySession', (req,res) => {
         }
 });
 
+app.post('/updateOrder', (req,res) => {
+        OrderPool.findOneAndUpdate({_id: req.body.orderId},req.body.updateObj, (err, order)=> {
+                res.send(order);
+        });
+});
+
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });

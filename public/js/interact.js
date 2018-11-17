@@ -101,15 +101,19 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     showInteractBoard();
     console.log(orderData)
     // show order detail and accept button
+    interactBoard.append(loader);
     getUserByOrderId(orderData._id, (userInvolved) => {
-        avatarRender(userInvolved.eater, interactBoard);
-        renderOrder(orderData,interactBoard,false);
+        
         if(userInvolved.hunter.user == null){
             //render acceptBtn
             getUserBySession((userData) => {
+                avatarRender(userInvolved.eater, interactBoard);
+                renderOrder(orderData,interactBoard,false);
                 avatarRender(userData, interactBoard);
                 acceptBtn.querySelector('.interactSubmit').style.cssText = 'max-width: 120px; margin-right:20px;';
                 interactBoard.append(acceptBtn);
+                $('.loader').remove();
+                
             })
             
         }else{

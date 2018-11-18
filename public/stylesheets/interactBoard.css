@@ -9,13 +9,8 @@
     height: 100vh;
     padding-top: 55px;
     color: #00FF89;
-<<<<<<< HEAD
-    transition: all 0.5s ease-in-out ;
-    -webkit-transition: all 0.5s ease-in-out ;
-=======
     transition: all 0.5s ease-in-out;
     -webkit-transition: all 0.5s ease-in-out;
->>>>>>> fa972c8c5a7af46245b286a77cde9d5403b4c551
     padding-bottom: 200px;
 }
 

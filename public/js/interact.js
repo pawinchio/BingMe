@@ -146,6 +146,7 @@ const awakeInteractBoardByHunter = (targetOrder) => {
 }
 
 const pendingInteract = () => {
+    interactBoard.empty();
     let dataGet;
     let hunter_wait = false;
     let eater_wait = false;
@@ -175,6 +176,7 @@ const pendingInteract = () => {
         //render current progress (role)
         // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
+        renderDetailState0(state,dataGet,interactBoard);
         if(state>=1){
             renderDetailState1(state,dataGet,interactBoard);
         }
@@ -200,7 +202,12 @@ const pendingInteract = () => {
             interactPipe.emit("connectRoom", dataGet.orderDetail._id);
         })
         interactPipe.on('ping', function(data){
-            console.log(data);
+            if((checkstate(dataGet)==0)&&(user.role=="Eater")){
+                $.get('/fetchPendingData',(data,status)=>{
+                    dataGet = data;
+                    interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id,"fix");
+                })
+            }
         });
         interactPipe.on("thread", function(data) {
             $('.remove').remove()
@@ -257,7 +264,7 @@ const pendingInteract = () => {
             let confirmPrice = jQuery.makeArray($('#list').children());
             let checkNull = false;
             for(let i=0;i<confirmPrice.length;i++){
-                dataGet.orderDetail.menu[i].price = confirmPrice[i].children[2].children[0].value;
+                dataGet.orderDetail.menu[i].price = Number(confirmPrice[i].children[2].children[0].value);
                 if(confirmPrice[i].children[2].children[0].value == "") checkNull = true;
             }
             console.log(dataGet.orderDetail.menu);
@@ -333,8 +340,11 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false,summery = fa
             totalPrice += orderData.menu[i].price;
         }
         else listItem.querySelector('.priceFood').readOnly = false;
-        if(!isDisplayPrice)listItem.querySelector('.priceFood').style.display = "none";
-        orderList.appendChild(listItem);
+        if(!isDisplayPrice){
+            listItem.querySelector('.priceFood').style.display = "none";
+            listItem.querySelector('span.priceFood').style.display = "none";
+        }
+            orderList.appendChild(listItem);
     }
     if(!isDisplayPrice) orderSummary.querySelector('#list.order-list-container').id = "listDummy"
     if(summery){
@@ -372,7 +382,7 @@ const avatarRender = (Data,interactBoard,fee=null) => {
         if(fee==null)avatar.querySelector('.avatar-text').innerText = Data.username;
         else{
             avatar.querySelector('.avatar-text').style.cssText  = 'float: right;padding-right: 19px;';
-            avatar.querySelector('.avatar-text').innerHTML = '<table><tbody><tr><td style="float: left;">'+Data.username+'</td></tr><tr><td style="font-size: 0.69rem;">ค่าบริการ '+fee+'  บาท</td></tr></tbody></table>';
+            avatar.querySelector('.avatar-text').innerHTML = '<table><tbody><tr><td style="float: left;">'+Data.username+'</td></tr><tr><td style="font-size: 0.67rem;">ค่าบริการ '+fee+'  บาท</td></tr></tbody></table>';
         }
         avatar.querySelector('#userIMG').src = Data.user.picture;
         if(Data.role != user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-left: 20px!important';
@@ -411,9 +421,12 @@ const checkstate = (Data) => {
     else return 0;
 }
 
-function renderDetailState1(state,dataGet,interactBoard) {
+function renderDetailState0(state,dataGet,interactBoard) {
     avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
     renderOrder(dataGet.orderDetail,interactBoard);
+}
+
+function renderDetailState1(state,dataGet,interactBoard) {
     if(user.role=='Eater') textRender("ผู้จัดส่งตอบรับคุณแล้ว",'color: white; font-size: 1.2rem;',"margin-left: 20px;text-align: left;",interactBoard);
     else textRender("คุณได้ตอบรับลูกค้าท่านนี้แล้ว",'color: white; font-size: 1.2rem;',"margin-right: 20px;text-align: right;",interactBoard);
     avatarRender(dataGet.userDetail.hunterDetail,interactBoard,dataGet.orderDetail.fee);
@@ -458,11 +471,11 @@ function renderDetailState2(state,dataGet,interactBoard){
 
 function renderDetailState3(state,dataGet,interactBoard){
     if(user.role=='Eater'){
-        textRender("ผู้จัดส่งยืนยันราคาอาหารแล้ว",'color: white; font-size: 1.2rem;',"margin-left: 20px;text-align: left;",interactBoard);
+        textRender("ผู้จัดส่งยืนยันราคาอาหารแล้ว",'color: white; font-size: 1.2rem;',"margin-bottom: 30px; margin-left: 20px;text-align: left;",interactBoard);
         renderOrder(dataGet.orderDetail,interactBoard,true,true);
     }
     else{
-        textRender("คุณได้ยืนยันราคาอาหารแก่ลูกค้าแล้ว",'color: white; font-size: 1.2rem;',"margin-top: 20px;margin-right: 20px;text-align: right;",interactBoard);
+        textRender("คุณได้ยืนยันราคาอาหารแก่ลูกค้าแล้ว",'color: white; font-size: 1.2rem;',"margin-bottom: 30px; margin-top: 50px;margin-right: 20px;text-align: right;",interactBoard);
         renderOrder(dataGet.orderDetail,interactBoard,true,true);
     }
     if(state==3){

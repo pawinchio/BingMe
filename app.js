@@ -185,10 +185,10 @@ app.get('/activate', (req,res) => {
 
 app.post('/createOrder', (req,res) => {
         // console.log(req.body);
-        let menuID = [];
-        let storeID ;
-        let storeLocation;
-        let orderPoolId;
+        var menuID = [];
+        var storeID ;
+        var storeLocation;
+        var orderPoolId;
         interect();
         
         async function addMenu() {
@@ -261,7 +261,8 @@ app.post('/createOrder', (req,res) => {
                                         if (store[0].historyMenu.indexOf(menu) === -1) store[0].historyMenu.push(menu)
                                 })
                                 await StoreHistory.findByIdAndUpdate(store[0]._id,store[0])
-                                storeID = store[0]._id
+                                storeID = store[0]._id;
+                                storeLocation = store[0].locationStore;
                         }
                 }) 
         }
@@ -288,6 +289,7 @@ app.post('/createOrder', (req,res) => {
                         isComplete: false,
                         dateCreated: Date()  
                 }
+                console.log(orderPenData);
                 OrderPool.create(orderPenData,(err,order)=>{
                         orderPoolId = order._id;
                         order.save((err)=>{
@@ -315,13 +317,14 @@ app.post('/createOrder', (req,res) => {
         
         async function interect(){
                 const first = await addMenu()
-                await sleep(3000)
+                await sleep(1000)
                 const second = await addStore(first)
-                await sleep(3000)
+                await sleep(1000)
                 const third = await addOrderPool(second)
-                await sleep(3000)
+                await sleep(1000)
                 const four = await addPendingOrder(third)
-                await res.send("A");
+                await sleep(1000)
+                res.send("A");
         }
 });
 
@@ -395,22 +398,30 @@ app.get('/fetchPendingData',(req,res)=>{
                         if(err) console.log(err);
                         orderDetail = pool;
                         if(userDetail.hunterDetail==null){
-                                UserAuth.findById(pool.hunterID,(err,userF)=>{
-                                        Hunter.findById(userF.userDataId,async (err,user)=>{
-                                                if(err) console.log(err);
-                                                userDetail.hunterDetail = {user,username : userF.username,role : userF.role};
-                                        })
-                                        
-                                })  
+                                if(pool.hunterID!=null){
+                                        console.log(pool);
+                                        UserAuth.findById(pool.hunterID,(err,userF)=>{
+                                                Hunter.findById(userF.userDataId,async (err,user)=>{
+                                                        if(err) console.log(err);
+                                                        userDetail.hunterDetail = {user,username : userF.username,role : userF.role};
+                                                })
+                                                
+                                        }) 
+                                }
+                                else userDetail.hunterDetail=null;   
                         }
                         else{
-                                UserAuth.findById(pool.eaterID,(err,userF)=>{
-                                        Eater.findById(userF.userDataId,async (err,user)=>{
-                                                if(err) console.log(err);
-                                                userDetail.eaterDetail = {user,username : userF.username,role : userF.role};
-                                        })
-                                        
-                                })   
+                                if(pool.eaterID != null){
+                                        console.log(pool);
+                                        UserAuth.findById(pool.eaterID,(err,userF)=>{
+                                                Eater.findById(userF.userDataId,async (err,user)=>{
+                                                        if(err) console.log(err);
+                                                        userDetail.eaterDetail = {user,username : userF.username,role : userF.role};
+                                                })
+                                                
+                                        })   
+                                }
+                                else userDetail.eaterDetail=null;
                         }
                 })
         }
@@ -503,9 +514,12 @@ interact.on('connection', function(client){
                 console.log(roomName+" room is created!");
                 client.room = roomName;
                 interact.emit('ping','server is hello');
-                client.on('interractData', function(Data,roomID){
+                client.on('interractData', function(Data,roomID,temp){
                         OrderPool.findByIdAndUpdate(Data._id,Data,(err)=>{
                                 if(err) console.log(err);
+                                else if(temp){
+                                        client.emit("thread", Data);
+                                }
                                 else{
                                         client.emit("thread", Data);
                                         client.broadcast.to(roomID).emit("thread", Data);

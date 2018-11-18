@@ -32,7 +32,7 @@
 }
 #searchForm > .row > #searchList > #searchbar{
     text-align: center;
-    height: 50px;
+    height: 65px;
     background: white;
     width: 100%;
 }
@@ -100,7 +100,7 @@
 @media screen and (max-width: 800px){
     #searchForm > .row > #searchList > #searchbar{
         z-index: 96;
-        background-color: #f8f9fac2;
+        background-color: #1d232821;
         position: absolute;
     }
     #searchForm > .row > #searchList > #searchbar > #searchInput{

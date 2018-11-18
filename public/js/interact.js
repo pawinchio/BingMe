@@ -151,88 +151,22 @@ const pendingInteract = () => {
     function renderTemplate() {
         interactBoard.empty()
         console.log(dataGet);
-        let state = 4//checkstate(dataGet);
+        let state = checkstate(dataGet);
         console.log(state);
         //render current progress (role)
         // avatar.querySelector('.avatar-text').innerText = dataGet.userDetail;
         //load template
         if(state>=1){
-            avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
-            renderOrder(dataGet.orderDetail,interactBoard);
-            if(user.role=='Eater') textRender("ผู้จัดส่งตอบรับคุณแล้ว",'color: white; font-size: 1.2rem;',"margin-left: 20px;text-align: left;",interactBoard);
-            else textRender("คุณได้ตอบรับลูกค้าท่านนี้แล้ว",'color: white; font-size: 1.2rem;',"margin-right: 20px;text-align: right;",interactBoard);
-            avatarRender(dataGet.userDetail.hunterDetail,interactBoard,dataGet.orderDetail.fee);
-            if(state==1){
-                    if(user.role=='Eater'){
-                        bottomRender("ชำระค่าจัดส่ง","payFee",interactBoard,'margin-right: 20px;');
-                        textRender("*ผู้จัดส่งจะยืนยันราคาอาหารในเมนูของคุณอีกครั้ง",'color: #00ff89; font-weight: bolder; font-size: 1rem;',"margin-right: 20px;text-align: right;",interactBoard);
-                        textRender("เพื่อให้คุณชำระเงินค่าสินค้า",'color: #00ff89; font-weight: bolder; font-size: 1rem;',"margin-right: 20px;text-align: right;",interactBoard);
-                    }
-                    else{
-                        loaderRender(interactBoard);
-                        textRender("กำลังรอการชำระเงิน",'color: white; font-weight: bolder; font-size: 1rem;',"text-align: center; margin-top: 50px;",interactBoard);
-                    }
-                }
+            renderDetailState1(state,dataGet,interactBoard);
         }
         if(state>=2){
-            if(user.role=='Eater'){
-                avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
-                textRender("ชำระค่าบริการแล้ว: "+dataGet.orderDetail.fee+" บาท",'color: white; font-size: 1rem;',"margin-right: 20px;text-align: right;",interactBoard);
-                bottomRender("ดูใบเสร็จ","showBill",interactBoard,'margin-right: 20px;');
-            }
-            else{
-                avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
-                textRender("ลูกค้าชำระค่าบริการแล้ว:",'color: white; font-size: 1rem;',"margin-left: 20px;text-align: left;",interactBoard);
-                textRender(dataGet.orderDetail.fee+" บาท",'color: white; font-size: 1rem;',"margin-left: 20px;text-align: left;",interactBoard);
-            }
-            if(state==2){
-                if(user.role=='Eater'){
-                    textRender("*ผู้จัดส่งจะยืนยันราคาอาหารในเมนูของคุณอีกครั้ง",'color: #00ff89; font-weight: bolder; font-size: 1rem;',"margin-right: 20px;text-align: right;",interactBoard);
-                    textRender("เพื่อให้คุณชำระเงินค่าสินค้า",'color: #00ff89; font-weight: bolder; font-size: 1rem;',"margin-bottom: 50px; margin-right: 20px;text-align: right;",interactBoard);
-                    loaderRender(interactBoard);
-                    textRender("ผู้จัดส่งกำลังเดินทาง",'color: white; font-weight: bolder; font-size: 1rem;',"text-align: center; margin-top: 50px;",interactBoard);
-                }
-                else{
-                    textRender("ออกเดินทางได้ทันที",'color: #00ff8; font-weight: bolder;',"text-align: center; margin-top: 50px;",interactBoard);
-                    textRender("คุณจะได้รับค่าบริการเมื่อการจัดส่งเสร็จสิ้น",'color: #00ff8; font-weight: bolder; font-size: 1rem;',"text-align: center;",interactBoard);
-                    bottomRender("คลิกที่นี่เมื่อถึงที่หมาย","onArrive",interactBoard,'width: 70%; height: 40px;');
-                }
-            }
+            renderDetailState2(state,dataGet,interactBoard);
         }
         if(state>=3){
-            if(user.role=='Eater'){
-                textRender("ผู้จัดส่งยืนยันราคาอาหารแล้ว",'color: white; font-size: 1.2rem;',"margin-left: 20px;text-align: left;",interactBoard);
-                renderOrder(dataGet.orderDetail,interactBoard,true);
-            }
-            else{
-                textRender("คุณได้ยืนยันราคาอาหารแก่ลูกค้าแล้ว",'color: white; font-size: 1.2rem;',"margin-top: 20px;margin-right: 20px;text-align: right;",interactBoard);
-                renderOrder(dataGet.orderDetail,interactBoard,true);
-            }
-            if(state==3){
-                if(user.role=='Eater'){
-                    loaderRender(interactBoard);
-                    textRender("กำลังจัดส่ง*",'color: white; font-size: 1.2rem;',"text-align: center; margin-top:20px;",interactBoard);
-                    bottomRender("แสดง QR Code รับสินค้า","showQRCode",interactBoard,'width: 70%; height: 40px;');
-                    textRender("*กรุณาชำระเงินค่าสินค้าปลายทางอีกครั้ง",'color: #ff3100; font-size: 1rem;',"text-align: right; margin-top:20px; margin-right:20px;",interactBoard);
-                    textRender("ตามราคาที่ระบุในใบเสร็จรับเงิน",'color: #ff3100; font-size: 1rem;',"text-align: right; margin-top:20px; margin-right:20px;",interactBoard);
-                }
-                else{
-                    textRender("จัดส่งยังที่หมายได้ทันที",'color: #00ff8; font-size: 2rem;',"text-align: center;",interactBoard);
-                    textRender("คุณจะได้รับค่าบริการเมื่อการจัดส่งเสร็จสิ้น",'color: #00ff8; font-size: 1rem;',"text-align: center;",interactBoard);
-                    bottomRender("ยืนยันการจัดส่งด้วย QR Code","showQRCode",interactBoard,'width: 70%; height: 40px;');
-                }
-            }
+            renderDetailState3(state,dataGet,interactBoard);
         }
         if(state==4){
-            interactBoard.append('<div style="text-align: center;"><i data-feather="check"></i></div>')
-            feather.replace({'min-width': '40px','width': '30%','height': '30%','stroke-width': '3'});
-            textRender("เสร็จสิ้น",'color: #00ff8; font-size: 2rem;',"text-align: center;",interactBoard);
-            if(user.role=='Eater'){
-                textRender("ขอขอบคุณที่ใช้บริการ",'color: #00ff8; font-size: 1.5rem;',"text-align: center;",interactBoard);
-            }
-            else{
-                textRender("เราได้ส่งค่าบริการให้กับคุณแล้ว",'color: #00ff8; font-size: 1.5rem;',"text-align: center;",interactBoard);
-            }
+            renderDetailState4(state,dataGet,interactBoard);
         }
         //show
         // interactBoard.append(avatar);
@@ -244,11 +178,31 @@ const pendingInteract = () => {
         //create pipeline
         interactPipe = io('/interact');
         interactPipe.on('connect', function(data){
-            interactPipe.emit("connectRoom", orderId);
+            interactPipe.emit("connectRoom", dataGet.orderDetail._id);
         })
         interactPipe.on('ping', function(data){
             console.log(data);
         });
+        interactPipe.on("thread", function(data) {
+            $('.remove').remove()
+            $('.loader').remove()
+            dataGet.orderDetail=data;
+            state = checkstate(dataGet);
+            if(state==1){
+                renderDetailState1(state,dataGet,interactBoard);
+            }
+            else if(state==2){
+                renderDetailState2(state,dataGet,interactBoard);
+            }
+            else if(state==3){
+                renderDetailState3(state,dataGet,interactBoard);
+            }
+            else if(state==4){
+                renderDetailState4(state,dataGet,interactBoard);
+            }
+            bottomScript()
+        });
+        bottomScript()
         //determine next action from progress (use role)
             //do or wait
             //do -> sent action through pipeline 
@@ -263,6 +217,42 @@ const pendingInteract = () => {
         const b = await renderTemplate(a)
         await sleep(500)
         const c = await pipeline(b)
+    }
+
+    function bottomScript(){
+        $("#payFee").on("click" , function(){
+            console.log("pay fee");
+            dataGet.orderDetail.isPaidFee = true;
+            interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
+            this.remove();
+        });
+        $("#onArrive").on("click" , function(){
+            $('.remove').remove();
+            this.remove();
+            textRender("กรุณายืนยันราคาสินค้าตามใบเสร็จ",'color: #00ff8; font-weight: bolder; font-size: 1rem;',"margin-top: 50px; text-align: center;",interactBoard,true);
+            renderOrder(dataGet.orderDetail,interactBoard,true);
+            bottomRender("ยืนยันราคา","conFirmFoodPrice",interactBoard,'width: 50%; height: 40px;');
+            bottomScript();
+        });
+        $('#conFirmFoodPrice').on("click", ()=>{
+            // for(let i=0;i<orderData.menu.length;i++){
+            //     let orderList = orderSummary.querySelector('#list.order-list-container');
+            //     listItem = document.getElementById('list-item').content.cloneNode(true);
+            //     listItem.querySelector('.list-name').innerText = orderData.menu[i].name;
+            //     listItem.querySelector('.countFood').value = orderData.menu[i].amount;
+            //     if(summery){
+            //         listItem.querySelector('.priceFood').value = orderData.menu[i].price;
+            //         totalCount += orderData.menu[i].amount;
+            //         totalPrice += orderData.menu[i].price;
+            //     }
+            //     else listItem.querySelector('.priceFood').readOnly = false;
+            //     if(!isDisplayPrice)listItem.querySelector('.priceFood').style.display = "none";
+            //     orderList.appendChild(listItem);
+            // }
+            $('div.container')[1].remove();
+            $('.remove').remove();
+            $('#conFirmFoodPrice').remove();
+        })
     }
 }
 
@@ -311,16 +301,30 @@ const showInteractBoard = () => {
     });
 }
 
-const renderOrder = (orderData,interactBoard,isDisplayPrice = false) => {
+const renderOrder = (orderData,interactBoard,isDisplayPrice = false,summery = false) => {
+    let totalCount,totalPrice;
     orderSummary = document.getElementById('order-summary').content.cloneNode(true);
     orderSummary.querySelector('#orderId').innerText = orderData._id.slice(-6);
     for(let i=0;i<orderData.menu.length;i++){
-        let orderList = orderSummary.querySelector('.order-list-container');
+        let orderList = orderSummary.querySelector('#list.order-list-container');
         listItem = document.getElementById('list-item').content.cloneNode(true);
         listItem.querySelector('.list-name').innerText = orderData.menu[i].name;
         listItem.querySelector('.countFood').value = orderData.menu[i].amount;
+        if(summery){
+            listItem.querySelector('.priceFood').value = orderData.menu[i].price;
+            totalCount += orderData.menu[i].amount;
+            totalPrice += orderData.menu[i].price;
+        }
+        else listItem.querySelector('.priceFood').readOnly = false;
         if(!isDisplayPrice)listItem.querySelector('.priceFood').style.display = "none";
-        else listItem.querySelector('.priceFood').value = orderData.menu[i].price;
+        orderList.appendChild(listItem);
+    }
+    if(summery){
+        let orderList = orderSummary.querySelector('#summery.order-list-container');
+        listItem = document.getElementById('list-item').content.cloneNode(true);
+        listItem.querySelector('.list-name').innerText = "รวม";
+        listItem.querySelector('.countFood').value = totalCount;
+        listItem.querySelector('.priceFood').value = totalPrice;
         orderList.appendChild(listItem);
     }
     interactBoard.append(orderSummary);
@@ -364,11 +368,12 @@ const loaderRender = (interactBoard) =>{
     interactBoard.append(loader);
 }
 
-const textRender = (inputText,styleText,styleDiv,interactBoard) =>{
+const textRender = (inputText,styleText,styleDiv,interactBoard,classAdd=false) =>{
     text = document.getElementById('text').content.cloneNode(true);
     text.querySelector('#textAppend').innerText = inputText;
     text.querySelector('#textAppend').style.cssText = styleText;
     text.querySelector('#divStyle').style.cssText = styleDiv;
+    if(classAdd)text.querySelector('#divStyle').className = 'remove';
     interactBoard.append(text);
 }
 
@@ -386,4 +391,86 @@ const checkstate = (Data) => {
     else if(Data.orderDetail.isPaidFee)return 2;
     else if(Data.orderDetail.isPickup)return 1
     else return 0;
+}
+
+function renderDetailState1(state,dataGet,interactBoard) {
+    avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
+    renderOrder(dataGet.orderDetail,interactBoard);
+    if(user.role=='Eater') textRender("ผู้จัดส่งตอบรับคุณแล้ว",'color: white; font-size: 1.2rem;',"margin-left: 20px;text-align: left;",interactBoard);
+    else textRender("คุณได้ตอบรับลูกค้าท่านนี้แล้ว",'color: white; font-size: 1.2rem;',"margin-right: 20px;text-align: right;",interactBoard);
+    avatarRender(dataGet.userDetail.hunterDetail,interactBoard,dataGet.orderDetail.fee);
+    if(state==1){
+        if(user.role=='Eater'){
+            bottomRender("ชำระค่าจัดส่ง","payFee",interactBoard,'margin-right: 20px;');
+            textRender("*ผู้จัดส่งจะยืนยันราคาอาหารในเมนูของคุณอีกครั้ง",'color: #00ff89; font-weight: bolder; font-size: 1rem;',"margin-right: 20px;text-align: right;",interactBoard,true);
+            textRender("เพื่อให้คุณชำระเงินค่าสินค้า",'color: #00ff89; font-weight: bolder; font-size: 1rem;',"margin-right: 20px;text-align: right;",interactBoard,true);
+        }
+        else{
+            loaderRender(interactBoard);
+            textRender("กำลังรอการชำระเงิน",'color: white; font-weight: bolder; font-size: 1rem;',"text-align: center; margin-top: 50px;",interactBoard,true);
+        }
+    }
+}
+
+function renderDetailState2(state,dataGet,interactBoard){
+    if(user.role=='Eater'){
+        avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
+        textRender("ชำระค่าบริการแล้ว: "+dataGet.orderDetail.fee+" บาท",'color: white; font-size: 1rem;',"margin-right: 20px;text-align: right;",interactBoard);
+        bottomRender("ดูใบเสร็จ","showBill",interactBoard,'margin-right: 20px;');
+    }
+    else{
+        avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
+        textRender("ลูกค้าชำระค่าบริการแล้ว:",'color: white; font-size: 1rem;',"margin-left: 20px;text-align: left;",interactBoard);
+        textRender(dataGet.orderDetail.fee+" บาท",'color: white; font-size: 1rem;',"margin-left: 20px;text-align: left;",interactBoard);
+    }
+    if(state==2){
+        if(user.role=='Eater'){
+            textRender("*ผู้จัดส่งจะยืนยันราคาอาหารในเมนูของคุณอีกครั้ง",'color: #00ff89; font-weight: bolder; font-size: 1rem;',"margin-right: 20px;text-align: right;",interactBoard,true);
+            textRender("เพื่อให้คุณชำระเงินค่าสินค้า",'color: #00ff89; font-weight: bolder; font-size: 1rem;',"margin-bottom: 80px; margin-right: 20px;text-align: right;",interactBoard,true);
+            loaderRender(interactBoard);
+            textRender("ผู้จัดส่งกำลังเดินทาง",'color: white; font-weight: bolder; font-size: 1rem;',"text-align: center; margin-top: 50px;",interactBoard,true);
+        }
+        else{
+            textRender("ออกเดินทางได้ทันที",'color: #00ff8; font-weight: bolder;',"text-align: center; margin-top: 50px;",interactBoard,true);
+            textRender("คุณจะได้รับค่าบริการเมื่อการจัดส่งเสร็จสิ้น",'color: #00ff8; font-weight: bolder; font-size: 1rem;',"text-align: center;",interactBoard,true);
+            bottomRender("คลิกที่นี่เมื่อถึงที่หมาย","onArrive",interactBoard,'width: 70%; height: 40px;');
+        }
+    }
+}
+
+function renderDetailState3(state,dataGet,interactBoard){
+    if(user.role=='Eater'){
+        textRender("ผู้จัดส่งยืนยันราคาอาหารแล้ว",'color: white; font-size: 1.2rem;',"margin-left: 20px;text-align: left;",interactBoard);
+        renderOrder(dataGet.orderDetail,interactBoard,true);
+    }
+    else{
+        textRender("คุณได้ยืนยันราคาอาหารแก่ลูกค้าแล้ว",'color: white; font-size: 1.2rem;',"margin-top: 20px;margin-right: 20px;text-align: right;",interactBoard);
+        renderOrder(dataGet.orderDetail,interactBoard,true);
+    }
+    if(state==3){
+        if(user.role=='Eater'){
+            loaderRender(interactBoard);
+            textRender("กำลังจัดส่ง*",'color: white; font-size: 1.2rem;',"text-align: center; margin-top:20px;",interactBoard,true);
+            bottomRender("แสดง QR Code รับสินค้า","showQRCode",interactBoard,'width: 70%; height: 40px;');
+            textRender("*กรุณาชำระเงินค่าสินค้าปลายทางอีกครั้ง",'color: #ff3100; font-size: 1rem;',"text-align: right; margin-top:20px; margin-right:20px;",interactBoard,true);
+            textRender("ตามราคาที่ระบุในใบเสร็จรับเงิน",'color: #ff3100; font-size: 1rem;',"text-align: right; margin-top:20px; margin-right:20px;",interactBoard,true);
+        }
+        else{
+            textRender("จัดส่งยังที่หมายได้ทันที",'color: #00ff8; font-size: 2rem;',"text-align: center;",interactBoard,true);
+            textRender("คุณจะได้รับค่าบริการเมื่อการจัดส่งเสร็จสิ้น",'color: #00ff8; font-size: 1rem;',"text-align: center;",interactBoard,true);
+            bottomRender("ยืนยันการจัดส่งด้วย QR Code","showQRCode",interactBoard,'width: 70%; height: 40px;');
+        }
+    }
+}
+
+function renderDetailState4(state,dataGet,interactBoard){
+    interactBoard.append('<div style="text-align: center;"><i data-feather="check"></i></div>')
+    feather.replace({'min-width': '40px','width': '30%','height': '30%','stroke-width': '3'});
+    textRender("เสร็จสิ้น",'color: #00ff8; font-size: 2rem;',"text-align: center;",interactBoard);
+    if(user.role=='Eater'){
+        textRender("ขอขอบคุณที่ใช้บริการ",'color: #00ff8; font-size: 1.5rem;',"text-align: center;",interactBoard);
+    }
+    else{
+        textRender("เราได้ส่งค่าบริการให้กับคุณแล้ว",'color: #00ff8; font-size: 1.5rem;',"text-align: center;",interactBoard);
+    }
 }

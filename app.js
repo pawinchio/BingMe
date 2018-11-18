@@ -480,12 +480,22 @@ interact.on('connection', function(client){
                 console.log(roomName+" room is created!");
                 client.room = roomName;
                 interact.emit('ping','server is hello');
+                client.on('interractData', function(Data,roomID){
+                        OrderPool.findByIdAndUpdate(Data._id,Data,(err)=>{
+                                if(err) console.log(err);
+                                else{
+                                        client.emit("thread", Data);
+                                        client.broadcast.to(roomID).emit("thread", Data);
+                                }
+                        })
+                });
         });
         client.on('disconnectRoom', function(roomName, clientID){
                 //Check if clientID have permission to see roomName
                 client.leave(roomName);
                 console.log(roomName+" room is leaved!");
         });
+        
 });
 
 server.listen(5500, () => console.log('Server run on port 5500'));

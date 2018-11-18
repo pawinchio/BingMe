@@ -254,23 +254,21 @@ const pendingInteract = () => {
             bottomScript();
         });
         $('#conFirmFoodPrice').on("click", ()=>{
-            // for(let i=0;i<orderData.menu.length;i++){
-            //     let orderList = orderSummary.querySelector('#list.order-list-container');
-            //     listItem = document.getElementById('list-item').content.cloneNode(true);
-            //     listItem.querySelector('.list-name').innerText = orderData.menu[i].name;
-            //     listItem.querySelector('.countFood').value = orderData.menu[i].amount;
-            //     if(summery){
-            //         listItem.querySelector('.priceFood').value = orderData.menu[i].price;
-            //         totalCount += orderData.menu[i].amount;
-            //         totalPrice += orderData.menu[i].price;
-            //     }
-            //     else listItem.querySelector('.priceFood').readOnly = false;
-            //     if(!isDisplayPrice)listItem.querySelector('.priceFood').style.display = "none";
-            //     orderList.appendChild(listItem);
-            // }
-            $('div.container')[1].remove();
-            $('.remove').remove();
-            $('#conFirmFoodPrice').remove();
+            let confirmPrice = jQuery.makeArray($('#list').children());
+            let checkNull = false;
+            for(let i=0;i<confirmPrice.length;i++){
+                dataGet.orderDetail.menu[i].price = confirmPrice[i].children[2].children[0].value;
+                if(confirmPrice[i].children[2].children[0].value == "") checkNull = true;
+            }
+            console.log(dataGet.orderDetail.menu);
+            if(checkNull) alert("Please input all menu price!!!");
+            else{
+                $('div.container')[1].remove();
+                $('.remove').remove();
+                $('#conFirmFoodPrice').remove();
+                dataGet.orderDetail.isFullFilled = true;
+                interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
+            }
         })
     }
 }
@@ -321,7 +319,7 @@ const showInteractBoard = () => {
 }
 
 const renderOrder = (orderData,interactBoard,isDisplayPrice = false,summery = false) => {
-    let totalCount,totalPrice;
+    let totalCount = 0 ,totalPrice = 0;
     orderSummary = document.getElementById('order-summary').content.cloneNode(true);
     orderSummary.querySelector('#orderId').innerText = orderData._id.slice(-6);
     for(let i=0;i<orderData.menu.length;i++){
@@ -338,6 +336,7 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false,summery = fa
         if(!isDisplayPrice)listItem.querySelector('.priceFood').style.display = "none";
         orderList.appendChild(listItem);
     }
+    if(!isDisplayPrice) orderSummary.querySelector('#list.order-list-container').id = "listDummy"
     if(summery){
         let orderList = orderSummary.querySelector('#summery.order-list-container');
         listItem = document.getElementById('list-item').content.cloneNode(true);
@@ -373,7 +372,7 @@ const avatarRender = (Data,interactBoard,fee=null) => {
         if(fee==null)avatar.querySelector('.avatar-text').innerText = Data.username;
         else{
             avatar.querySelector('.avatar-text').style.cssText  = 'float: right;padding-right: 19px;';
-            avatar.querySelector('.avatar-text').innerHTML = '<table><tbody><tr><td style="float: left;">'+Data.username+'</td></tr><tr><td style="font-size: 0.74rem;">ค่าบริการ '+fee+'  บาท</td></tr></tbody></table>';
+            avatar.querySelector('.avatar-text').innerHTML = '<table><tbody><tr><td style="float: left;">'+Data.username+'</td></tr><tr><td style="font-size: 0.69rem;">ค่าบริการ '+fee+'  บาท</td></tr></tbody></table>';
         }
         avatar.querySelector('#userIMG').src = Data.user.picture;
         if(Data.role != user.role) avatar.querySelector('.user-avatar').style.cssText = 'margin-left: 20px!important';
@@ -460,11 +459,11 @@ function renderDetailState2(state,dataGet,interactBoard){
 function renderDetailState3(state,dataGet,interactBoard){
     if(user.role=='Eater'){
         textRender("ผู้จัดส่งยืนยันราคาอาหารแล้ว",'color: white; font-size: 1.2rem;',"margin-left: 20px;text-align: left;",interactBoard);
-        renderOrder(dataGet.orderDetail,interactBoard,true);
+        renderOrder(dataGet.orderDetail,interactBoard,true,true);
     }
     else{
         textRender("คุณได้ยืนยันราคาอาหารแก่ลูกค้าแล้ว",'color: white; font-size: 1.2rem;',"margin-top: 20px;margin-right: 20px;text-align: right;",interactBoard);
-        renderOrder(dataGet.orderDetail,interactBoard,true);
+        renderOrder(dataGet.orderDetail,interactBoard,true,true);
     }
     if(state==3){
         if(user.role=='Eater'){

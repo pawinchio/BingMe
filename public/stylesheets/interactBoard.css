@@ -1,6 +1,6 @@
 #interactBoard {
     overflow-y: scroll;
-    background: black;
+    background: #222428;
     position: fixed;
     z-index: 96;
     bottom: 100vh;
@@ -9,8 +9,8 @@
     height: 100vh;
     padding-top: 55px;
     color: #00FF89;
-    transition: all 0.5s ease-in-out ;
-    -webkit-transition: all 0.5s ease-in-out ;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
     padding-bottom: 200px;
 }
 
@@ -76,17 +76,19 @@
 }
 
 .user-avatar{
-    background: #00ff8900;
+    background: #00ff891c;
     max-width: 200px;
     width: 90%;
     margin: 20px auto;
-    padding: 5px;
+    padding: 10px;
     text-align: left;
     border-radius: 20px;
     color: white;
     border: 2px solid white;
-    transition: all 0.2s ease-in-out ;
-    -webkit-transition: all 0.2s ease-in-out ;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    border: 1.5px solid #00ff89;
+    background-color: #00ff890f;
 }
 
 .interactSubmit:hover, .interactSubmit:focus{
@@ -96,15 +98,16 @@
 
 #interact-footer{
     width: 100%;
-    height: 100px;
+    height: 110px;
     position: fixed;
     z-index: 96;
     bottom: 100vh;
     text-align: center;
     transition: all 0.5s ease-in-out;
     -webkit-transition: all 0.5s ease-in-out;
-    background: black;
-    box-shadow: 0 0 20px 16px black;
+    background: #222428;
+    padding-top: 15px;
+    box-shadow: 0 0 20px 16px #222428;
 }
 
 .interact-button{
@@ -123,7 +126,7 @@
     color: #00ff89;
     width: fit-content;
     padding: 10px;
-    margin: auto 2%;
+    margin: auto 0;
 }
 
 #interactBoard > input{

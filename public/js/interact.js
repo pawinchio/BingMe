@@ -277,6 +277,11 @@ const pendingInteract = () => {
                 interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
             }
         })
+        $('#QRCodeScan').on("click",function(){
+            dataGet.orderDetail.isComplete = true;
+            interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
+            this.remove();
+        })
     }
 }
 
@@ -489,7 +494,7 @@ function renderDetailState3(state,dataGet,interactBoard){
         else{
             textRender("จัดส่งยังที่หมายได้ทันที",'color: #00ff8; font-size: 2rem;',"text-align: center;",interactBoard,true);
             textRender("คุณจะได้รับค่าบริการเมื่อการจัดส่งเสร็จสิ้น",'color: #00ff8; font-size: 1rem;',"text-align: center;",interactBoard,true);
-            bottomRender("ยืนยันการจัดส่งด้วย QR Code","showQRCode",interactBoard,'width: 70%; height: 40px;');
+            bottomRender("ยืนยันการจัดส่งด้วย QR Code","QRCodeScan",interactBoard,'width: 70%; height: 40px;');
         }
     }
 }
@@ -499,6 +504,7 @@ function renderDetailState4(state,dataGet,interactBoard){
     feather.replace({'min-width': '40px','width': '30%','height': '30%','stroke-width': '3'});
     textRender("เสร็จสิ้น",'color: #00ff8; font-size: 2rem;',"text-align: center;",interactBoard);
     if(user.role=='Eater'){
+        $('#showQRCode').remove();
         textRender("ขอขอบคุณที่ใช้บริการ",'color: #00ff8; font-size: 1.5rem;',"text-align: center;",interactBoard);
     }
     else{

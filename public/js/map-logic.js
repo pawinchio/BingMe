@@ -4,8 +4,10 @@ function initMap (){
     }
 }
 
+var mapLoaded = false;
 var myinitialLocation=null;
 var map = null;
+var markerArray = [];
 // Initialize and add the map
 function renderMap(position) {
     // console.log(position);
@@ -25,7 +27,7 @@ function renderMap(position) {
             zoomControl: false
     });
     
-    if($('#searchForm').attr('class')=='active') waitMapLoaded(map);
+    waitMapLoaded(map);
 
     map.panBy(0, 150)
     var marker = new google.maps.Marker({
@@ -33,13 +35,23 @@ function renderMap(position) {
         map: map,
         title: "You're Here"
     });
+   markerArray.push(marker);
+}
+
+const clearMarker = (markerArray) => {
+    for(let i=0; i<markerArray.length;i++){
+        markerArray[i].setMap(null);
+    }
 }
 
 const waitMapLoaded = (mapObj) => {
-    $('.loader').show();
-    $('#searchInput').prop('readonly', true);
+    google.maps.event.addListener( map, 'idle', function() {
+        mapLoaded = true;
+        $('.loader').hide();
+        $('#searchInput').prop('readonly', false);
+    });
     mapObj.addListener('tilesloaded', function () {
-        console.log('Map loaded');
+        mapLoaded = true;
         $('.loader').hide();
         $('#searchInput').prop('readonly', false);
     });
@@ -49,6 +61,7 @@ var directionsService =null;
 var directionsDisplay = null;
 
 function calculateAndDisplayRoute(destId) {
+    clearMarker(markerArray);
     if(directionsDisplay != null) {
         directionsDisplay.setMap(null);
         directionsDisplay = null;
@@ -158,28 +171,31 @@ function getPredictSearch (searchValue) {
     // autoCompleteService.getPlacePredictions({ input: searchValue, location: myinitialLocation, radius: 25000 ,types:['establishment']}, displaySuggestions);
 }
 
-const getFreeOrder = (position) => {
-    let distance = 15000;
+const getFreeOrder = (position, range) => {
+    $('#choiceContainer').removeClass('up');
+    $('#upArrow').show();
+    $('#downArrow').hide();
+    $('.loader').show();
+    let distance = range;
     let hunterLat = position.coords.latitude;
     let hunterLng = position.coords.longitude;
     $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLng, dist:distance}, (data, status) => {
         renderHunterChoice(data,hunterLat,hunterLng);
+        $('.loader').hide();
     });
     
 }
 
 const renderHunterChoice = (data,hunterLat,hunterLng) => {
-    console.log(data);
-    $('#choiceContainer').addClass('up');
-    $('#upArrow').hide();
-    $('#downArrow').show();
     var target = document.getElementById('searchResult');
     target.innerHTML ='';
     while (target.firstChild) {
         target.removeChild(target.firstChild);
     }
+    
     for(let i=0; i<data.length; i++){
         // console.log(templ);
+        showRangeDetail(data.length);
         let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
         let thisChoice = templ.querySelector('.choice');
         thisChoice.dataset.orderDetail = JSON.stringify(data[i]);
@@ -203,15 +219,20 @@ const renderHunterChoice = (data,hunterLat,hunterLng) => {
         target.appendChild(templ);
         feather.replace({'min-width': '40px','width': '40px','height': '40px','stroke-width': '3', 'padding-right': '0!important'});
     }
+
+    $('#choiceContainer').addClass('up');
+    $('#upArrow').hide();
+    $('#downArrow').show();
 }
 
 const plotHunterDirection = (targetOrder, hunterLat, hunterLng) => {
+    clearMarker(markerArray);
     if(directionsDisplay != null) {
         directionsDisplay.setMap(null);
         directionsDisplay = null;
     }
     directionsService = new google.maps.DirectionsService;
-    directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
     directionsDisplay.setMap(map);
     let hunterOrigin = new google.maps.LatLng(hunterLat, hunterLng);
     let storeLocation = new google.maps.LatLng(targetOrder.storeLocation.coordinates[1],targetOrder.storeLocation.coordinates[0]);
@@ -229,7 +250,67 @@ const plotHunterDirection = (targetOrder, hunterLat, hunterLng) => {
     directionsService.route(directionRequest, (response, status) => {
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
-            var route = response.routes[0];
+            var leg = response.routes[0].legs;
+
+            icon_config = {
+                scale: .50,
+                strokeWeight: 1.0,
+                strokeColor: 'black',
+                strokeOpacity: 1,
+                fillColor: '#00ff89',
+                fillOpacity: 1.0
+            }
+            
+            let mark1 = new MarkerWithLabel({
+                position: leg[0].start_location,
+                map: map,
+                labelContent: "ตำแหน่งของคุณ",
+                labelAnchor: new google.maps.Point(20, 0),
+                icon: {
+                        path: fontawesome.markers.TAXI,
+                        ...icon_config
+                    },
+                labelClass: 'map-label'
+            });
+            markerArray.push(mark1);
+            
+            let mark2 = new MarkerWithLabel({
+                position: leg[0].end_location,
+                map: map,
+                labelContent: "ซื้อสินค้าที่นี่",
+                labelAnchor: new google.maps.Point(20, 0),
+                icon: {
+                        path: fontawesome.markers.SHOPPING_CART,
+                        ...icon_config
+                    },
+                labelClass: 'map-label',
+            });
+            markerArray.push(mark2);
+
+            let mark3 = new MarkerWithLabel({
+                position: leg[1].end_location,
+                map: map,
+                labelContent: "ส่งของที่นี่",
+                labelAnchor: new google.maps.Point(20, 0),
+                icon: {
+                        path: fontawesome.markers.MALE,
+                        ...icon_config
+                    },
+                labelClass: 'map-label',
+                labelStyle: {
+
+                }
+            });
+            markerArray.push(mark3);
+            
         }else console.log(status);
     });
+}
+
+function showRangeDetail (numberResult){
+    $('.range-detail').css({
+        "display":"block"
+    });
+    $('#choice-range').text($('#searchRange').val() + ' KM');
+    if(numberResult)$('#choice-number').text(numberResult);
 }

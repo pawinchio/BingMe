@@ -103,15 +103,34 @@ const awakeInteractBoardByHunter = (targetOrder) => {
     showInteractBoard();
     console.log(orderData)
     // show order detail and accept button
+    interactBoard.append(loader);
     getUserByOrderId(orderData._id, (userInvolved) => {
-        avatarRender(userInvolved.eater, interactBoard);
-        renderOrder(orderData,interactBoard,false);
+        
         if(userInvolved.hunter.user == null){
             //render acceptBtn
             getUserBySession((userData) => {
+                avatarRender(userInvolved.eater, interactBoard);
+                renderOrder(orderData,interactBoard,false);
                 avatarRender(userData, interactBoard);
+                acceptBtn.querySelector('.interactSubmit').dataset.orderId = orderData._id;
                 acceptBtn.querySelector('.interactSubmit').style.cssText = 'max-width: 120px; margin-right:20px;';
+                acceptBtn.querySelector('.interactSubmit').addEventListener('click', (e)=>{
+                    orderData.isPickup = true;
+                    orderData.hunterID = user._id;
+                    $.post('/updateOrder',{orderId: orderData._id, updateObj: orderData}, (data, status)=>{
+                        if(status == 'success'){
+                            userData.user.refPending = orderData._id;
+                            $.post('/updateUser',userData, (data, status)=>{
+                                if(status == 'success'){
+                                    pendingInteract();
+                                }
+                            });
+                        }
+                    });
+                });
                 interactBoard.append(acceptBtn);
+                $('.loader').remove();
+                
             })
             
         }else{

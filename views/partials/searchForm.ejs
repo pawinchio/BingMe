@@ -2,13 +2,23 @@
     <div class="row">
         <div class="col-lg-4 col-md-12" id="searchList">
             <form id="searchbar">
-                <input type="search" class="form-control controls" id="searchInput" placeholder="ค้นหาร้านหรือเมนูที่คุณต้องการ" onkeydown="if (event.keyCode == 13) {return false;}">
+                <%if(user){%>
+                <%if(user.role == 'Eater'){%>
+                    <input type="search" class="form-control controls" id="searchInput" placeholder="ค้นหาร้านหรือเมนูที่คุณต้องการ" onkeydown="if (event.keyCode == 13) {return false;}">
+                <%}else if(user.role == 'Hunter'){%>
+                    <div style="width:100%; height:100%">
+                        <label for="searchRange">ระยะการค้นหา (KM)</label>
+                        <input type="range" class="form-control" min='0' max='30' step="0.1" value='10' id='searchRange'>
+                    </div>
+                    
+                <%}%>
+                 <%}%>
                 <img class="search-load" src="/assets/images/loading.gif" alt="">
             </form>
             <div id="choiceContainer">
                 <div id="searchArrow">
-                    <i style="margin:auto;" id='upArrow' data-feather="chevron-up" display='block'></i>
-                    <i style="margin:auto;" id='downArrow' data-feather="chevron-down" display='none'></i>
+                    <i style="margin:auto; stroke-width: 2px;" id='upArrow' data-feather="chevron-up" display='block'></i>
+                    <i style="margin:auto; stroke-width: 2px;" id='downArrow' data-feather="chevron-down" display='none'></i>
                 </div>
                 <div id="searchchoice">
                     <div id="searchResult">
@@ -24,6 +34,10 @@
             <div style="border-bottom: 0.5px solid #00ff89;">ระยะทาง: <span id="choice-distance"></span></div>
             <div style="">เรตติง: <span id="choice-rating"></span></div>
         </div>
+        <div class="range-detail" style="padding:3px 6px; display:none;">
+            <div style="border-bottom: 0.5px solid #00ff89;">ระยะการค้นหา: <span id="choice-range"></span></div>
+            <div style="">จำนวนผลลัพธ์: <span id="choice-number"></span></div>
+        </div>
         <script src="js/map-logic.js"></script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdYyhCUCpJwLDmuMnlePmtBIwj76H3MIg&libraries=places&callback=initMap"></script>
         </div>
@@ -31,11 +45,13 @@
 </div>
 
 <template id="choice-template">
-  <div class="choice d-flex" style="border-radius: 10px;
+  <div class="choice d-flex" style="
+    border-radius: 20px;
     margin: 15px 10px;
     background: white;
     border: 1px solid darkgray;
-    padding: 6px;">
+    padding: 6px;
+    box-shadow: grey 0px 0px 10px;">
     
     <div class="mr-auto p-2" style="width: 59%; text-overflow: ellipsis;
     overflow-x: hidden; font-size: smaller; margin: auto; white-space: initial;">
@@ -53,19 +69,64 @@
 </template>
 
 <template id="hunter-choice-template">
-    <div class="choice d-flex" style="border-radius: 10px;
-    margin: 15px 10px;
-    background: white;
-    border: 1px solid darkgray;
-    padding: 6px;">
+    <div class="choice d-flex" style="
+        border-radius: 20px;
+        margin: 15px 10px;
+        background: white;
+        border: 1px solid darkgray;
+        padding: 9px;
+        height: 75px;
+        color: unset;
+        box-shadow: grey 0px 0px 10px;
+    ">
         <i style="margin:auto;" data-feather="map-pin" class="choice-button p-2"></i>
-        <div class="orderStoreName mr-auto p-2" style="width: 45%; max-height: 50px; text-overflow: ellipsis;
-    overflow-x: hidden; font-size: smaller; margin: auto; white-space: initial;">
+        <div class="orderStoreName mr-auto p-2" style="
+            width: 65%;
+            max-height: 50px;
+            text-overflow: ellipsis;
+            overflow-x: hidden;
+            font-size: smaller;
+            margin: auto;
+            white-space: initial;
+        ">
         </div>
-        <i style="margin:auto;" data-feather="package" class="choice-button p-2" style=""></i>
-        <div class="orderQuantity p-2"></div>
-        <i style="margin:auto;" data-feather="dollar-sign" class="choice-button p-2"></i>
-        <div class="orderFee p-2" style='width:56px; padding-left: 0!important;'></div>
-        <i style="margin:auto;" data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoardByHunter(this)"></i>
+        <table class="p-2" style="margin:auto;">
+            <tr><td style="padding: 0!important;text-align: center;">
+                    <i style="
+                        margin:auto;
+                        width: 20px;
+                        height: 20px;
+                        vertical-align: sub;
+                        padding: 0 !important;
+                    " data-feather="package" class="choice-button p-2" style=""></i>
+                </td>
+                <td>
+                    <div class="orderQuantity p-2" style="padding: 0!important;padding-left: 5px!important;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td style="
+                    text-align: center;
+                    border-radius: 7px;
+                ">
+                    <i style="
+                        margin: auto;
+                        vertical-align: sub;
+                        width: 20px;
+                        height: 20px;
+                        padding: 0 !important;
+                    " data-feather="dollar-sign" class="choice-button p-2"></i>
+                </td>
+                <td>
+                    <div class="orderFee p-2" style='width: 30px; width:56px; padding: 0!important;'></div>
+                </td>
+            </tr>
+        </table>
+        
+        <i style="
+            margin:auto; 
+            width: 50px;
+            height: 50px;
+        " data-feather="arrow-right" class="choice-button p-2" onclick="awakeInteractBoardByHunter(this)"></i>
     </div>
 </template>

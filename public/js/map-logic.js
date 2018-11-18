@@ -136,7 +136,7 @@ var displaySuggestions = function(predictions) {
             "background":"white",
             "color": "unset",
         });
-        this.style.background="black";
+        this.style.background="#27292d";
         this.style.color="#00FF89";
         $('#searchResult').scrollTo(this);
         showChoiceDetail(this);
@@ -208,7 +208,7 @@ const renderHunterChoice = (data,hunterLat,hunterLng) => {
                 "background":"white",
                 "color": "unset",
             });
-            this.style.background="black";
+            this.style.background="#27292d";
             this.style.color="#00FF89";
 
             //send hunterLat/Long to plotHunterDirection

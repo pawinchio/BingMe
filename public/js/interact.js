@@ -210,9 +210,12 @@ const pendingInteract = () => {
             }
         });
         interactPipe.on("thread", function(data) {
+            //อัพเดตข้อมูลใหม่และเอาชิ้นส่วนเก่าและตัวโหลดดิ้งออก
             $('.remove').remove()
             $('.loader').remove()
+            //อัพเดตข้อมูลล่าสุดของ order จาก database
             dataGet.orderDetail=data;
+            //ตรวจสอบ state ว่า order ได้ดำเนินการถึงขั้นตอนไหน
             state = checkstate(dataGet);
             if(state==1){
                 renderDetailState1(state,dataGet,interactBoard);
@@ -229,12 +232,6 @@ const pendingInteract = () => {
             bottomScript()
         });
         bottomScript()
-        //determine next action from progress (use role)
-            //do or wait
-            //do -> sent action through pipeline 
-            //wait -> wait action from pipeline 
-
-            //action has some button to tricker Backend to update order in DB
     }
     
     async function pending() {
@@ -246,8 +243,9 @@ const pendingInteract = () => {
     }
 
     function bottomScript(){
+        //ฟังก์ชั่นในการกดปุ่มต่างๆ
         $("#payFee").on("click" , function(){
-            console.log("pay fee");
+            //console.log("pay fee");
             dataGet.orderDetail.isPaidFee = true;
             interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
             this.remove();
@@ -280,6 +278,9 @@ const pendingInteract = () => {
         $('#QRCodeScan').on("click",function(){
             dataGet.orderDetail.isComplete = true;
             interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
+            $.post('/updateMenu',dataGet.orderDetail,(data,status)=>{
+                if(status) console.log('update menu complete');
+            });
             this.remove();
         })
     }
@@ -330,6 +331,26 @@ const showInteractBoard = () => {
     });
 }
 
+const getUserByOrderId = (orderId, callback) => {
+    $.post('/fetchUserByOrderId',{orderId: orderId},(data, status)=>{
+        if(status=='success'){
+            callback(data);
+        }else console.log(status);
+    })
+}
+
+const getUserBySession = (callback) => {
+    $.get('/fetchUserBySession', (data, status) => {
+        if(status=='success'){
+            callback(data);
+        }
+    });
+}
+
+//================================== ส่วนฟังก์ชั่นไว้ใช้เพิ่ม element ใน interractboard =======================================
+
+//เพิ่มรายการอาหาร
+//ใส่ข้อมูลรายการเมนูที่จะแสดง board บอกว่าแสดงราคาหรือไม่ แสดงสรุปผลรายการหรือไม่
 const renderOrder = (orderData,interactBoard,isDisplayPrice = false,summery = false) => {
     let totalCount = 0 ,totalPrice = 0;
     orderSummary = document.getElementById('order-summary').content.cloneNode(true);
@@ -363,23 +384,8 @@ const renderOrder = (orderData,interactBoard,isDisplayPrice = false,summery = fa
     interactBoard.append(orderSummary);
 }
 
-const getUserByOrderId = (orderId, callback) => {
-    $.post('/fetchUserByOrderId',{orderId: orderId},(data, status)=>{
-        if(status=='success'){
-            callback(data);
-        }else console.log(status);
-    })
-}
-
-const getUserBySession = (callback) => {
-    $.get('/fetchUserBySession', (data, status) => {
-        if(status=='success'){
-            callback(data);
-        }
-    });
-}
-
-
+//เพิ่ม avatar ผู้ใช้
+//ใส่ข้อมูลuserที่จะแสดง board ใส่ค่าบริการเพื่อแสดงค่าบริการถ้าไม่มีไม่ต้องใส่
 const avatarRender = (Data,interactBoard,fee=null) => {
     if(Data&&Data.username&&Data.user)
     {
@@ -396,11 +402,14 @@ const avatarRender = (Data,interactBoard,fee=null) => {
     }
 }
 
+//เพิ่ม loading
 const loaderRender = (interactBoard) =>{
     loader = $('#loader').html();
     interactBoard.append(loader);
 }
 
+//เพิ่มข้อความ
+//ใส่ข้อความที่ต้องการให้แสดง cssของข้อความ cssของกล่อง boardที่จะใส่ลงไป เป็นส่วนที่ต้องลบทิ้งเมื่ออัปเดตหรือไม่
 const textRender = (inputText,styleText,styleDiv,interactBoard,classAdd=false) =>{
     text = document.getElementById('text').content.cloneNode(true);
     text.querySelector('#textAppend').innerText = inputText;
@@ -410,6 +419,8 @@ const textRender = (inputText,styleText,styleDiv,interactBoard,classAdd=false) =
     interactBoard.append(text);
 }
 
+//เพิ่มปุ่ม
+//ข้อความในปุ่ม idของปุ่ม board cssของปุ่มถ้าไม่ใส่จะเป็นdefault
 const bottomRender = (text,id,interactBoard,styleAdd=null) =>{
     payBtn = document.getElementById('payBtn').content.cloneNode(true);
     payBtn.querySelector('.interactSubmit').innerText=text;
@@ -418,6 +429,14 @@ const bottomRender = (text,id,interactBoard,styleAdd=null) =>{
     interactBoard.append(payBtn);
 } 
 
+//โยนข้อมูลเข้ามาและฟังก์ชั่นจะส่งค่าคืนกลับไปว่าอยู่ state ได้ดำเนินการถึงขั้นตอนไหน
+/*
+    state 0 : eater รอ hunter รับงาน
+    state 1 : hunter รอ eater จ่ายเงิน
+    state 2 : eater จ่ายเงินแล้วรอ hunter ยืนยันราคา
+    state 3 : hunter ยืนยันราคาแล้ว eater รอ hunter เดินทางมาถึง
+    state 4 : hunter ส่งมอบอาหารและแสกน QRCode เรียบร้อย
+*/
 const checkstate = (Data) => {
     if(Data.orderDetail.isComplete) return 4;
     else if(Data.orderDetail.isFullFilled) return 3;
@@ -426,6 +445,8 @@ const checkstate = (Data) => {
     else return 0;
 }
 
+
+//==================================== ฟังก์ชั่น Render ตัวส่วนประกอบต่างๆใน interractboard ตาม state ========================================
 function renderDetailState0(state,dataGet,interactBoard) {
     avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
     renderOrder(dataGet.orderDetail,interactBoard);

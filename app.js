@@ -324,7 +324,7 @@ app.post('/createOrder', (req,res) => {
                 await sleep(1000)
                 const four = await addPendingOrder(third)
                 await sleep(1000)
-                res.send("A");
+                await res.send("A");
         }
 });
 
@@ -399,7 +399,7 @@ app.get('/fetchPendingData',(req,res)=>{
                         orderDetail = pool;
                         if(userDetail.hunterDetail==null){
                                 if(pool.hunterID!=null){
-                                        console.log(pool);
+                                        //console.log(pool);
                                         UserAuth.findById(pool.hunterID,(err,userF)=>{
                                                 Hunter.findById(userF.userDataId,async (err,user)=>{
                                                         if(err) console.log(err);
@@ -412,7 +412,7 @@ app.get('/fetchPendingData',(req,res)=>{
                         }
                         else{
                                 if(pool.eaterID != null){
-                                        console.log(pool);
+                                        //console.log(pool);
                                         UserAuth.findById(pool.eaterID,(err,userF)=>{
                                                 Eater.findById(userF.userDataId,async (err,user)=>{
                                                         if(err) console.log(err);
@@ -501,6 +501,21 @@ app.post('/updateUser', (req,res) => {
                 });
         }
 });
+
+app.post('/updateMenu',(req,res)=>{
+        
+        // for(const menu of req.body.menu){console.log(menu.name);}
+        for(const menu of req.body.menu){
+                // req.body.menu.forEach(menu => {
+                Menu.find({Name:menu.name}, (err,menuData)=>{
+                        menuData[0].COPAvg = menuData[0].COPAvg+Number(menu.amount);
+                        menuData[0].priceAvg = (menuData[0].priceAvg+Number(menu.price))/menuData[0].COPAvg;
+                        Menu.findByIdAndUpdate(menuData[0]._id,menuData[0],(err,menu)=>{
+                                if(err) console.log(err);
+                        })              
+                });
+        }
+})
 
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA

@@ -1,7 +1,7 @@
 #searchForm{
     background: white;
     width: 100vw;
-    height: 100%;
+    height: calc(100% - 48px);
     position: fixed;
     z-index: 95;
     top: 0%;
@@ -27,7 +27,7 @@
 }
 #searchForm > .row > #searchList{
     background: whitesmoke;
-    height: 100vh;
+    height: 100%;
     padding: 0;
 }
 #searchForm > .row > #searchList > #searchbar{
@@ -85,7 +85,7 @@
         max-width: 66.666667% !important;
     }
     #map {
-        height: 96.5% !important;
+        height: 100% !important;
         width: 100% !important;
     }
     #searchForm > .row > #searchList > #choiceContainer > #searchchoice{
@@ -117,7 +117,7 @@
     #searchForm > .row > #searchMap > #map{
         overflow: auto;
         width: auto;
-        height: 94vh;
+        height: 100%;
     }
 
     #searchForm > .row > #searchList > #choiceContainer > #searchchoice{
@@ -164,7 +164,7 @@
 }
 
 #map {
-    height: 96.5%;
+    height: 100%;
     width: 100%;
 }
 

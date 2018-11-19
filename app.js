@@ -185,10 +185,10 @@ app.get('/activate', (req,res) => {
 
 app.post('/createOrder', (req,res) => {
         // console.log(req.body);
-        let menuID = [];
-        let storeID ;
-        let storeLocation;
-        let orderPoolId;
+        var menuID = [];
+        var storeID ;
+        var storeLocation;
+        var orderPoolId;
         interect();
         
         async function addMenu() {
@@ -261,7 +261,8 @@ app.post('/createOrder', (req,res) => {
                                         if (store[0].historyMenu.indexOf(menu) === -1) store[0].historyMenu.push(menu)
                                 })
                                 await StoreHistory.findByIdAndUpdate(store[0]._id,store[0])
-                                storeID = store[0]._id
+                                storeID = store[0]._id;
+                                storeLocation = store[0].locationStore;
                         }
                 }) 
         }
@@ -288,6 +289,7 @@ app.post('/createOrder', (req,res) => {
                         isComplete: false,
                         dateCreated: Date()  
                 }
+                console.log(orderPenData);
                 OrderPool.create(orderPenData,(err,order)=>{
                         orderPoolId = order._id;
                         order.save((err)=>{
@@ -315,12 +317,13 @@ app.post('/createOrder', (req,res) => {
         
         async function interect(){
                 const first = await addMenu()
-                await sleep(3000)
+                await sleep(1000)
                 const second = await addStore(first)
-                await sleep(3000)
+                await sleep(1000)
                 const third = await addOrderPool(second)
-                await sleep(3000)
+                await sleep(1000)
                 const four = await addPendingOrder(third)
+                await sleep(1000)
                 await res.send("A");
         }
 });
@@ -395,22 +398,30 @@ app.get('/fetchPendingData',(req,res)=>{
                         if(err) console.log(err);
                         orderDetail = pool;
                         if(userDetail.hunterDetail==null){
-                                UserAuth.findById(pool.hunterID,(err,userF)=>{
-                                        Hunter.findById(userF.userDataId,async (err,user)=>{
-                                                if(err) console.log(err);
-                                                userDetail.hunterDetail = {user,username : userF.username,role : userF.role};
-                                        })
-                                        
-                                })  
+                                if(pool.hunterID!=null){
+                                        //console.log(pool);
+                                        UserAuth.findById(pool.hunterID,(err,userF)=>{
+                                                Hunter.findById(userF.userDataId,async (err,user)=>{
+                                                        if(err) console.log(err);
+                                                        userDetail.hunterDetail = {user,username : userF.username,role : userF.role};
+                                                })
+                                                
+                                        }) 
+                                }
+                                else userDetail.hunterDetail=null;   
                         }
                         else{
-                                UserAuth.findById(pool.eaterID,(err,userF)=>{
-                                        Eater.findById(userF.userDataId,async (err,user)=>{
-                                                if(err) console.log(err);
-                                                userDetail.eaterDetail = {user,username : userF.username,role : userF.role};
-                                        })
-                                        
-                                })   
+                                if(pool.eaterID != null){
+                                        //console.log(pool);
+                                        UserAuth.findById(pool.eaterID,(err,userF)=>{
+                                                Eater.findById(userF.userDataId,async (err,user)=>{
+                                                        if(err) console.log(err);
+                                                        userDetail.eaterDetail = {user,username : userF.username,role : userF.role};
+                                                })
+                                                
+                                        })   
+                                }
+                                else userDetail.eaterDetail=null;
                         }
                 })
         }
@@ -438,11 +449,10 @@ app.post('/fetchFreeOrder', (req,res) => {
                                         }
                                 }
                         }, isPickup: false
-                }).find((error, results) => {
-                        if (error) console.log(error);
-                        res.send(results);
-                });
-        
+        }).find((error, results) => {
+                if (error) console.log(error);
+                res.send(results);
+        }); 
 });
 
 app.get('/fetchUserBySession', (req,res) => {
@@ -491,6 +501,21 @@ app.post('/updateUser', (req,res) => {
         }
 });
 
+app.post('/updateMenu',(req,res)=>{
+        
+        // for(const menu of req.body.menu){console.log(menu.name);}
+        for(const menu of req.body.menu){
+                // req.body.menu.forEach(menu => {
+                Menu.find({Name:menu.name}, (err,menuData)=>{
+                        menuData[0].COPAvg = menuData[0].COPAvg+Number(menu.amount);
+                        menuData[0].priceAvg = (menuData[0].priceAvg+Number(menu.price))/menuData[0].COPAvg;
+                        Menu.findByIdAndUpdate(menuData[0]._id,menuData[0],(err,menu)=>{
+                                if(err) console.log(err);
+                        })              
+                });
+        }
+})
+
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });
@@ -503,12 +528,25 @@ interact.on('connection', function(client){
                 console.log(roomName+" room is created!");
                 client.room = roomName;
                 interact.emit('ping','server is hello');
+                client.on('interractData', function(Data,roomID,temp){
+                        OrderPool.findByIdAndUpdate(Data._id,Data,(err)=>{
+                                if(err) console.log(err);
+                                else if(temp){
+                                        client.emit("thread", Data);
+                                }
+                                else{
+                                        client.emit("thread", Data);
+                                        client.broadcast.to(roomID).emit("thread", Data);
+                                }
+                        })
+                });
         });
         client.on('disconnectRoom', function(roomName, clientID){
                 //Check if clientID have permission to see roomName
                 client.leave(roomName);
                 console.log(roomName+" room is leaved!");
         });
+        
 });
 
 server.listen(5500, () => console.log('Server run on port 5500'));

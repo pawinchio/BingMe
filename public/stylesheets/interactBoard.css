@@ -134,3 +134,10 @@
     border: 2px solid!important;
     border-radius: 15px!important;
 }
+
+@media screen and (min-width: 800px){
+    #interactBoard{
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+}

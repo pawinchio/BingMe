@@ -306,3 +306,21 @@ const checkstate = (Data) => {
     else if(Data.orderDatail.isPickup)return 1
     else return 0;
 }
+
+
+
+const showInteractPopup = (headText, bodyHtml) => {
+    let interactPopup = document.getElementById('interact-popup').content.cloneNode(true);
+    interactPopup.querySelector('#interact-popup-title').innerText = headText;
+    interactPopup.querySelector('.modal-body').innerHTML = bodyHtml;
+    $('body').append(interactPopup);
+    $('#interactPopup').modal('show');
+    feather.replace({'min-width': '40px','width': '40px','height': '40px','stroke-width': '3', 'padding-right': '0!important'});
+}
+
+const killInteractPopup = () => {
+    $('#interactPopup').remove();
+    $('.modal-backdrop').hide();
+}
+
+// showInteractPopup('Test Popup','<p>This is test text from html</p>');

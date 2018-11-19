@@ -149,3 +149,29 @@
         <div class='p-2 dismissMenu' style='color:black;'>X</div>
     </div>
 </template>
+
+<template id='interact-popup'>
+    <div class="modal show" id="interactPopup" role="dialog" onclick='killInteractPopup()'>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="
+            background: #00ff8938;
+            color: #00ff89;
+            border: 2px solid #00ff89;
+            ">
+            <div class="modal-header d-flex justify-content-between" style="background:none;border-bottom: 0.5px solid;">
+                <div class='p-1' style="width:40px"></div>
+                <h5 class="modal-title p-1" id="interact-popup-title" style="color:#00ff89!important">รายละเอียดร้านค้า</h5>
+                <i data-feather="x" class="p-1" onclick='killInteractPopup()'></i>
+            </div>
+            
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer" style='background:none;'>
+                <div></div>
+            </div>
+            
+            </div>
+        </div>
+        </div>
+</template>

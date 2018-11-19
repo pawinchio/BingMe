@@ -1,5 +1,7 @@
 let user = undefined;
+
 $(document).ready(function () {
+
     killInteractBoard();
     $('#dismiss, .overlay').on('click', function () {
         // hide sidebar

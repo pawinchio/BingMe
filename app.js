@@ -488,6 +488,7 @@ app.post('/updateOrder', (req,res) => {
 
 app.post('/updateUser', (req,res) => {
         console.log(req.body);
+        if(req.body.user.refPending=='')req.body.user.refPending=null;
         if(req.body.role == 'Eater'){
                 Eater.findByIdAndUpdate(req.body.user._id, req.body.user, (err, userData)=> {
                         if(!userData) console.log(err);
@@ -524,10 +525,10 @@ app.post('/checkqr',(req,res)=>{
                        if(eaterData.refPending == data[0]){
                                OrderPool.findById(data[0], (err, order)=>{
                                         if(order) res.send('completed');
-                                        else res.status(404).send();
+                                        else res.send('failed');
                                });
-                       }else res.status(404).send();
-                }else res.status(404).send();
+                       }else res.send('failed');
+                }else res.send('failed');
         });
 
 });

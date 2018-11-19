@@ -17,123 +17,150 @@ var avatar = document.getElementById('avatar').content.cloneNode(true);
 var text = document.getElementById('text').content.cloneNode(true);
 
 const awakeInteractBoard = (source) => {
-    let placeData = source.parentNode.getAttribute('data-place-detail');
-    // console.log(source.parentNode);
-     console.log(placeData);
-    showInteractBoard();
-    interactBoard.empty();
-    interactBoard.append($('#create-order').html());
-    // show menu form and storeName from placeData
-    $("#inputFood").keypress(function(event){
-        if(event.which === 13){
-            addMenu(event);
-        }
-    });
-    $("#addBot").on("click",addMenu);
 
-    //remove menu
-    $("div#showFood").on("click" ,"div#remove.p-2", function(event){
-        $(this).parent().fadeOut(500,function(){
-            $(this).remove();
-        });
-        event.stopPropagation();
-    });
+    getUserBySession((userData)=>{
+        if(userData){
+            console.log(userData.user.refPending);
+            if(userData.user.refPending==null){
+                let placeData = source.parentNode.getAttribute('data-place-detail');
+                // console.log(source.parentNode);
+                console.log(placeData);
+                showInteractBoard();
+                interactBoard.empty();
+                interactBoard.append($('#create-order').html());
+                // show menu form and storeName from placeData
+                $("#inputFood").keypress(function(event){
+                    if(event.which === 13){
+                        addMenu(event);
+                    }
+                });
+                $("#addBot").on("click",addMenu);
 
-    // if form send create new order in db from data that currently got
-    $("#sendMenu").on("click",()=>{
-        var loader = $('#loader').html();
-        interactBoard.append(loader);
-
-        let eaterId = user._id;
-        let menuList = jQuery.makeArray($('#showFood').children());
-        let menuArray = [];
-        call();
-
-        function getmenuData() {
-            menuList.forEach((child) => {
-                let foodName = child.children[0].innerText;
-                let foodAmount = child.children[1].children[0].value;
-                let menuObj = {
-                    name: foodName,
-                    amount: foodAmount,
-                    price: null
-                }
-                menuArray.push(menuObj);
-            });
-        }
-        
-        function sentData() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    let eaterLocation = {
-                        Latitude: position.coords.latitude,
-                        Longitude: position.coords.longitude
-                    };
-                    console.log(menuArray);
-                    $.post('/createOrder',{
-                        eaterId: eaterId,
-                        storeData: JSON.parse(placeData),
-                        menu: menuArray,
-                        locationEater: eaterLocation
-                    }, (data, status) => {
-                        console.log(data);
-                        if(status == 'success'){
-                            // call PendingInteract 
-                            pendingInteract(user);
-                        }
+                //remove menu
+                $("div#showFood").on("click" ,"div#remove.p-2", function(event){
+                    $(this).parent().fadeOut(500,function(){
+                        $(this).remove();
                     });
+                    event.stopPropagation();
+                });
+
+                // if form send create new order in db from data that currently got
+                $("#sendMenu").on("click",()=>{
+                    var loader = $('#loader').html();
+                    interactBoard.append(loader);
+
+                    let eaterId = user._id;
+                    let menuList = jQuery.makeArray($('#showFood').children());
+                    let menuArray = [];
+                    call();
+
+                    function getmenuData() {
+                        menuList.forEach((child) => {
+                            let foodName = child.children[0].innerText;
+                            let foodAmount = child.children[1].children[0].value;
+                            let menuObj = {
+                                name: foodName,
+                                amount: foodAmount,
+                                price: null
+                            }
+                            menuArray.push(menuObj);
+                        });
+                    }
+                    
+                    function sentData() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(position => {
+                                let eaterLocation = {
+                                    Latitude: position.coords.latitude,
+                                    Longitude: position.coords.longitude
+                                };
+                                console.log(menuArray);
+                                $.post('/createOrder',{
+                                    eaterId: eaterId,
+                                    storeData: JSON.parse(placeData),
+                                    menu: menuArray,
+                                    locationEater: eaterLocation
+                                }, (data, status) => {
+                                    console.log(data);
+                                    if(status == 'success'){
+                                        // call PendingInteract 
+                                        pendingInteract(user);
+                                    }
+                                });
+                            });
+                        }
+                    }
+
+                    async function call() {
+                            const a = await getmenuData();
+                            const b = await sentData(a);
+                    } 
                 });
             }
+            else{
+                alert("You already have a pending order!!!");
+                killInteractBoard();
+                return ;
+            }
         }
-
-        async function call() {
-                const a = await getmenuData();
-                const b = await sentData(a);
-        } 
-    });
+    })
 }
 
 const awakeInteractBoardByHunter = (targetOrder) => {
-    interactBoard.empty();
-    // fetch Data from pendingOrder's orderId
-    let orderData = JSON.parse(targetOrder.parentNode.getAttribute('data-order-detail'));
-    showInteractBoard();
-    console.log(orderData)
-    // show order detail and accept button
-    interactBoard.append(loader);
-    getUserByOrderId(orderData._id, (userInvolved) => {
-        
-        if(userInvolved.hunter.user == null){
-            //render acceptBtn
-            getUserBySession((userData) => {
-                avatarRender(userInvolved.eater, interactBoard);
-                renderOrder(orderData,interactBoard,false);
-                avatarRender(userData, interactBoard);
-                acceptBtn.querySelector('.interactSubmit').dataset.orderId = orderData._id;
-                acceptBtn.querySelector('.interactSubmit').style.cssText = 'max-width: 120px; margin-right:20px;';
-                acceptBtn.querySelector('.interactSubmit').addEventListener('click', (e)=>{
-                    orderData.isPickup = true;
-                    orderData.hunterID = user._id;
-                    $.post('/updateOrder',{orderId: orderData._id, updateObj: orderData}, (data, status)=>{
-                        if(status == 'success'){
-                            userData.user.refPending = orderData._id;
-                            $.post('/updateUser',userData, (data, status)=>{
-                                if(status == 'success'){
-                                    pendingInteract();
-                                }
+
+    getUserBySession((userData)=>{
+        if(userData){
+            if(userData.user.refPending==null){
+                interactBoard.empty();
+                // fetch Data from pendingOrder's orderId
+                let orderData = JSON.parse(targetOrder.parentNode.getAttribute('data-order-detail'));
+                showInteractBoard();
+                console.log(orderData)
+                // show order detail and accept button
+                interactBoard.append(loader);
+                getUserByOrderId(orderData._id, (userInvolved) => {
+                    
+                    if(userInvolved.hunter.user == null){
+                        //render acceptBtn
+                        getUserBySession((userData) => {
+                            avatarRender(userInvolved.eater, interactBoard);
+                            renderOrder(orderData,interactBoard,false);
+                            avatarRender(userData, interactBoard);
+                            acceptBtn.querySelector('.interactSubmit').dataset.orderId = orderData._id;
+                            acceptBtn.querySelector('.interactSubmit').style.cssText = 'max-width: 120px; margin-right:20px;';
+                            acceptBtn.querySelector('.interactSubmit').addEventListener('click', (e)=>{
+                                orderData.isPickup = true;
+                                orderData.hunterID = user._id;
+                                $.post('/updateOrder',{orderId: orderData._id, updateObj: orderData}, (data, status)=>{
+                                    if(status == 'success'){
+                                        userData.user.refPending = orderData._id;
+                                        $.post('/updateUser',userData, (data, status)=>{
+                                            if(status == 'success'){
+                                                pendingInteract();
+                                            }
+                                        });
+                                    }
+                                });
                             });
-                        }
-                    });
+                            interactBoard.append(acceptBtn);
+                            $('.loader').remove();
+                            
+                        })
+                        
+                    }else{
+                        alert('Something went wrong this order has been picked by other hunter!');
+                    } 
                 });
-                interactBoard.append(acceptBtn);
-                $('.loader').remove();
-                
-            })
-            
-        }else{
-            alert('Something went wrong this order has been picked by other hunter!');
-        } 
-    });
+            }
+            else{
+                alert("You already have a pending order!!!");
+                killInteractBoard();
+                return ;
+            }
+        }
+    })
+
+    
     
     // avatarRender(userInvolved.eater, interactBoard);
     
@@ -143,12 +170,24 @@ const awakeInteractBoardByHunter = (targetOrder) => {
 }
 
 const pendingInteract = () => {
+
+    getUserBySession((userData)=>{
+        if(userData){
+            if(userData.user.refPending==null){
+                alert("You don't have any pending order!!!");
+                killInteractBoard();
+                return ;
+            }
+            else pending();
+        }
+    })
+
     interactBoard.empty();
     var beforeState;
     let dataGet;
     let hunter_wait = false;
     let eater_wait = false;
-    pending()
+    
 
     function init() {
         //clear interactBoard's child
@@ -314,9 +353,20 @@ const pendingInteract = () => {
                         $.post('/updateMenu',dataGet.orderDetail,(data,status)=>{
                             if(status) console.log('update menu complete');
                         });
+                        dataGet.userDetail.hunterDetail.user.refHistory.push(dataGet.userDetail.hunterDetail.user.refPending);
+                        dataGet.userDetail.hunterDetail.user.refPending = null;
+                        dataGet.userDetail.eaterDetail.user.refPending = null;
+                        console.log(dataGet);
+                        $.post('/updateUser',dataGet.userDetail.hunterDetail,(data,status)=>{
+                            if(status="success") console.log("Update Success");
+                        });
+                        $.post('/updateUser',dataGet.userDetail.eaterDetail,(data,status)=>{
+                            if(status="success") console.log("Update Success");
+                        });
                         this.remove();
                     }
                     else{
+                        console.log("Wrong");
                         alert('Wrong Eater!!!!');
                         
                     } 
@@ -500,7 +550,7 @@ const checkstate = (Data) => {
 function renderDetailState0(state,dataGet,interactBoard) {
     avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
     renderOrder(dataGet.orderDetail,interactBoard);
-    if(user.role=='Eater'){
+    if(user.role=='Eater'&&state==0){
     loaderRender(interactBoard);
     textRender("กำลังค้นหาผู้จัดส่ง",'color: white; font-weight: bolder; font-size: 1rem;',"text-align: center; margin-top: 50px;",interactBoard,true);
     }

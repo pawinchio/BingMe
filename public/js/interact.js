@@ -286,7 +286,8 @@ const pendingInteract = () => {
             }
         })
         $('#showQRCode').on('click',function(){
-            interactBoard.append('<div style=" margin-left: auto; margin-right: auto; width: 22%;;"><img src="https://api.qrserver.com/v1/create-qr-code/?data='+dataGet.orderDetail._id+'&amp;size=200x200" alt="" title="" /></div>')
+            showInteractPopup('QR Code','<div style=" margin-left: auto; margin-right: auto; width: 85%;"><img src="https://api.qrserver.com/v1/create-qr-code/?data='+dataGet.orderDetail._id+'&amp;size=200x200" alt="" title="" /></div>');
+            //interactBoard.append('')
         })
         $('#QRCodeScan').on("click",function(){
             dataGet.orderDetail.isComplete = true;

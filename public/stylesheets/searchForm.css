@@ -30,6 +30,7 @@
     height: 100%;
     padding: 0;
 }
+
 #searchForm > .row > #searchList > #searchbar{
     text-align: center;
     height: 65px;
@@ -97,7 +98,7 @@
         left: 85% !important;
     }
 }
-@media screen and (max-width: 800px){
+@media only screen and (min-width: 0px) and (max-width: 767px){
     #searchForm > .row > #searchList > #searchbar{
         z-index: 96;
         background-color: #1d232821;

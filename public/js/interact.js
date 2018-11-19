@@ -188,6 +188,8 @@ const pendingInteract = () => {
             renderDetailState4(state,dataGet,interactBoard);
         }
         beforeState=state;
+        let tg = document.getElementById("interactBoard");
+        tg.scrollTop = tg.scrollHeight;
         //show
         // interactBoard.append(avatar);
         // interactBoard.append(orderSummary);
@@ -210,13 +212,14 @@ const pendingInteract = () => {
         });
         interactPipe.on("thread", async function(data) {
             //อัพเดตข้อมูลใหม่และเอาชิ้นส่วนเก่าและตัวโหลดดิ้งออก
-            $('.remove').remove()
-            $('.loader').remove()
+            console.log(data);
             //อัพเดตข้อมูลล่าสุดของ order จาก database
             function updatedata(){dataGet.orderDetail=data;}
             //ตรวจสอบ state ว่า order ได้ดำเนินการถึงขั้นตอนไหน
             function stateCheck() {
                 if(beforeState!=checkstate(dataGet)){
+                    $('.remove').remove()
+                    $('.loader').remove()
                     state = checkstate(dataGet);
                     if(state==1){
                         renderDetailState1(state,dataGet,interactBoard);
@@ -232,6 +235,8 @@ const pendingInteract = () => {
                     }
                     bottomScript()
                     beforeState=state;
+                    let tg = document.getElementById("interactBoard");
+                    tg.scrollTop = tg.scrollHeight;
                 }
             }
             await updatedata();
@@ -258,7 +263,13 @@ const pendingInteract = () => {
             this.remove();
         });
         $('#showBill').on('click', function(){
-            //showbill
+            bill = document.getElementById('bill').content.cloneNode(true);
+            bill.getElementById('username').innerText=user.username;
+            bill.getElementById('billPrice').innerText=dataGet.orderDetail.fee+' บาท';
+            bill.getElementById('totalFee').innerText='รวม '+dataGet.orderDetail.fee+' บาท';
+            let div=document.createElement("div");
+            div.appendChild(bill);
+            showInteractPopup('Invoice',div.innerHTML)
         })
         $("#onArrive").on("click" , function(){
             $('.remove').remove();
@@ -286,19 +297,41 @@ const pendingInteract = () => {
             }
         })
         $('#showQRCode').on('click',function(){
-            showInteractPopup('QR Code','<div style=" margin-left: auto; margin-right: auto; width: 85%;"><img src="https://api.qrserver.com/v1/create-qr-code/?data='+dataGet.orderDetail._id+'&amp;size=200x200" alt="" title="" /></div>');
+            showInteractPopup('QR Code','<div style=" margin-left: auto; margin-right: auto; width: 85%;"><img src="https://api.qrserver.com/v1/create-qr-code/?data='+dataGet.orderDetail._id+','+dataGet.userDetail.eaterDetail.user._id+'&amp;size=200x200" /></div>');
             //interactBoard.append('')
         })
         $('#QRCodeScan').on("click",function(){
-            dataGet.orderDetail.isComplete = true;
-            interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
-            $.post('/updateMenu',dataGet.orderDetail,(data,status)=>{
-                if(status) console.log('update menu complete');
+            showInteractPopup('QR Code Scan','<video id="qr-preview" width="100%"></video>');
+            let scanner = new Instascan.Scanner({video: document.getElementById('qr-preview')});
+            scanner.addListener('scan', (content)=>{
+                scanner.stop();
+                killInteractPopup();
+                $.post('/checkqr', {text: content},(data,status)=>{
+                    if(data=='completed'&&status=='success'){
+                        console.log(data);
+                        dataGet.orderDetail.isComplete = true;
+                        interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
+                        $.post('/updateMenu',dataGet.orderDetail,(data,status)=>{
+                            if(status) console.log('update menu complete');
+                        });
+                        this.remove();
+                    }
+                    else{
+                        alert('Wrong Eater!!!!');
+                        
+                    } 
+                })
             });
-            /*$.get('/dashboard',(data,status)=>{
-                
-            });*/
-            this.remove();
+
+            Instascan.Camera.getCameras().then((cameras)=>{
+                if(cameras.length > 0){
+                    scanner.start(cameras[0]);
+                }else {
+                    console.log('Sorry, no camera found!');
+                }
+            }).catch((e)=>{
+                console.log(e);
+            });
         })
     }
 }
@@ -467,6 +500,10 @@ const checkstate = (Data) => {
 function renderDetailState0(state,dataGet,interactBoard) {
     avatarRender(dataGet.userDetail.eaterDetail,interactBoard);
     renderOrder(dataGet.orderDetail,interactBoard);
+    if(user.role=='Eater'){
+    loaderRender(interactBoard);
+    textRender("กำลังค้นหาผู้จัดส่ง",'color: white; font-weight: bolder; font-size: 1rem;',"text-align: center; margin-top: 50px;",interactBoard,true);
+    }
 }
 
 function renderDetailState1(state,dataGet,interactBoard) {
@@ -562,6 +599,7 @@ const showInteractPopup = (headText, bodyHtml) => {
 const killInteractPopup = () => {
     $('#interactPopup').remove();
     $('.modal-backdrop').hide();
+
 }
 
 // showInteractPopup('Test Popup','<p>This is test text from html</p>');

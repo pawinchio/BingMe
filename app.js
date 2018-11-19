@@ -516,6 +516,22 @@ app.post('/updateMenu',(req,res)=>{
         }
 })
 
+app.post('/checkqr',(req,res)=>{
+        //0: orderID, 1: eaterID
+        const data = req.body.text.split(",");
+        Eater.findById(data[1],(err,eaterData)=>{
+               if(eaterData){
+                       if(eaterData.refPending == data[0]){
+                               OrderPool.findById(data[0], (err, order)=>{
+                                        if(order) res.send('completed');
+                                        else res.status(404).send();
+                               });
+                       }else res.status(404).send();
+                }else res.status(404).send();
+        });
+
+});
+
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });

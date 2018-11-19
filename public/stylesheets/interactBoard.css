@@ -141,3 +141,16 @@
         padding-right: 20%;
     }
 }
+
+#billTable{
+    border: 3px solid #00ff89;
+    border-collapse: collapse;
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#billTable, #billTable> tbody >tr > th, #billTable >tbody>tr> td {
+    border: 3px solid #00ff89;
+    border-collapse: collapse;
+}

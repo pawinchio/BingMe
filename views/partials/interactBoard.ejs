@@ -158,6 +158,27 @@
     </div>
 </template>
 
+<template id='bill'>
+    <div>
+        <p id='username'>Customer_001</p>
+        <p>ชำระเงินให้กับ</p>
+        <p>BingMe</p>
+        <table id="billTable">
+            <tbody>
+            <tr>
+                <th>รายละเอียด</th>
+                <th>ราคา</th>
+            </tr>
+            <tr>
+                <td>ชำระเงินค่าบริการ</td>
+                <td id="billPrice">35 บาท</td>
+            </tr>
+            </tbody>
+        </table>
+        <p id='totalFee' style="margin-top: 10px; text-align: right;">รวม 35 บาท</p>
+    </div>
+</template>
+
 <template id='interact-popup'>
     <div class="modal show" id="interactPopup" role="dialog" onclick='killInteractPopup()'>
         <div class="modal-dialog" role="document">
@@ -172,7 +193,7 @@
                 <i data-feather="x" class="p-1" onclick='killInteractPopup()'></i>
             </div>
             
-            <div class="modal-body" style='padding-top: 1.2rem;'>
+            <div class="modal-body" style='padding-top: 1.2rem; font-family: "Kanit";'>
                 
             </div>
             <div class="modal-footer" style='background:none;'>

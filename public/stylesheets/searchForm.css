@@ -222,3 +222,7 @@
     color: #00ff89;
     border-radius: 10px;
 }
+
+#choiceContainer{
+    height: calc(100% - 65px);
+}

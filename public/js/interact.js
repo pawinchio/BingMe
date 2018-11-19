@@ -89,11 +89,8 @@ const awakeInteractBoard = (source) => {
         async function call() {
                 const a = await getmenuData();
                 const b = await sentData(a);
-        }
-        
+        } 
     });
-
-       
 }
 
 const awakeInteractBoardByHunter = (targetOrder) => {
@@ -147,6 +144,7 @@ const awakeInteractBoardByHunter = (targetOrder) => {
 
 const pendingInteract = () => {
     interactBoard.empty();
+    var beforeState;
     let dataGet;
     let hunter_wait = false;
     let eater_wait = false;
@@ -189,6 +187,7 @@ const pendingInteract = () => {
         if(state==4){
             renderDetailState4(state,dataGet,interactBoard);
         }
+        beforeState=state;
         //show
         // interactBoard.append(avatar);
         // interactBoard.append(orderSummary);
@@ -209,27 +208,35 @@ const pendingInteract = () => {
                 })
             }
         });
-        interactPipe.on("thread", function(data) {
+        interactPipe.on("thread", async function(data) {
             //อัพเดตข้อมูลใหม่และเอาชิ้นส่วนเก่าและตัวโหลดดิ้งออก
             $('.remove').remove()
             $('.loader').remove()
             //อัพเดตข้อมูลล่าสุดของ order จาก database
-            dataGet.orderDetail=data;
+            function updatedata(){dataGet.orderDetail=data;}
             //ตรวจสอบ state ว่า order ได้ดำเนินการถึงขั้นตอนไหน
-            state = checkstate(dataGet);
-            if(state==1){
-                renderDetailState1(state,dataGet,interactBoard);
+            function stateCheck() {
+                if(beforeState!=checkstate(dataGet)){
+                    state = checkstate(dataGet);
+                    if(state==1){
+                        renderDetailState1(state,dataGet,interactBoard);
+                    }
+                    else if(state==2){
+                        renderDetailState2(state,dataGet,interactBoard);
+                    }
+                    else if(state==3){
+                        renderDetailState3(state,dataGet,interactBoard);
+                    }
+                    else if(state==4){
+                        renderDetailState4(state,dataGet,interactBoard);
+                    }
+                    bottomScript()
+                    beforeState=state;
+                }
             }
-            else if(state==2){
-                renderDetailState2(state,dataGet,interactBoard);
-            }
-            else if(state==3){
-                renderDetailState3(state,dataGet,interactBoard);
-            }
-            else if(state==4){
-                renderDetailState4(state,dataGet,interactBoard);
-            }
-            bottomScript()
+            await updatedata();
+            await sleep(200);
+            await stateCheck();
         });
         bottomScript()
     }
@@ -250,6 +257,9 @@ const pendingInteract = () => {
             interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
             this.remove();
         });
+        $('#showBill').on('click', function(){
+            //showbill
+        })
         $("#onArrive").on("click" , function(){
             $('.remove').remove();
             this.remove();
@@ -275,12 +285,18 @@ const pendingInteract = () => {
                 interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
             }
         })
+        $('#showQRCode').on('click',function(){
+            interactBoard.append('<div style=" margin-left: auto; margin-right: auto; width: 22%;;"><img src="https://api.qrserver.com/v1/create-qr-code/?data='+dataGet.orderDetail._id+'&amp;size=200x200" alt="" title="" /></div>')
+        })
         $('#QRCodeScan').on("click",function(){
             dataGet.orderDetail.isComplete = true;
             interactPipe.emit("interractData",dataGet.orderDetail,dataGet.orderDetail._id);
             $.post('/updateMenu',dataGet.orderDetail,(data,status)=>{
                 if(status) console.log('update menu complete');
             });
+            /*$.get('/dashboard',(data,status)=>{
+                
+            });*/
             this.remove();
         })
     }

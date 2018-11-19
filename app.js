@@ -449,11 +449,10 @@ app.post('/fetchFreeOrder', (req,res) => {
                                         }
                                 }
                         }, isPickup: false
-                }).find((error, results) => {
-                        if (error) console.log(error);
-                        res.send(results);
-                });
-        
+        }).find((error, results) => {
+                if (error) console.log(error);
+                res.send(results);
+        }); 
 });
 
 app.get('/fetchUserBySession', (req,res) => {

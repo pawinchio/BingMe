@@ -49,11 +49,13 @@ const waitMapLoaded = (mapObj) => {
         mapLoaded = true;
         $('.loader').hide();
         $('#searchInput').prop('readonly', false);
+        $.getScript('https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js');
     });
     mapObj.addListener('tilesloaded', function () {
         mapLoaded = true;
         $('.loader').hide();
         $('#searchInput').prop('readonly', false);
+        $.getScript('https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js');
     });
 }
 
@@ -118,15 +120,17 @@ var displaySuggestions = function(predictions) {
             // console.log(response);
             var distance = response.rows[0].elements[0].distance.text;
             var duration = response.rows[0].elements[0].duration.text;
-            var pricePerKM = 5;
+            var pricePerKM = 2;
+            var fixedPrice = 25;
+            var calculatedPrice = ((parseFloat(distance,10)*pricePerKM)+fixedPrice).toFixed(2);
             thisChoice.dataset.placeDetail = JSON.stringify({
                 ...prediction,
                 distance: distance,
                 duration: duration,
-                fee: (parseFloat(distance,10)*pricePerKM).toFixed(2)
+                fee: calculatedPrice
             });
             thisDuration.innerText = duration;
-            thisFee.innerText = (parseFloat(distance,10)*pricePerKM).toFixed(2);
+            thisFee.innerText = calculatedPrice;
       });
 
       templ.querySelector('.choice-fee').innerText = '0.00';
@@ -136,7 +140,7 @@ var displaySuggestions = function(predictions) {
             "background":"white",
             "color": "unset",
         });
-        this.style.background="black";
+        this.style.background="#27292d";
         this.style.color="#00FF89";
         $('#searchResult').scrollTo(this);
         showChoiceDetail(this);
@@ -208,7 +212,7 @@ const renderHunterChoice = (data,hunterLat,hunterLng) => {
                 "background":"white",
                 "color": "unset",
             });
-            this.style.background="black";
+            this.style.background="#27292d";
             this.style.color="#00FF89";
 
             //send hunterLat/Long to plotHunterDirection

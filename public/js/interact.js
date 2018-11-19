@@ -548,3 +548,19 @@ function renderDetailState4(state,dataGet,interactBoard){
         textRender("เราได้ส่งค่าบริการให้กับคุณแล้ว",'color: #00ff8; font-size: 1.5rem;',"text-align: center;",interactBoard);
     }
 }
+
+const showInteractPopup = (headText, bodyHtml) => {
+    let interactPopup = document.getElementById('interact-popup').content.cloneNode(true);
+    interactPopup.querySelector('#interact-popup-title').innerText = headText;
+    interactPopup.querySelector('.modal-body').innerHTML = bodyHtml;
+    $('body').append(interactPopup);
+    $('#interactPopup').modal('show');
+    feather.replace({'min-width': '40px','width': '40px','height': '40px','stroke-width': '3', 'padding-right': '0!important'});
+}
+
+const killInteractPopup = () => {
+    $('#interactPopup').remove();
+    $('.modal-backdrop').hide();
+}
+
+// showInteractPopup('Test Popup','<p>This is test text from html</p>');

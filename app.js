@@ -242,7 +242,8 @@ app.post('/createOrder', (req,res) => {
                                                         req.body.storeData.geometry.location.lng,
                                                         req.body.storeData.geometry.location.lat
                                                 ]
-                                        }
+                                        },
+                                        address: req.body.storeData.vicinity
                                 }
                                 StoreHistory.create(storeData,(err,store)=>{
                                         if(err) console.log(err)
@@ -475,6 +476,16 @@ app.get('/fetchUserBySession', (req,res) => {
                                 })
                         })
                 }
+        }
+});
+
+app.post('/getStoreDataByStoreID',(req,res)=>{
+        if(req.body.storeId!=null){
+                StoreHistory.findById(req.body.storeId,(err,storeData)=>{
+                        if(err)console.log(err);
+                        console.log(storeData);
+                        res.send(storeData);
+                });
         }
 });
 

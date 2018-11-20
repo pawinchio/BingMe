@@ -16,7 +16,8 @@ var storeHistorySchema = new mongoose.Schema({
             enum: ['Point'] 
         },
         coordinates: [Number]
-    }
+    },
+    address : String
 });
 storeHistorySchema.index({locationStore: "2dsphere" });
 module.exports = mongoose.model("storeHistory", storeHistorySchema);

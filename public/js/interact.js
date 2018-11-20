@@ -202,6 +202,7 @@ const pendingInteract = () => {
             dataGet = data;
             // console.log(dataGet);
         })
+        interactBoard.append('<div style="margin-bottom: 150px;"></div>');
         loaderRender(interactBoard)
     }
     
@@ -240,6 +241,7 @@ const pendingInteract = () => {
         interactPipe = io('/interact');
         interactPipe.on('connect', function(data){
             interactPipe.emit("connectRoom", dataGet.orderDetail._id);
+            orderId=dataGet.orderDetail._id;
         })
         interactPipe.on('ping', function(data){
             if((checkstate(dataGet)==0)&&(user.role=="Eater")){
@@ -294,6 +296,14 @@ const pendingInteract = () => {
     }
 
     function bottomScript(){
+        $('.showStoreData').on("click", function(){
+            $.post('/getStoreDataByStoreID',{storeId:dataGet.orderDetail.storeId},(storeData,status)=>{
+                if(storeData&&status=="success"){
+                    console.log(storeData);
+                    showInteractPopup('Store Details','<div style="font-size: 1rem;"><p>Name : '+storeData.storeName+'</p><p>Address : '+storeData.address+'</p></div>');
+                }
+            })
+        })
         //ฟังก์ชั่นในการกดปุ่มต่างๆ
         $("#payFee").on("click" , function(){
             //console.log("pay fee");
@@ -325,7 +335,7 @@ const pendingInteract = () => {
                 dataGet.orderDetail.menu[i].price = Number(confirmPrice[i].children[2].children[0].value);
                 if(confirmPrice[i].children[2].children[0].value == "") checkNull = true;
             }
-            console.log(dataGet.orderDetail.menu);
+            //console.log(dataGet.orderDetail.menu);
             if(checkNull) alert("Please input all menu price!!!");
             else{
                 $('div.container')[1].remove();
@@ -358,10 +368,10 @@ const pendingInteract = () => {
                         dataGet.userDetail.eaterDetail.user.refPending = null;
                         console.log(dataGet);
                         $.post('/updateUser',dataGet.userDetail.hunterDetail,(data,status)=>{
-                            if(status="success") console.log("Update Success");
+                            if(status=="success") console.log("Update Success");
                         });
                         $.post('/updateUser',dataGet.userDetail.eaterDetail,(data,status)=>{
-                            if(status="success") console.log("Update Success");
+                            if(status=="success") console.log("Update Success");
                         });
                         this.remove();
                     }

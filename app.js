@@ -328,6 +328,40 @@ app.post('/fetchFreeOrder', (req,res) => {
         
 });
 
+app.post('/eaterDataForm', (req,res) => {
+        //eaterdata
+        let input = req.body;
+        console.log(req.body)
+        console.log("pass")
+                var newEater = new Eater({
+                        firstName: input.firstname,
+                        lastName: input.lastname,
+                        phoneNumber: input.phone,
+                        gender: input.gender,
+                        birthday: input.birthDay,
+                        address : input.ADDRESS,
+                        email : input.email,
+                        picture : '/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
+                        c_dCardNumber : input.Cardnumber,
+                        holderName : input.CardName,
+                        expiration_m : input.expireMonth,
+                        expiration_y : input.expireYear,
+                        cvv : input.CVV,
+                        billingAddress: input.BillingAddress,
+                        refPending : null,
+                        costTotal : 0,
+                        discount : 100
+
+                });
+                console.log(newEater)
+                newEater.save().catch(err => {
+                        console.log('Code Saving Failed'+err);
+                
+                });
+                console.log("save!!!!")
+                //res.redirect("/")      
+});
+
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });
@@ -349,100 +383,69 @@ interact.on('connection', function(client){
 });
 
 
-app.post('/eaterDataForm', (req,res) => {
-        //eaterdata
-        let input = req.body;
-        console.log("pass")
-                var newEater = new Eater({
-                        firstName: input.firstname,
-                        lastName: input.lastname,
-                        phoneNumber: input.phone,
-                        gender: input.gender,
-                        birthday: input.birthDay,
-                        address : input.ADDRESS,
-                        email : input.email,
-                        //picture : input.imagename,
-                        c_dCardNumber : input.Cardnumber,
-                        holderName : input.CardName,
-                        expiration_m : input.expireMonth,
-                        expiration_y : input.expireYear,
-                        cvv : input.CVV,
-                        billingAddress: input.BillingAddress,
-                        refPending : null,
-                        costTotal : 0,
-                        discount : 100
 
-                });
-                console.log(newEater)
-                newEater.save().catch(err => {
-                        console.log('Code Saving Failed'+err);
-                
-                });
-                console.log("save!!!!")
-                //res.redirect("/")      
-});
 
 // ajax with jquery
 
+
 // ------------------------------------------------------
-// Set The Storage Engine
-const storage = multer.diskStorage({
-        destination: './public/uploads/',
-        filename: function(req, file, cb){
-          cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-        }
-});
-      
-// Init Upload
-const upload = multer({
-        storage: storage,
-        limits:{fileSize: 100000000000000},
-        fileFilter: function(req, file, cb){
-                checkFileType(file, cb);
-        }
-}).single('myImage');
-      
-      // Check File Type
-function checkFileType(file, cb){
-        // Allowed ext
-        const filetypes = /jpeg|jpg|png|gif/;
-        // Check ext
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-        // Check mime
-        const mimetype = filetypes.test(file.mimetype);
-
-        if(mimetype && extname){
-                return cb(null,true);
-        } else {
-                cb('Error: Images Only!');
-        }
-}
-
 const fileUpload = require('express-fileupload');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+// const path = require('path');
 app.use(fileUpload());
+app.use(express.static("userSrc"));
 
 app.post('/upload', (req, res) => {
-        uploadHandler(req,res);
+        uploadHandler(req,res, () =>{
+                res.send('/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg');
+        });
+        //อ่านจาก database
+        
+        
 });
       
 //-----------------------------------------------------------
-const uploadHandler = (req, res) => {
+const uploadHandler = (req, res, callback) => {
         if(req.files){
                 let fileUploaded = req.files.fileUpload;
-                let fileName = req.query.fileName;
-                let filePath = req.query.filePath;
-                console.log(req.query);
-                console.log('Files named '+fileName+' was uploaded!')
-                fileUploaded.mv(filePath+fileName, (err) =>{
-                        if(err) {
-                                console.log("Can't save file recieved");
-                                res.status(500).send(err);
+                let fileName = req.user._id+'.jpg';
+                console.log(req.user._id.toString());
+                let filePath = path.join('userSrc','photos',req.user._id.toString(),'avatar');
+                console.log(filePath);
+                console.log('Files named '+fileName+' was uploaded! to ->'+filePath);
+                fs.mkdir(path.join(__dirname,filePath), {recursive:true}, (err) => {
+                        if(!err){
+                                fileUploaded.mv(path.join(filePath,fileName), (err) =>{
+                                        if(err) {
+                                                console.log("Can't save file recieved");
+                                                res.status(500).send(err);
+                                        }
+                                        console.log("save!!!!")
+                                        callback();
+                                });
                         }
                 });
+                // if(!fs.existsSync(path.join(__dirname,filePath,' '))){
+                //         fs.mkdirSync(path.join(__dirname,filePath,' '));
+                // }
+                // fileUploaded.mv(filePath+fileName, (err) =>{
+                //         if(err) {
+                //                 console.log("Can't save file recieved");
+                //                 res.status(500).send(err);
+                //         }
+                //         console.log("save!!!!")
+                //         callback();
+                // });
+
         }
-        res.send('Okay');
-        // ส่งข้อมูลกลับ
-}
+        // res.send(req.files);
+        // เก็บลงDatabase
+
+} 
+        
+        
+
 //-----------------------------------------------------------
 
 server.listen(5500, () => console.log('Server run on port 5500'));

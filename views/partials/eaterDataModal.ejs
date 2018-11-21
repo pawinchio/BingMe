@@ -1,142 +1,115 @@
-<form action="/eaterDataForm" method="post" enctype="multipart/form-data">
-    <div class="modal-body" style="color: darkgray;font-family: 'Gotham Rounded Bold';font-weight: 100;">
-        <!-- <div id="header-form"><p style="text-align: center;font-size: 200%;background: #00ff89;
-            border-radius: 15px 15px 0 0;padding: 6px;border-bottom: 0;">Eater Data</p></div> -->
+    <div class="modal-body" style="color: darkgray;font-family: 'Gotham Rounded Bold';font-weight: 100;padding: 0;">
         <div class="form-group">
-	         <div class="row">
+	        <div class="row">
                 <div class="col-lg-4 col-sm-12">
-                          <!-- ________________________________________________________________________________________ -->
-                    <!-- <input name="myImage" type="file" id="img"> -->
                     <form id="photoForm" action="/upload" method="POST" enctype="multipart/form-data">
-                        <div class="" style="width: 100%">
-                            <div class="file-path-wrapper">
-                                    <input class="file-path validate Eaterpic" type="text">
+                        <div class="form-section section-1" style="width: 100%;text-align: center">
+                            <div class="file-path-wrapper" style='text-align: center;'>
+                                <img class="file-path validate eaterpic"></img>
                             </div>
                     
                             <div class="btn btn-defaut"id="">
                                 <input id="photoInput" name="myImage" type="file" style='width:100%;margin: 10px auto;'>
                             </div>
                             
-                            <div  class="btn btn-success" id="sendPhoto" style="margin: 0 8%;">Submit</div>
-                            <div  class="btn btn-danger">delete</div>
+                            <div  class="btn btn-primary" id="sendPhoto" style="margin: 0 8%;">Submit</div>
                         </div>  
                     </form>
-                    <!-- _________________________________________________________________________________________________ -->
-                    <!--input cerdit-card  -->
-                    <p>
-                    <label for="CREDIT-NUMBER" style="font-weight: bold;color: #00FF89">CREDIT/DEBIT CARD NUMBER</label>
-                    <input  type="number"  class="form-control eaterInfo" name="Cardnumber" placeholder="card must have  16  number"required >                    
-                    <!-- card must have  16  number --></p>
-                    
-                    <label style="font-weight: bold;color: #00FF89">HOLDER NAME</label>
-                    <input  type="text" class="form-control eaterInfo" name="CardName" placeholder="CardName" required>
-                            <div class="row" style="border-bottom: 1px solid lightgray;">
-                                <div class="column" style="padding:8px">
-                                        <p><label style="font-weight: bold;color: #00FF89">EXPIRATION</label></p>
-                                        <p><select name="expireMonth"required>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                            </select>
-                                            <select name="expireYear"required>
-                                                <option value="2025">2025</option>
-                                                <option value="2024">2024</option>
-                                                <option value="2023">2023</option>
-                                                <option value="2022">2022</option>
-                                                <option value="2021">2021</option>
-                                                <option value="2020">2020</option>
-                                                <option value="2019">2019</option>
-                                                <option value="2018">2018</option>
-                                            </select></p>
+                    <div class="form-section section-2">
+                        <form action="/eaterDataForm" method="post" enctype="multipart/form-data">
+                        <div class='form-group'>
+                            <label for="eater-card">Credit / Debit Card Number</label>
+                            <input type="text" class="form-control" id="eater-card" placeholder="Your Card Number" name="Cardnumber">
+                        </div>
+                        <div class='form-group'>
+                                <label for="eater-card-holder">Holder Name</label>
+                                <input type="text" class="form-control" id="eater-card-holder" placeholder="Your Card Holder Name" name="CardName">
+                        </div>
+                        <div class="form-group">
+                                <label for="expireDate">Expiration</label>
+                                <div class='row'>
+                                    <select id="expireDate" class="form-control col-md-5" name="expireMonth">
+                                    <option selected>Month</option>
+                                    <%for(let i=1;i<=12;i++){%>
+                                    <option value=<%-i%>><%- i%></option>
+                                    <%}%>
+                                    </select>
+                                    <select class="form-control col-md-7" name="expireYear">
+                                            <option selected>Year</option>
+                                            <%for(let i=2018;i<=2030;i++){%>
+                                            <option value=<%-i%>><%- i%></option>
+                                            <%}%>
+                                    </select>
                                 </div>
-                                <div class="column"style="padding:8px" >
-                                            <p><label style="font-weight: bold;color: #00FF89"> CVV </label>
-                                                <input  type="number" class="form-control eaterInfo" name="CVV" min="000" max="999" placeholder="cvv" required></p>
-                                                <!-- edit number of cvv to under 999 -->
+                                <!-- <label for="expireDate">CVV</label>  -->
+                        </div>
+                    </div>
+                    <div class="form-section section-3">
+                            <div class='form-group'>
+                                    <label for="eater-billing">Billing Address</label>
+                                    <textarea class="form-control" id="eater-billing" placeholder="Your Billing Address" name="BillingAddress"></textarea>
+                            </div>
+                    </div>
+                </div> <!-- End of left col -->
+
+                <div class="col-lg-8 col-sm-12">
+                    <div class="form-section section-4">
+                        <div class="form-group" style="padding: 0 15px;">
+                            <label for="firstname">Fullname</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                        <input type="text" id='firstname' class="form-control" placeholder="First name" name="firstname">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" placeholder="Last name" name="lastname">
                                 </div>
                             </div>
-                            <!-- css under line -->
-                            
-                            
-                            <div class="row" class="billing">
-                                <div class="column">
-                                        <label style="font-weight: bold;color: #00FF89" > BILLING ADDRESS         </label>
+                        </div>
+                        <div class='form-group' style="padding: 0 15px;">
+                                <label for="eater-phone">Phone Number</label>
+                                <input style="width:50%" type="text" class="form-control" id="eater-phone" placeholder="e.g.0123456789" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <div class='row'>
+                                <div class="col-md-4">
+                                    <label style="color:#00ff89; margin-top:10px;" for="gender">Gender</label>
+                                    <select class="form-control" id="gender"name="gender">
+                                        <option selected>Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
                                 </div>
-                                <div class="column">
-                                    <input type="checkbox" name="checkbox" value="checkbox"> SAME AS ADDRESS<br>
+
+                                <div class="col-md-8">
+                                    <label style="color:#00ff89; margin-top:10px;" for="birth">Birthday</label>
+                                    <input type="date" name="birthDay" id="birth" class="form-control" name="birthDay">
                                 </div>
-                                    <!-- check  -->
-                                    <!-- <input   class="form-control box"  name="BILLING-ADDRESS" placeholder="BILLING-ADDRESS" required> -->
-                                    <textarea class="form-control box"  name="BillingAddress" placeholder="BILLING-ADDRESS" required></textarea>
                             </div>
-                            
-              </div> 
-               <!--___________________________________________________________________________________________________________________________________  -->
-                    <div class="col-lg-8 col-sm-12">
-                                <div class="row">
-                                    <div class="column">
-                                        <label style="font-weight: bold;color: #00FF89">FIRSTNAME</label>
-                                        <input  type="text" class="form-control eaterInfo" name="firstname" placeholder="Firstname" required>
-                                    </div>
-                                    <div class="column">
-                                        <label style="font-weight: bold;color: #00FF89">LASTNAME</label>
-                                        <input  type="text"class="form-control eaterInfo" name="lastname" placeholder="Lastname" required>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label style="font-weight: bold;color: #00FF89">PHONE</label>
-                                    <input   class="form-control" type="number"  id="eater-phone" name="phone" placeholder="Phone"  required>
-                                    <!-- phone must be 10 number -->
-                                </div>
-                                <div class="row">
-                                    <div class="column">
-                                        <label style="font-weight: bold;color: #00FF89;">GENDER</label>
-                                        <input   class="form-control eaterInfo" name="gender" name="gender" placeholder="Gender"required>
-                                    </div>
-                                    <div class="column">
-                                        <p><label style="font-weight: bold;color: #00FF89">BIRTHDAY</label></p>
-                                        <input type="date"  name="birthDay" value="2018-07-22"  min="1980-01-01" max="2018-12-31"required>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 10px">
-                                <label style="font-weight: bold;color: #00FF89">ADDRESS</label>
-                                
-                                <!-- <input   class="form-control box"  name="ADDRESS" placeholder="Address" required> -->
-                                <textarea class="form-control box"  name="ADDRESS" placeholder="Address" required></textarea>
-                                 <!-- css under line -->
-                                </div>
-                                <div id="mail-box">
-                                            <label for="emailToVerify"style="color: #00FF89">Email address</label>
-                                            <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
-                                            <label style="font-weight: bold;color: #00FF89"> PASSWORD</label>
-                                            <input  type="password" name="password" min="6" required class="form-control eaterPassword"  required> 
-                                </div>
-                                <div>
-                                    <button class="modal-footer" type="submit" id="uData-foot" >
-                                            <div><i data-feather="log-in" class="login-icon"></i>  SUBMIT PROFILE </div>
-                                        </button>
-                                </div>
+                        </div>
+                        <div class='form-group'>
+                                <label for="eater-address">Address</label>
+                                <textarea class="form-control" id="eater-address" style="height: 120px;" placeholder="Your Address" name="ADDRESS"></textarea>
+                        </div>
                     </div>
 
-		       
+                    <div class="form-section section-5">
+                            <div class="form-group">
+                                <label for="eater-email">Email address</label>
+                                <input type="email" class="form-control" id="eater-email" aria-describedby="emailHelp" placeholder="Enter email">
+                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="eater-password">Password</label>
+                                <input type="password" class="form-control" id="eater-password" placeholder="Password">
+                            </div>
 
+                            <button type="submit" class="btn btn-default" style="width: 100%;margin-top: 50px;">Submit</button>
+                    </div>
+                </div>
 	        </div>
         </div>
-    
-
-
-
-    </div>
-    
+    </div> 
 </form>
 
 
@@ -162,9 +135,16 @@
                 async: false,
                 processData: false,
                 contentType: false,
-                dataType: 'json',
                 data: formData,
-                success: callback
+                success: function(data, status){
+                    callback(data);
+                },
+                error: function(err){
+                    console.log(err);
+                },
+                complete: function(){
+                    console.log('complete');
+                }
             });
         });
     }
@@ -180,7 +160,8 @@
 
     uploadFile(myRequest, (data) => {
         // fuunction รับ data กลับ
-        console.log(data); //print ข้อความ string ที่ server ส่งกลับมาถ้าสำเร็จ
+        $('.eaterpic').attr('src','');
+        $('.eaterpic').attr('src','http://'+ $(location).attr('host') + data);
     });
 
 </script>

@@ -21,6 +21,7 @@ function renderMap(position) {
         document.getElementById('map'), {
             zoom: 15, 
             center: myinitialLocation,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
             gestureHandling: 'greedy',
             mapTypeControl: false,
             fullscreenControl: false,

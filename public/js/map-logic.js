@@ -28,6 +28,7 @@ function renderMap(position) {
     });
     
     // waitMapLoaded(map);
+    mapLoaded = true;
     $('.loader').hide();
     $('#searchInput').prop('readonly', false);
 

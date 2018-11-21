@@ -46,12 +46,10 @@ const awakeInteractBoard = (source) => {
 
                 // if form send create new order in db from data that currently got
                 $("#sendMenu").on("click",()=>{
-                    var loader = $('#loader').html();
-                    interactBoard.append(loader);
-
                     let eaterId = user._id;
                     let menuList = jQuery.makeArray($('#showFood').children());
                     let menuArray = [];
+                    
                     call();
 
                     function getmenuData() {
@@ -68,27 +66,32 @@ const awakeInteractBoard = (source) => {
                     }
                     
                     function sentData() {
-                        if (navigator.geolocation) {
-                            navigator.geolocation.getCurrentPosition(position => {
-                                let eaterLocation = {
-                                    Latitude: position.coords.latitude,
-                                    Longitude: position.coords.longitude
-                                };
-                                console.log(menuArray);
-                                $.post('/createOrder',{
-                                    eaterId: eaterId,
-                                    storeData: JSON.parse(placeData),
-                                    menu: menuArray,
-                                    locationEater: eaterLocation
-                                }, (data, status) => {
-                                    console.log(data);
-                                    if(status == 'success'){
-                                        // call PendingInteract 
-                                        pendingInteract(user);
-                                    }
+                        if(menuArray.length!=0){
+                            var loader = $('#loader').html();
+                            interactBoard.append(loader);
+                            if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(position => {
+                                    let eaterLocation = {
+                                        Latitude: position.coords.latitude,
+                                        Longitude: position.coords.longitude
+                                    };
+                                    console.log(menuArray);
+                                    $.post('/createOrder',{
+                                        eaterId: eaterId,
+                                        storeData: JSON.parse(placeData),
+                                        menu: menuArray,
+                                        locationEater: eaterLocation
+                                    }, (data, status) => {
+                                        console.log(data);
+                                        if(status == 'success'){
+                                            // call PendingInteract 
+                                            pendingInteract(user);
+                                        }
+                                    });
                                 });
-                            });
+                            }
                         }
+                        else alert("Please add food menu");
                     }
 
                     async function call() {

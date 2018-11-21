@@ -1,8 +1,7 @@
 function initMap (){
-    navigator.geolocation.getCurrentPosition(renderMap);
     if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(renderMap);
-    }
+    }else alert('This browser is not support please use on Android or PC');
 }
 
 var mapLoaded = false;

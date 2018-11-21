@@ -1,8 +1,6 @@
 const   express = require('express'),
         app = express(),
         url = require('url'),
-        server = require('http').createServer(app),
-        io = require('socket.io').listen(server),
         mongoose = require('mongoose'),
         ejs = require('ejs'),
         passport = require('passport'),
@@ -10,7 +8,17 @@ const   express = require('express'),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
-        uuid = require('uuid/v1');
+        crypto = require('crypto'),
+        uuid = require('uuid/v1'),
+        https = require('https'),
+        fs = require('fs');
+
+var options = {
+        key: fs.readFileSync('privatekey.pem'),
+        cert: fs.readFileSync('certificate.pem')
+};
+let server = https.createServer(options, app);
+const   io = require('socket.io').listen(server);
 
 var     Eater  = require("./models/eater"),
         Hunter  = require("./models/hunter"),

@@ -27,7 +27,9 @@ function renderMap(position) {
             zoomControl: false
     });
     
-    waitMapLoaded(map);
+    // waitMapLoaded(map);
+    $('.loader').hide();
+    $('#searchInput').prop('readonly', false);
 
     map.panBy(0, 150)
     var marker = new google.maps.Marker({

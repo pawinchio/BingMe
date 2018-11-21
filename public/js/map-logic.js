@@ -1,4 +1,5 @@
 function initMap (){
+
     if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(renderMap);
     }else alert('This browser is not support please use on Android or PC');
@@ -27,7 +28,7 @@ function renderMap(position) {
             zoomControl: false
     });
     
-    // waitMapLoaded(map);
+    waitMapLoaded(map);
 
     map.panBy(0, 150)
     var marker = new google.maps.Marker({

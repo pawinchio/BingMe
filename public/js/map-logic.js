@@ -11,7 +11,6 @@ var map = null;
 var markerArray = [];
 // Initialize and add the map
 function renderMap(position) {
-    alert('Map rendering');
     // console.log(position);
     myinitialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     
@@ -30,7 +29,6 @@ function renderMap(position) {
     });
     
     waitMapLoaded(map);
-    alert('Map loaded');
 
     map.panBy(0, 150)
     var marker = new google.maps.Marker({

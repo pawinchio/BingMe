@@ -48,8 +48,7 @@ const awakeInteractBoard = (source) => {
                 $("#sendMenu").on("click",()=>{
                     let eaterId = user._id;
                     let menuList = jQuery.makeArray($('#showFood').children());
-                    let menuArray = [];
-                    
+                    let menuArray = [];                   
                     call();
 
                     function getmenuData() {

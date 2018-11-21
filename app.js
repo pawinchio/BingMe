@@ -579,4 +579,4 @@ interact.on('connection', function(client){
         
 });
 
-server.listen(5500, () => console.log('Server run on port 5500'));
+server.listen(process.env.PORT || 5500, () => console.log('Server run on port 5500'));

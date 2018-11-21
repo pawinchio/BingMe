@@ -561,6 +561,7 @@ interact.on('connection', function(client){
                         OrderPool.findByIdAndUpdate(Data._id,Data,(err)=>{
                                 if(err) console.log(err);
                                 else if(temp){
+                                        console.log(Data);
                                         client.emit("thread", Data);
                                 }
                                 else{

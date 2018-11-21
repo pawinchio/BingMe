@@ -523,6 +523,7 @@ app.post('/updateMenu',(req,res)=>{
                         menuData[0].priceAvg = (menuData[0].priceAvg+Number(menu.price))/menuData[0].COPAvg;
                         Menu.findByIdAndUpdate(menuData[0]._id,menuData[0],(err,menu)=>{
                                 if(err) console.log(err);
+                                res.end();
                         })              
                 });
         }

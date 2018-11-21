@@ -398,6 +398,7 @@ const pendingInteract = () => {
 
 const killInteractBoard = () => {
     let interactBoard = $('#interactBoard');
+    $('.loader').hide();
     interactBoard.css({
         "bottom":"100vh"
     });
@@ -657,8 +658,10 @@ const showInteractPopup = (headText, bodyHtml) => {
 }
 
 const killInteractPopup = () => {
+    $('#interactPopup').empty();
     $('#interactPopup').remove();
     $('.modal-backdrop').hide();
+    $('body').removeClass()
 
 }
 

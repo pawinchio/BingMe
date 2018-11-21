@@ -1,5 +1,4 @@
 function initMap (){
-    alert('Map invoked');
     if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(renderMap);
     }else alert('This browser is not support please use on Android or PC');

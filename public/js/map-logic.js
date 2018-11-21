@@ -29,7 +29,7 @@ function renderMap(position) {
             zoomControl: false
     });
     
-    // waitMapLoaded(map);
+    waitMapLoaded(map);
 
     map.panBy(0, 150)
     var marker = new google.maps.Marker({
@@ -38,13 +38,6 @@ function renderMap(position) {
         title: "You're Here"
     });
    markerArray.push(marker);
-
-   google.maps.event.addListener( map, 'idle', function() {
-        mapLoaded = true;
-        $('.loader').hide();
-        $('#searchInput').prop('readonly', false);
-        $.getScript('https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js');
-    });
 
 }
 

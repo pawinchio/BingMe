@@ -1,4 +1,5 @@
 function initMap (){
+    navigator.permissions.query({name:'geolocation'});
     if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(renderMap);
     }else {

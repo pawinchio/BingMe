@@ -28,9 +28,6 @@ function renderMap(position) {
     });
     
     // waitMapLoaded(map);
-    mapLoaded = true;
-    $('.loader').hide();
-    $('#searchInput').prop('readonly', false);
 
     map.panBy(0, 150)
     var marker = new google.maps.Marker({

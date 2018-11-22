@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><%-error.errorTopic%></h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" onclick="refresh()">&times;</button>
             </div>
             <div class="modal-body">
                 <p style="text-align: center;"><%-error.errorDesc%></p>
@@ -17,4 +17,8 @@
     $(document).ready(function(){
         $('#errormodal').modal('show');
     });
+
+    const refresh = () => {
+        window.location.replace($(location).attr('host'));
+    } 
 </script>

@@ -134,7 +134,7 @@ body{
 }
 .menubar > #logo{
     color: #00FF89;
-    -webkit-text-stroke: 1px rgba(0,0,0,0.17);
+    -webkit-text-stroke: 1px #49505736;
 }
 
 .menubar > .menu-element{

@@ -24,7 +24,10 @@ $(document).ready(function () {
     //Search form logic
     $('#searchDismiss').on('click', function () {
         // restore backward page scrolling
-        $('html, body').on('scroll touchmove mousewheel');
+        $('html, body').css({
+            overflow: 'auto',
+            height: 'auto'
+        });
         // console.log("click");
         $('#searchForm').removeClass('active');
         // hide dismiss button
@@ -56,7 +59,10 @@ $(document).ready(function () {
     });
     $('#searchCollapse.allow').on('click', function () {
         // prevent backward page from scrolling
-        $('html, body').off('scroll touchmove mousewheel');
+        $('html, body').css({
+            overflow: 'hidden',
+            height: '100%'
+        });
         //lock input and show loading bar
         if(!mapLoaded){    
             $('.loader').show();

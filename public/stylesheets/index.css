@@ -40,11 +40,6 @@
     border: 1.5px solid #343a40;
 }
 
-.scrollcard > .usercard:hover{
-    background: rgba(0, 123, 255, 0.03);
-    border: 1.5px solid rgba(0,123,255,.25);
-}
-
 .scrollcard > .usercard > table{
     text-align: left;
     width: 56%;

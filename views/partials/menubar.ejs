@@ -3,7 +3,7 @@
     <div class="menu-element" id="logo">bingme</div>
     <div class="menu-element">
         <%if(user){%>
-            <%if(user.userDataId==!null || user.isAcitivated==false){%>
+            <%if(user.userDataId==!null || user.isActivated==false){%>
                 <i id="searchCollapse" class="menuicon active not-allow" data-feather="search"></i>
             <%}else if(user.role=='Hunter'){%>
                 <i id="searchCollapse" class="menuicon active allow" data-feather="crosshair"></i>

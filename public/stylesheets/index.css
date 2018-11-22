@@ -35,6 +35,7 @@
 }
 
 .scrollcard > .usercard{
+    vertical-align: top;
     width: 200px;
     border: 1.5px solid #343a40;
 }
@@ -71,6 +72,7 @@
 }
 
 .scrollcard > .statcard{
+    vertical-align: top;
     width: 120px;
     border-radius: 15px;
     background: #00ff894f;
@@ -93,6 +95,7 @@
 }
 
 .scrollcard > .pendingcard{
+    vertical-align: top;
     border-radius: 15px;
     border: 1.5px solid #d40023;
     background: #d400235c;

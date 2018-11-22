@@ -1,7 +1,6 @@
 let user = undefined;
 
 $(document).ready(function () {
-    $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyBgGHLirqKKf-dcCtflezxhJRJDy7FsXZM&libraries=places&callback=initMap');
     killInteractBoard();
     $('#dismiss, .overlay').on('click', function () {
         // hide sidebar
@@ -42,7 +41,7 @@ $(document).ready(function () {
             directionsDisplay = null;
         }
 
-        initMap();
+        // initMap();
 
         $('#choiceContainer').removeClass('up');
         $('#upArrow').show();

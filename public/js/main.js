@@ -23,7 +23,8 @@ $(document).ready(function () {
 
     //Search form logic
     $('#searchDismiss').on('click', function () {
-        // hide sidebar
+        // restore backward page scrolling
+        $('html, body').on('scroll touchmove mousewheel');
         // console.log("click");
         $('#searchForm').removeClass('active');
         // hide dismiss button
@@ -41,8 +42,6 @@ $(document).ready(function () {
             directionsDisplay = null;
         }
 
-        // initMap();
-
         $('#choiceContainer').removeClass('up');
         $('#upArrow').show();
         $('#downArrow').hide();
@@ -56,6 +55,8 @@ $(document).ready(function () {
         alert('Please login before using Bingme');
     });
     $('#searchCollapse.allow').on('click', function () {
+        // prevent backward page from scrolling
+        $('html, body').off('scroll touchmove mousewheel');
         //lock input and show loading bar
         if(!mapLoaded){    
             $('.loader').show();

@@ -328,40 +328,6 @@ app.post('/fetchFreeOrder', (req,res) => {
         
 });
 
-app.post('/eaterDataForm', (req,res) => {
-        //eaterdata
-        let input = req.body;
-        console.log(req.body)
-        console.log("pass")
-                var newEater = new Eater({
-                        firstName: input.firstname,
-                        lastName: input.lastname,
-                        phoneNumber: input.phone,
-                        gender: input.gender,
-                        birthday: input.birthDay,
-                        address : input.ADDRESS,
-                        email : input.email,
-                        picture : '/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
-                        c_dCardNumber : input.Cardnumber,
-                        holderName : input.CardName,
-                        expiration_m : input.expireMonth,
-                        expiration_y : input.expireYear,
-                        cvv : input.CVV,
-                        billingAddress: input.BillingAddress,
-                        refPending : null,
-                        costTotal : 0,
-                        discount : 100
-
-                });
-                console.log(newEater)
-                newEater.save().catch(err => {
-                        console.log('Code Saving Failed'+err);
-                
-                });
-                console.log("save!!!!")
-                //res.redirect("/")      
-});
-
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });
@@ -383,7 +349,56 @@ interact.on('connection', function(client){
 });
 
 
+app.post('/eaterDataForm', (req,res) => {
+        //eaterdata
+        var MongoClient = require('mongodb').MongoClient;
+        let input = req.body;
+        // console.log(req.body)
+        console.log("pass")
+                var newEater = new Eater({
+                        firstName: input.firstname,
+                        lastName: input.lastname,
+                        phoneNumber: input.phone,
+                        gender: input.gender,
+                        birthday: input.birthDay,
+                        address : input.ADDRESS,
+                        email : input.email,
+                        picture : '/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
+                        c_dCardNumber : input.Cardnumber,
+                        holderName : input.CardName,
+                        expiration_m : input.expireMonth,
+                        expiration_y : input.expireYear,
+                        cvv : input.CVV,
+                        billingAddress: input.BillingAddress,
+                        refPending : null,
+                        costTotal : 0,
+                        discount : 100
+                });
+                // console.log(newEater);
+                // console.log(req.user._id);
+                newEater.save().catch(err => {
+                        console.log('Code Saving Failed'+err);
+                        
+                });
+                console.log("save!!!!");
+                // collection.update({_id:"req.user._id"}, {userDataId:"res.user._id"});
+                // MongoClient.connect(url, function(err, db) {
+                // if (err) throw err;
+                // var dbo = db.db("mydb");
+                // var myquery = { _id:req.user._id };
+                // var newvalues = { $set: { userDataId: res.user._id } };
+                // dbo.collection("customers").updateOne(myquery, newvalues, function(err, res) {
+                //         if (err) throw err;
+                //         console.log("1 document updated");
+                //         db.close();
+                //         });
+                // });
+                
+                // req.user._id   find in userauth update userdata_id
+                
+                   
 
+});
 
 // ajax with jquery
 

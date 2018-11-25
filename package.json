@@ -17,14 +17,8 @@
     "express-fileupload": "^1.0.0",
     "express-session": "^1.15.6",
     "feather-icons": "^4.7.3",
-<<<<<<< HEAD
     "fs": "0.0.1-security",
     "mkdirp": "^0.5.1",
-=======
-    "fontawesome-markers": "^4.6.1",
-    "instascan": "^1.0.0",
-    "markerwithlabel": "^2.0.2",
->>>>>>> 7cbb30da424d4e4b7ac3fb57b16b5c0df5e5e455
     "mongoose": "^5.3.2",
     "multer": "^1.4.1",
     "nodemailer": "^4.6.8",

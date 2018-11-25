@@ -21,14 +21,16 @@ var     Eater  = require("./models/eater"),
         OrderPool  = require("./models/orderPool"),
         StoreHistory  = require("./models/storeHistory"),
         UserAuth = require('./models/userAuth'),
+        methodOverride = require("method-Override"),
         UserActivation = require('./models/userActivation');
+
 
 const   tools = require('./calculations.js');
 
 mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db',{ useNewUrlParser: true } );
 app.set('view engine','ejs');
 // app.use(expressSanitizer());
-//app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(require('express-session')({
@@ -615,23 +617,25 @@ app.post('/eaterDataForm', (req,res) => {
                         
                 });
                 console.log("save!!!!");
-                
-                // collection.update({_id:"req.user._id"}, {userDataId:"res.user._id"});
-                // MongoClient.connect(url, function(err, db) {
-                // if (err) throw err;
-                // var dbo = db.db("mydb");
-                // var myquery = { _id:req.user._id };
-                // var newvalues = { $set: { userDataId: res.user._id } };
-                // dbo.collection("customers").updateOne(myquery, newvalues, function(err, res) {
-                //         if (err) throw err;
-                //         console.log("1 document updated");
-                //         db.close();
-                //         });
-                // });
-                
-                // req.user._id   find in userauth update userdata_id
-                
-                   
+});
+
+app.put('/eaterDataForm', (req,res) => {
+        //find and update _id
+        eater.findById({firstName:req.body.name,},function(err,findeater){
+                if(err){
+                        console.log(err);
+                } else{
+                      console.log("find");
+                      var Data=req.params.id;
+                }    
+        });
+        userauths.findByIdAndUpdate(req.user._id,{userDataId:Data},function(err, updateuserauths){
+              if(err){
+                      console.log(err);
+              } else{
+                    console.log("update");
+              } 
+        })
 
 });
 

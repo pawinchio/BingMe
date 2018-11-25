@@ -34,23 +34,24 @@
 </template>
 
 <template id='acceptBtn'>
-    <div class="interactSubmit" id="sendAccept" style='max-width: unset;width: 120px;margin: 20px 100px;'>ตอบรับลูกค้า</div>
+    <div class="interactSubmit" id="sendAccept" style='max-width: unset;width: 120px;margin: 20px 20px;'>ตอบรับลูกค้า</div>
 </template>
 
 <template id='payBtn'>
-    <div class="interactSubmit" id="sendPay" style='max-width: unset;width: 120px;margin-top: 20px;margin-right: 20px;'>ชำระค่าจัดส่ง</div>
+    <div class="interactSubmit" id="sendPay" style='max-width: unset;width: 120px;margin-top: 20px;'></div>
 </template>
 
 <template id='avatar'>
-    <div style='
+    <div id='avatarStyle' style='
         max-width: 200px;
         min-width: 120px;
         margin-top: 20px;
         margin-left: 20px;
         text-align: left;
         padding: 12px;
-    ' class="user-avatar" style='max-width: unset;width: 120px;margin-top: 20px;margin-right: 20px;'>
-        <img style='
+        margin-right: 20px;
+    ' class="user-avatar">
+        <img id='userIMG' style='
                 width: 50px;
                 height: 50px;
                 border-radius: 15px;
@@ -67,76 +68,56 @@
     width: 90%;
     border-radius: 15px;
     color: white;
-    border: 2px solid white;">
+    max-width: 600px;
+    border: 2px solid white;
+    margin-bottom: 50px;">
         <div class="d-flex justify-content-center" style="
         padding: 10px 0;
         border-bottom: 1px solid lightgray;
         font-size: larger;
         ">
             <span>รายการสั่งซื้อ: </span>
-            <span id="orderId" style="
+            <span id="orderId" class="showStoreData" style="
             color: #00ff89;
             padding-left: 10px;">000000</span>
         </div>
-        <div class="d-flex" style="">
-            <div class="mr-auto p-2" style="font-size: large">a</div>
-            <div class="p-2">
-                <input type="number" style="
-                background: #fafafa!important;
-                border: 2px solid!important;
-                border-radius: 15px!important;
-                
-                height: 32px;
-                margin: auto;
-                width: 50px;
-                " readonly></input>
-            </div>
-            <div class="p-2">
-                <input type="number" style="
-                background: #fafafa!important;
-                border: 2px solid!important;
-                border-radius: 15px!important;
-                
-                height: 32px;
-                margin: auto;
-                width: 50px;
-                " readonly></input>
-            </div>  
+        <div class="order-list-container" id="list" style="">
+            
         </div>
         <div class="d-flex justify-content-center" style="
-        padding: 13px 0;
         border-top: 1px solid lightgray;
         color: black;
         font-size: larger;
         ">
         </div>
+        <div class="order-list-container" id="summery" style="">
     </div>
 </template>
 
 <template id="list-item">
-    <div class="d-flex" style="color: black;">
-        <div class="mr-auto p-2" style="font-size: large">a</div>
+    <div class="d-flex justify-content-between" style="color: black; width: 100%;">
+        <div class="mr-auto p-2 list-name" style="font-size: large;color: white;">a</div>
         <div class="p-2">
             <input type="number" style="
-            background: #fafafa!important;
-            border: 2px solid!important;
+            background: #00ff891a!important;
+            border: 2px solid #00ff89!important;
             border-radius: 15px!important;
-            
             height: 32px;
             margin: auto;
             width: 50px;
-            " readonly></input>
+            color: #00ff89;
+            " class='countFood' readonly></input>
         </div>
         <div class="p-2">
-            <input type="number" style="
+            <input class='priceFood' type="number" style="
             background: #fafafa!important;
             border: 2px solid!important;
             border-radius: 15px!important;
             
             height: 32px;
             margin: auto;
-            width: 50px;
-            " readonly></input>
+            width: 60px;
+            " readonly></input><span class='priceFood' style="color: white;">บาท</span>
         </div>
     </div>
 </template>
@@ -163,8 +144,63 @@
                 background: #ebebeb;
                 width: 30px;
                 text-align: center;
-                padding: 2px;'>
+                padding: 2px;
+                '>
         </div>
         <div class='p-2 dismissMenu' style='color:black;'>X</div>
     </div>
+</template>
+
+
+<template id='text'>
+    <div id='divStyle'>
+        <h4 id='textAppend'></h4>
+    </div>
+</template>
+
+<template id='bill'>
+    <div>
+        <p id='username'>Customer_001</p>
+        <p>ชำระเงินให้กับ</p>
+        <p>BingMe</p>
+        <table id="billTable">
+            <tbody>
+            <tr>
+                <th>รายละเอียด</th>
+                <th>ราคา</th>
+            </tr>
+            <tr>
+                <td>ชำระเงินค่าบริการ</td>
+                <td id="billPrice">35 บาท</td>
+            </tr>
+            </tbody>
+        </table>
+        <p id='totalFee' style="margin-top: 10px; text-align: right;">รวม 35 บาท</p>
+    </div>
+</template>
+
+<template id='interact-popup'>
+    <div class="modal show" id="interactPopup" role="dialog" onclick='killInteractPopup()'>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="
+            background: #00ff8938;
+            color: #00ff89;
+            border: 2px solid #00ff89;
+            ">
+            <div class="modal-header d-flex justify-content-between" style="background:none;border-bottom: 0.5px solid;">
+                <div class='p-1' style="width:40px"></div>
+                <h5 class="modal-title p-1" id="interact-popup-title" style="color:#00ff89!important">รายละเอียดร้านค้า</h5>
+                <i data-feather="x" class="p-1" onclick='killInteractPopup()'></i>
+            </div>
+            
+            <div class="modal-body" style='padding-top: 1.2rem; font-family: "Kanit";'>
+                
+            </div>
+            <div class="modal-footer" style='background:none;'>
+                <div></div>
+            </div>
+            
+            </div>
+        </div>
+        </div>
 </template>

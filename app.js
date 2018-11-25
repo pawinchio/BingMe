@@ -10,9 +10,13 @@ const   express = require('express'),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
+<<<<<<< HEAD
         multer = require('multer'),
         path = require('path'),
         uuid = require('uuid/v1');;
+=======
+        uuid = require('uuid/v1');
+>>>>>>> 7cbb30da424d4e4b7ac3fb57b16b5c0df5e5e455
 
 var     Eater  = require("./models/eater"),
         EaterPic =require("./models/eaterPicture"),
@@ -51,6 +55,12 @@ var transporter = nodemailer.createTransport({
           pass: '11121150'
         }
       });
+
+function sleep(ms){
+        return new Promise(resolve=>{
+                setTimeout(resolve,ms)
+        })
+}
 
 app.get('/', (req,res) => {
         let errSent = null;
@@ -183,9 +193,10 @@ app.get('/activate', (req,res) => {
 
 app.post('/createOrder', (req,res) => {
         // console.log(req.body);
-        let menuID = [];
-        let storeID ;
-        let storeLocation;
+        var menuID = [];
+        var storeID ;
+        var storeLocation;
+        var orderPoolId;
         interect();
         
         async function addMenu() {
@@ -193,7 +204,7 @@ app.post('/createOrder', (req,res) => {
                 // req.body.menu.forEach(menu => {
                         await Menu.find({Name: menu.name},async (err,menuData)=>{
                                 if(menuData[0]==null){
-                                        console.log("notfound : "+menu.name);
+                                        console.log("Add New Food : "+menu.name);
                                         menuTemp = {
                                                 img: null,
                                                 Name: menu.name,
@@ -211,7 +222,7 @@ app.post('/createOrder', (req,res) => {
                                         
                                 }
                                 else{
-                                        console.log("found : "+menu.name);
+                                        console.log("Found Food : "+menu.name);
                                         await menuID.push(menuData[0]._id);
                                         
                                 }
@@ -221,7 +232,7 @@ app.post('/createOrder', (req,res) => {
         
         async function addStore() {
                 StoreHistory.find({storeName: req.body.storeData.name}, async (err,store)=>{
-                        console.log("Menu ID : "+menuID);
+                        // console.log("Menu ID : "+menuID);
                         // console.log(store);
                         // console.log(req.body.storeData.geometry.location.lng);
 
@@ -229,6 +240,10 @@ app.post('/createOrder', (req,res) => {
                                 console.log("Add New Store : "+req.body.storeData.name);
                                 storeData={
                                         img: null,
+                                        storeName: req.body.storeData.name,
+                                        historyMenu: menuID,
+                                        priceAvg: null,
+                                        COPAvg: null,
                                         locationStore:{
                                                 type : 'Point',
                                                 coordinates: [
@@ -236,14 +251,12 @@ app.post('/createOrder', (req,res) => {
                                                         req.body.storeData.geometry.location.lat
                                                 ]
                                         },
-                                        storeName: req.body.storeData.name,
-                                        historyMenu: menuID,
-                                        priceAvg: null,
-                                        COPAvg: null
+                                        address: req.body.storeData.vicinity
                                 }
                                 StoreHistory.create(storeData,(err,store)=>{
-                                        // console.log(err);
-                                        store.save(()=>{
+                                        if(err) console.log(err)
+                                        store.save((err)=>{
+                                                if(err) console.log(err)
                                                 StoreHistory.find({storeName: req.body.storeData.name}, (err,store)=>{
                                                         storeID = store[0]._id;
                                                         storeLocation = store[0].locationStore;
@@ -252,12 +265,13 @@ app.post('/createOrder', (req,res) => {
                                 })
                         }
                         else{
-                                console.log("found : " + req.body.storeData.name);
+                                console.log("Found Store : " + req.body.storeData.name);
                                 await menuID.forEach((menu)=>{
                                         if (store[0].historyMenu.indexOf(menu) === -1) store[0].historyMenu.push(menu)
                                 })
                                 await StoreHistory.findByIdAndUpdate(store[0]._id,store[0])
-                                storeID = store[0]._id
+                                storeID = store[0]._id;
+                                storeLocation = store[0].locationStore;
                         }
                 }) 
         }
@@ -268,7 +282,8 @@ app.post('/createOrder', (req,res) => {
                                 Latitude: req.body.locationEater.Latitude,
                                 Longitude: req.body.locationEater.Longitude
                         },
-                        eaterID: req.body.eaterId,
+                        storeName: req.body.storeData.name,
+                        eaterID: req.user._id,
                         menu: req.body.menu,
                         storeId: storeID,
                         storeLocation: storeLocation,
@@ -283,29 +298,151 @@ app.post('/createOrder', (req,res) => {
                         isComplete: false,
                         dateCreated: Date()  
                 }
+                console.log(orderPenData);
                 OrderPool.create(orderPenData,(err,order)=>{
-                        order.save();
-                        // console.log(order);
+                        orderPoolId = order._id;
+                        order.save((err)=>{
+                                if(err) console.log(err);
+                        });
                 })   
         }
-
-        function sleep(ms){
-                return new Promise(resolve=>{
-                    setTimeout(resolve,ms)
+        function addPendingOrder() {
+                console.log("Update Eater Pending Order")
+                UserAuth.findById(req.user._id,(err,user)=>{
+                        Eater.findById(user.userDataId,async (err,user)=>{
+                                function updateData()
+                                {
+                                        if (user.refStoreHistory.indexOf(storeID) === -1) user.refStoreHistory.push(storeID);
+                                        if (user.refHistory.indexOf(orderPoolId) === -1) user.refHistory.push(orderPoolId);
+                                        user.refPending = orderPoolId;
+                                }
+                                await updateData();
+                                await Eater.findByIdAndUpdate(user._id,user);
+                        })
                 })
-            }
+                
+        }
+
         
         async function interect(){
                 const first = await addMenu()
-                await sleep(3000)
+                await sleep(1000)
                 const second = await addStore(first)
-                await sleep(3000)
-                const third = await addOrderPool(second);
-
+                await sleep(1000)
+                const third = await addOrderPool(second)
+                await sleep(1000)
+                const four = await addPendingOrder(third)
+                await sleep(1000)
+                await res.send("A");
         }
-                
-        res.send('request received by Backend');
 });
+
+app.post('/fetchUserByOrderId', (req,res) => {
+        OrderPool.findById(req.body.orderId, (err, order) => {
+                UserAuth.findById(order.eaterID, (err,eater) => {
+                        UserAuth.findById(order.hunterID, (err,hunter)=>{
+                                let eaterDataId = null;
+                                let hunterDataId = null;
+                                if(eater) eaterDataId = eater.userDataId;
+                                if(hunter) hunterDataId = hunter.userDataId;
+                                Eater.findById(eaterDataId, (err,eaterData)=>{
+                                        Hunter.findById(hunterDataId, (err, hunterData) => {
+                                                eaterData = {user: eaterData, username: null, role:null};
+                                                hunterData = {user: hunterData, username:null, role:null};
+                                                if(eater) eaterData = {
+                                                        ...eaterData,
+                                                        username: eater.username,
+                                                        role: eater.role
+                                                }
+                                                if(hunter) hunterData = {
+                                                        ...hunterData,
+                                                        username: hunter.username,
+                                                        role: hunter.role
+                                                }
+                                                res.send({eater: eaterData, hunter: hunterData});
+                                        })
+                                })
+                        })
+                })
+        });
+});
+
+app.get('/fetchPendingData',(req,res)=>{
+        let poolRef;
+        let userDetail = {
+                eaterDetail: null,
+                hunterDetail: null
+        }
+        let orderDetail;
+
+        fetchData()
+
+        function findOrderRef() {
+                if(req.user){
+                        if(req.user.role == "Eater"){
+                                console.log("Eater")
+                                Eater.findById(req.user.userDataId,async (err,user)=>{
+                                        if(err) console.log(err);
+                                        poolRef = user.refPending;
+                                        userDetail.eaterDetail = {user,username : req.user.username,role : req.user.role};
+                                })
+                        }
+                        else{
+                                console.log("Hunter")
+                                Hunter.findById(req.user.userDataId,async (err,user)=>{
+                                        if(err) console.log(err);
+                                        poolRef = user.refPending;
+                                        userDetail.hunterDetail = {user,username : req.user.username,role : req.user.role};
+                                        
+                                })
+                        }
+                }
+                else{
+                        console.log("NULL")
+                }
+        }
+        function getDetailPending() {
+                //add poolRef in order ID
+                OrderPool.findById(poolRef, (err,pool)=>{
+                        if(err) console.log(err);
+                        orderDetail = pool;
+                        if(userDetail.hunterDetail==null){
+                                if(pool.hunterID!=null){
+                                        //console.log(pool);
+                                        UserAuth.findById(pool.hunterID,(err,userF)=>{
+                                                Hunter.findById(userF.userDataId,async (err,user)=>{
+                                                        if(err) console.log(err);
+                                                        userDetail.hunterDetail = {user,username : userF.username,role : userF.role};
+                                                })
+                                                
+                                        }) 
+                                }
+                                else userDetail.hunterDetail=null;   
+                        }
+                        else{
+                                if(pool.eaterID != null){
+                                        //console.log(pool);
+                                        UserAuth.findById(pool.eaterID,(err,userF)=>{
+                                                Eater.findById(userF.userDataId,async (err,user)=>{
+                                                        if(err) console.log(err);
+                                                        userDetail.eaterDetail = {user,username : userF.username,role : userF.role};
+                                                })
+                                                
+                                        })   
+                                }
+                                else userDetail.eaterDetail=null;
+                        }
+                })
+        }
+        
+        async function fetchData(){
+                const first = await findOrderRef();
+                await sleep(500)
+                const second = await getDetailPending(first); 
+                await sleep(1000)
+                await res.send({userDetail,orderDetail});
+        }
+})
 
 app.post('/fetchFreeOrder', (req,res) => {
         // OrderPool.find(null,null,(err,order)=>{
@@ -320,12 +457,100 @@ app.post('/fetchFreeOrder', (req,res) => {
                                                 coordinates: [req.body.h_lon, req.body.h_lat]
                                         }
                                 }
-                        }
-                }).find((error, results) => {
-                        if (error) console.log(error);
-                        res.send(results);
+                        }, isPickup: false
+        }).find((error, results) => {
+                if (error) console.log(error);
+                res.send(results);
+        }); 
+});
+
+app.get('/fetchUserBySession', (req,res) => {
+        if(req.user){
+                if(req.user.role == 'Eater'){
+                        Eater.findById(req.user.userDataId, (err, eater) => {
+                                res.send({
+                                        user: eater,
+                                        username: req.user.username,
+                                        role: req.user.role
+                                })
+                        })
+                }else if(req.user.role == 'Hunter'){
+                        console.log('find hunter');
+                        Hunter.findById(req.user.userDataId, (err, hunter) => {
+                                res.send({
+                                        user: hunter,
+                                        username: req.user.username,
+                                        role: req.user.role
+                                })
+                        })
+                }
+        }
+});
+
+app.post('/getStoreDataByStoreID',(req,res)=>{
+        if(req.body.storeId!=null){
+                StoreHistory.findById(req.body.storeId,(err,storeData)=>{
+                        if(err)console.log(err);
+                        console.log(storeData);
+                        res.send(storeData);
                 });
+        }
+});
+
+app.post('/updateOrder', (req,res) => {
+        // console.log(req.body);
+        OrderPool.findByIdAndUpdate(req.body.orderId,req.body.updateObj, (err, order)=> {
+                if(!order) console.log(err);
+                else res.send('Acquire Success!');
+        });
+});
+
+app.post('/updateUser', (req,res) => {
+        console.log(req.body);
+        if(req.body.user.refPending=='')req.body.user.refPending=null;
+        if(req.body.role == 'Eater'){
+                Eater.findByIdAndUpdate(req.body.user._id, req.body.user, (err, userData)=> {
+                        if(!userData) console.log(err);
+                        else res.send('Update Success!');
+                });
+        }else if(req.body.role == 'Hunter'){
+                Hunter.findByIdAndUpdate(req.body.user._id, req.body.user, (err, userData)=> {
+                        if(!userData) console.log(err);
+                        else res.send('Update Success!');
+                });
+        }
+});
+
+app.post('/updateMenu',(req,res)=>{
         
+        // for(const menu of req.body.menu){console.log(menu.name);}
+        for(const menu of req.body.menu){
+                // req.body.menu.forEach(menu => {
+                Menu.find({Name:menu.name}, (err,menuData)=>{
+                        menuData[0].COPAvg = menuData[0].COPAvg+Number(menu.amount);
+                        menuData[0].priceAvg = (menuData[0].priceAvg+Number(menu.price))/menuData[0].COPAvg;
+                        Menu.findByIdAndUpdate(menuData[0]._id,menuData[0],(err,menu)=>{
+                                if(err) console.log(err);
+                                res.send('Update Success!');
+                        })              
+                });
+        }
+})
+
+app.post('/checkqr',(req,res)=>{
+        //0: orderID, 1: eaterID
+        const data = req.body.text.split(",");
+        Eater.findById(data[1],(err,eaterData)=>{
+               if(eaterData){
+                       if(eaterData.refPending == data[0]){
+                               OrderPool.findById(data[0], (err, order)=>{
+                                        if(order) res.send('completed');
+                                        else res.send('failed');
+                               });
+                       }else res.send('failed');
+                }else res.send('failed');
+        });
+
 });
 
 app.get('/dashboard', (req,res) => {
@@ -340,12 +565,25 @@ interact.on('connection', function(client){
                 console.log(roomName+" room is created!");
                 client.room = roomName;
                 interact.emit('ping','server is hello');
+                client.on('interractData', function(Data,roomID,temp){
+                        OrderPool.findByIdAndUpdate(Data._id,Data,(err)=>{
+                                if(err) console.log(err);
+                                else if(temp){
+                                        client.emit("thread", Data);
+                                }
+                                else{
+                                        client.emit("thread", Data);
+                                        client.broadcast.to(roomID).emit("thread", Data);
+                                }
+                        })
+                });
         });
         client.on('disconnectRoom', function(roomName, clientID){
                 //Check if clientID have permission to see roomName
                 client.leave(roomName);
                 console.log(roomName+" room is leaved!");
         });
+        
 });
 
 

@@ -4,8 +4,10 @@ function initMap (){
     }
 }
 
+var mapLoaded = false;
 var myinitialLocation=null;
 var map = null;
+var markerArray = [];
 // Initialize and add the map
 function renderMap(position) {
     // console.log(position);
@@ -25,7 +27,7 @@ function renderMap(position) {
             zoomControl: false
     });
     
-    if($('#searchForm').attr('class')=='active') waitMapLoaded(map);
+    waitMapLoaded(map);
 
     map.panBy(0, 150)
     var marker = new google.maps.Marker({
@@ -33,15 +35,27 @@ function renderMap(position) {
         map: map,
         title: "You're Here"
     });
+   markerArray.push(marker);
+}
+
+const clearMarker = (markerArray) => {
+    for(let i=0; i<markerArray.length;i++){
+        markerArray[i].setMap(null);
+    }
 }
 
 const waitMapLoaded = (mapObj) => {
-    $('.loader').show();
-    $('#searchInput').prop('readonly', true);
-    mapObj.addListener('tilesloaded', function () {
-        console.log('Map loaded');
+    google.maps.event.addListener( map, 'idle', function() {
+        mapLoaded = true;
         $('.loader').hide();
         $('#searchInput').prop('readonly', false);
+        $.getScript('https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js');
+    });
+    mapObj.addListener('tilesloaded', function () {
+        mapLoaded = true;
+        $('.loader').hide();
+        $('#searchInput').prop('readonly', false);
+        $.getScript('https://cdn.sobekrepository.org/includes/gmaps-markerwithlabel/1.9.1/gmaps-markerwithlabel-1.9.1.min.js');
     });
 }
 
@@ -49,6 +63,7 @@ var directionsService =null;
 var directionsDisplay = null;
 
 function calculateAndDisplayRoute(destId) {
+    clearMarker(markerArray);
     if(directionsDisplay != null) {
         directionsDisplay.setMap(null);
         directionsDisplay = null;
@@ -105,15 +120,17 @@ var displaySuggestions = function(predictions) {
             // console.log(response);
             var distance = response.rows[0].elements[0].distance.text;
             var duration = response.rows[0].elements[0].duration.text;
-            var pricePerKM = 5;
+            var pricePerKM = 2;
+            var fixedPrice = 25;
+            var calculatedPrice = ((parseFloat(distance,10)*pricePerKM)+fixedPrice).toFixed(2);
             thisChoice.dataset.placeDetail = JSON.stringify({
                 ...prediction,
                 distance: distance,
                 duration: duration,
-                fee: (parseFloat(distance,10)*pricePerKM).toFixed(2)
+                fee: calculatedPrice
             });
             thisDuration.innerText = duration;
-            thisFee.innerText = (parseFloat(distance,10)*pricePerKM).toFixed(2);
+            thisFee.innerText = calculatedPrice;
       });
 
       templ.querySelector('.choice-fee').innerText = '0.00';
@@ -123,7 +140,7 @@ var displaySuggestions = function(predictions) {
             "background":"white",
             "color": "unset",
         });
-        this.style.background="black";
+        this.style.background="#27292d";
         this.style.color="#00FF89";
         $('#searchResult').scrollTo(this);
         showChoiceDetail(this);
@@ -131,8 +148,8 @@ var displaySuggestions = function(predictions) {
       })
       target.appendChild(templ);
       $('#choiceContainer').addClass('up');
-        $('#upArrow').hide();
-        $('#downArrow').show();
+      $('#upArrow').hide();
+      $('#downArrow').show();
       feather.replace({'min-width': '50px','width': '50px','height': '50px','stroke-width': '3'});
     });
 };
@@ -158,17 +175,146 @@ function getPredictSearch (searchValue) {
     // autoCompleteService.getPlacePredictions({ input: searchValue, location: myinitialLocation, radius: 25000 ,types:['establishment']}, displaySuggestions);
 }
 
-const getFreeOrder = (position) => {
-    let distance = 15000;
+const getFreeOrder = (position, range) => {
+    $('#choiceContainer').removeClass('up');
+    $('#upArrow').show();
+    $('#downArrow').hide();
+    $('.loader').show();
+    let distance = range;
     let hunterLat = position.coords.latitude;
-    let hunterLong = position.coords.longitude;
-    $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLong, dist:distance}, (data, status) => {
-        renderHunterChoice(data);
+    let hunterLng = position.coords.longitude;
+    $.post('/fetchFreeOrder',{h_lat: hunterLat, h_lon: hunterLng, dist:distance}, (data, status) => {
+        renderHunterChoice(data,hunterLat,hunterLng);
+        $('.loader').hide();
     });
     
 }
 
-const renderHunterChoice = (data) => {
-    let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
+const renderHunterChoice = (data,hunterLat,hunterLng) => {
+    var target = document.getElementById('searchResult');
+    target.innerHTML ='';
+    while (target.firstChild) {
+        target.removeChild(target.firstChild);
+    }
+    
+    for(let i=0; i<data.length; i++){
+        // console.log(templ);
+        showRangeDetail(data.length);
+        let templ = document.getElementById('hunter-choice-template').content.cloneNode(true);
+        let thisChoice = templ.querySelector('.choice');
+        thisChoice.dataset.orderDetail = JSON.stringify(data[i]);
+        templ.querySelector('.orderStoreName').innerText = data[i].storeName;
+        templ.querySelector('.orderQuantity').innerText = data[i].menu.length;
+        templ.querySelector('.orderFee').innerText = data[i].fee;
 
+        templ.querySelector('.choice').addEventListener('click', function(e){
+            $('.choice').css({
+                "background":"white",
+                "color": "unset",
+            });
+            this.style.background="#27292d";
+            this.style.color="#00FF89";
+
+            //send hunterLat/Long to plotHunterDirection
+            plotHunterDirection(data[i], hunterLat, hunterLng);
+            
+        });
+
+        target.appendChild(templ);
+        feather.replace({'min-width': '40px','width': '40px','height': '40px','stroke-width': '3', 'padding-right': '0!important'});
+    }
+
+    $('#choiceContainer').addClass('up');
+    $('#upArrow').hide();
+    $('#downArrow').show();
+}
+
+const plotHunterDirection = (targetOrder, hunterLat, hunterLng) => {
+    clearMarker(markerArray);
+    if(directionsDisplay != null) {
+        directionsDisplay.setMap(null);
+        directionsDisplay = null;
+    }
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+    directionsDisplay.setMap(map);
+    let hunterOrigin = new google.maps.LatLng(hunterLat, hunterLng);
+    let storeLocation = new google.maps.LatLng(targetOrder.storeLocation.coordinates[1],targetOrder.storeLocation.coordinates[0]);
+    let eaterLocation = new google.maps.LatLng(targetOrder.locationEater.Latitude, targetOrder.locationEater.Longitude);
+    let directionRequest = {
+        origin: hunterOrigin,
+        destination: eaterLocation,
+        waypoints: [{
+            location: storeLocation,
+            stopover: true
+        }],
+        optimizeWaypoints: false,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+    directionsService.route(directionRequest, (response, status) => {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+            var leg = response.routes[0].legs;
+
+            icon_config = {
+                scale: .50,
+                strokeWeight: 1.0,
+                strokeColor: 'black',
+                strokeOpacity: 1,
+                fillColor: '#00ff89',
+                fillOpacity: 1.0
+            }
+            
+            let mark1 = new MarkerWithLabel({
+                position: leg[0].start_location,
+                map: map,
+                labelContent: "ตำแหน่งของคุณ",
+                labelAnchor: new google.maps.Point(20, 0),
+                icon: {
+                        path: fontawesome.markers.TAXI,
+                        ...icon_config
+                    },
+                labelClass: 'map-label'
+            });
+            markerArray.push(mark1);
+            
+            let mark2 = new MarkerWithLabel({
+                position: leg[0].end_location,
+                map: map,
+                labelContent: "ซื้อสินค้าที่นี่",
+                labelAnchor: new google.maps.Point(20, 0),
+                icon: {
+                        path: fontawesome.markers.SHOPPING_CART,
+                        ...icon_config
+                    },
+                labelClass: 'map-label',
+            });
+            markerArray.push(mark2);
+
+            let mark3 = new MarkerWithLabel({
+                position: leg[1].end_location,
+                map: map,
+                labelContent: "ส่งของที่นี่",
+                labelAnchor: new google.maps.Point(20, 0),
+                icon: {
+                        path: fontawesome.markers.MALE,
+                        ...icon_config
+                    },
+                labelClass: 'map-label',
+                labelStyle: {
+
+                }
+            });
+            markerArray.push(mark3);
+            
+        }else console.log(status);
+    });
+}
+
+function showRangeDetail (numberResult){
+    $('.range-detail').css({
+        "display":"block"
+    });
+    $('#choice-range').text($('#searchRange').val() + ' KM');
+    if(numberResult)$('#choice-number').text(numberResult);
 }

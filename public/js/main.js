@@ -1,5 +1,7 @@
 let user = undefined;
+
 $(document).ready(function () {
+
     killInteractBoard();
     $('#dismiss, .overlay').on('click', function () {
         // hide sidebar
@@ -33,7 +35,7 @@ $(document).ready(function () {
         $('#searchCollapse').addClass('active');
         $('#searchInput').val('');
         $('#searchResult').html('');
-        $('#map + .choice-detail').hide();
+        $('#map + .choice-detail, .range-detail').hide();
 
         if(directionsDisplay != null) {
             directionsDisplay.setMap(null);
@@ -55,11 +57,24 @@ $(document).ready(function () {
         alert('Please login before using Bingme');
     });
     $('#searchCollapse.allow').on('click', function () {
+        //lock input and show loading bar
+        if(!mapLoaded){    
+            $('.loader').show();
+            $('#searchInput').prop('readonly', true);
+        }
         // open search form
         $('.menubar').addClass('black');
         $('#searchDismiss').addClass('active');
         $('#searchForm').addClass('active');
         $('#searchCollapse').removeClass('active');
+        if(user){
+            if(user.role == 'Hunter') searchForHunter($('#searchRange').val()*1000);
+        }
+    });
+
+    $('#searchRange').on('input', () => {
+        showRangeDetail ();
+        searchForHunter($('#searchRange').val()*1000);
     });
 
     var timeout = null;
@@ -117,6 +132,15 @@ $(document).ready(function () {
               
                    
 });
+
+const searchForHunter = (range) => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            getFreeOrder(position, range);
+        });
+    }else alert('Please allow position service');
+    $('.search-load').css({"display":"none"});
+}
 
 
 

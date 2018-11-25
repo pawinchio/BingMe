@@ -10,13 +10,9 @@ const   express = require('express'),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
-<<<<<<< HEAD
         multer = require('multer'),
         path = require('path'),
         uuid = require('uuid/v1');;
-=======
-        uuid = require('uuid/v1');
->>>>>>> 7cbb30da424d4e4b7ac3fb57b16b5c0df5e5e455
 
 var     Eater  = require("./models/eater"),
         EaterPic =require("./models/eaterPicture"),

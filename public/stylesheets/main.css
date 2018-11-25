@@ -299,7 +299,7 @@ body{
     box-shadow: 0 0 4px 2px #00ff89;
 }
 
-.loader {
+.loader, .modal-loader {
     display: none;
     position: fixed;
     border: 10px solid #f3f3f3; /* Light grey */
@@ -350,3 +350,37 @@ input[type=range]::-webkit-slider-runnable-track {
     border-radius: 11px;
 }
 
+.full-modal > .modal-dialog{
+    width: 100%!important;
+    max-width: unset!important;
+    height: 100vh!important;
+    padding: 0!important;
+    margin: 0!important;
+}
+
+.full-modal > .modal-dialog > .modal-content{
+    height: 100%!important;
+    border-radius: 0!important;
+}
+
+.full-modal-body{
+    font-family: 'Kanit'!important;
+    color: black!important;
+    max-width: 700px;
+    margin: 5% auto;
+}
+
+.full-modal-body > h6{
+    font-size: 1.2rem;
+}
+.full-modal-body > p{
+    font-size: 1rem;
+}
+
+.model-send-white{
+    padding: 4px 20px;
+    border: 1px solid lightgray;
+    background-color: white;
+    border-radius: 50px;
+    font-size: 15px;
+}

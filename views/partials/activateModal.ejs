@@ -1,22 +1,30 @@
-<div class='modal show' id='activateModal' role='dialog'>
+<div class='modal show full-modal' id='activateModal' role='dialog'>
     <div class='modal-dialog'>
         <div class="modal-content" >
-            <div class="modal-header">
-                <h5 class="modal-title">Account Activation</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="modal-header d-flex justify-content-between">
+                <div class="p-2" style="width: 30px;height: 30px;">
+                    <form action="/logout" method="post">
+                        <button><i data-feather="arrow-left" style="width: 30px;height: 30px;"></i></button>
+                    </form>
+                </div>
+                <h5 class="modal-title p-2" style="font-size: 1.5rem;">การยืนยันตัวตน</h5>
+                <div class="p-2" style="padding: 0!important; width: 20px;"></div>
             </div>
-            <form action="/activate" method="post">
-                <div class="modal-body" style="color: darkgray;">
-                    <p style="text-align: center;">Your account is not activated yet</p>
-                    <div class="form-group">
-                        <label for="emailToVerify">Email address</label>
-                        <input style="border-radius: 20px; border: none;" type="email" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
-                    </div>
+            <div class="modal-body full-modal-body" id="face1">
+                <div class="modal-loader" style="top:calc(25vh - (25vw / 2));"></div>
+                <h6>เกือบสำเร็จแล้วล่ะ!</h6>
+                <p>เพื่อเริ่มต้นใช้งานเพียงยืนยันที่อยู่อีเมลของคุณ</p>
+                <div class="form-group">
+                    <label for="emailToVerify">Email address</label>
+                    <input onclick="setNewEmail()" style="border-radius: 20px; border: none;" type="text" class="form-control" id="emailToVerify" name="email" value=<%- user.email.toUpperCase() %> readonly>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" style="margin: auto; padding:4px 0;  border: none; background-color: transparent;">Send Verification Email</button>  
+            
+                <div style="text-align: right;">
+                    <button type="submit" onclick="createActivation()" class="model-send-white">ส่งอีเมลยืนยัน</button>
                 </div>
-            </form>
+                <p style="padding-top: 50px; color:#0062cc;">*เราจะส่งอีเมลยืนยันไปยังที่อยู่ที่ระบุไว้<br/>โปรดดำเนินการตามคำแนะนำเพื่อยืนยันตัวตนของคุณ</p>
+            </div>
+            
         </div>
     </div>
 </div>
@@ -25,4 +33,31 @@
     $(document).ready(function(){
         $('#activateModal').modal('show');
     });
+
+    const setNewEmail = () => {
+        $('#emailToVerify').attr('readonly', false);
+        $('#emailToVerify').css('background', 'whitesmoke');
+        $('#emailToVerify').val('');
+    }
+
+    const createActivation = () => {
+        $('.modal-loader').show();
+        $.post('/activate', {
+            email: $('#emailToVerify').val()
+        }, (data, status)=>{
+            console.log(data);
+            $('#face1').empty();
+            $('#face1').append('<div style="text-align:center"><h5 id="dialog"></h5><div id="icon"></div><p id="detail" style="color:red;"></p></div>');
+            if(data == 'created' || data == 'repeat'){
+                $('#face1 > div > #dialog').html('อีเมลถูกส่งไปแล้ว!</br>โปรดตรวจสอบกล่องข้อความของคุณ');
+                $('#face1 > div > #icon').append('<i data-feather="mail" style="color:#00ff89;width: 120px;height: 120px; margin:20px auto;"></i>');
+            }else{
+                $('#face1 > div > #dialog').html('การส่งผิดพลาด</br>โปรดลองอีกครั้ง หรือติดต่อฝ่ายสนับสนุนของเรา');
+                $('#face1 > div > #icon').append('<i data-feather="alert-octagon" style="color:red;width: 120px;height: 120px; margin:20px auto;"></i>');
+            }
+            $('#face1 > div > #detail').html('*คุณสามารถปิดหน้าต่างนี้ได้ทันที');
+            $('.modal-loader').hide();
+            feather.replace({'stroke-width': '1'});
+        });
+    }
 </script>

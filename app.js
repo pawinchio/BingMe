@@ -125,13 +125,13 @@ app.post('/activate', (req,res) => {
                         userId: req.user._id,
                         code: code
                 });
+                var mailOptions = {
+                        from: bingmeMail,
+                        to: req.body.email,
+                        subject: '[BINGME] Verification Email',
+                };
+                mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+code);
                 newActivation.save().then(()=>{
-                        var mailOptions = {
-                                from: bingmeMail,
-                                to: req.body.email,
-                                subject: '[BINGME] Verification Email',
-                        };
-                        mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+code);
                         transporter.sendMail(mailOptions, function(error, info){
                                 if (error) {
                                   console.log(error);
@@ -139,11 +139,25 @@ app.post('/activate', (req,res) => {
                                   console.log('Email sent: ' + info.response);
                                 }
                         });
+                        res.send('created');
                 }).catch(err => {
-                        console.log('Code Saving Failed'+err);
+                        if (err.name === 'MongoError' && err.code === 11000){
+                                console.log('Activation code was create before\n'+err);
+                                transporter.sendMail(mailOptions, function(error, info){
+                                        if (error) {
+                                          console.log(error);
+                                        } else {
+                                          console.log('Email sent: ' + info.response);
+                                        }
+                                });
+                                res.send('repeat');
+                        }
+                        else{
+                                console.log('Code Saving Failed'+err);
+                                res.send('failed');
+                        }
                 });     
-        }
-        res.redirect('/');
+        }else res.send('failed');
 });
 
 const activateEmailTemplate_th = (name, link)=>{

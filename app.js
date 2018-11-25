@@ -374,13 +374,14 @@ app.post('/eaterDataForm', (req,res) => {
                         costTotal : 0,
                         discount : 100
                 });
-                // console.log(newEater);
+                console.log(newEater);
                 // console.log(req.user._id);
                 newEater.save().catch(err => {
                         console.log('Code Saving Failed'+err);
                         
                 });
                 console.log("save!!!!");
+                
                 // collection.update({_id:"req.user._id"}, {userDataId:"res.user._id"});
                 // MongoClient.connect(url, function(err, db) {
                 // if (err) throw err;

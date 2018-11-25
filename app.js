@@ -21,7 +21,7 @@ var     Eater  = require("./models/eater"),
         OrderPool  = require("./models/orderPool"),
         StoreHistory  = require("./models/storeHistory"),
         UserAuth = require('./models/userAuth'),
-        methodOverride = require("method-Override"),
+        methodOverride = require("method-override"),
         UserActivation = require('./models/userActivation');
 
 
@@ -613,31 +613,26 @@ app.post('/eaterDataForm', (req,res) => {
                 console.log(newEater);
                 // console.log(req.user._id);
                 newEater.save().catch(err => {
-                        console.log('Code Saving Failed'+err);
-                        
+                        console.log('Code Saving Failed'+err);      
                 });
                 console.log("save!!!!");
+                Eater.find({firstName:req.body.firstname,lastName:req.body.lastname}, (err,eaterData)=>{
+                        if(err) console.log(err);
+                        console.log(eaterData)
+                        console.log(eaterData[0]._id);
+                        UserAuth.findOneAndUpdate({_id:req.user._id},{userDataId:eaterData[0]._id},(err,eaterID)=>{
+                                if(err) console.log(err);
+                                // res.send('summit Success!');
+                                console.log("updated")
+                                
+                        }); 
+
+                });
+        successRedirect: '/' 
 });
 
-app.put('/eaterDataForm', (req,res) => {
-        //find and update _id
-        eater.findById({firstName:req.body.name,},function(err,findeater){
-                if(err){
-                        console.log(err);
-                } else{
-                      console.log("find");
-                      var Data=req.params.id;
-                }    
-        });
-        userauths.findByIdAndUpdate(req.user._id,{userDataId:Data},function(err, updateuserauths){
-              if(err){
-                      console.log(err);
-              } else{
-                    console.log("update");
-              } 
-        })
 
-});
+
 
 // ajax with jquery
 

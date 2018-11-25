@@ -10,7 +10,7 @@
         </script>
         <%if(user.userDataId == null){%>
             <%- include('partials/userDataModal', {user: user}); %>
-        <%}if(!user.isActivated){%>
+        <%}else if(!user.isActivated){%>
             <%- include('partials/activateModal', {user: user}); %>
         <%}%>
     <% } %>

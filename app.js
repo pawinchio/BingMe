@@ -628,7 +628,7 @@ app.post('/eaterDataForm', (req,res) => {
                         }); 
 
                 });
-        successRedirect: '/' 
+        // ปิด 
 });
 
 

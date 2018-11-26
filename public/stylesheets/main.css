@@ -375,6 +375,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 .full-modal-body > p{
     font-size: 1rem;
+}
 #contact{
     width: 500px;
 }

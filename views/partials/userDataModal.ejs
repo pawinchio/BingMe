@@ -1,14 +1,18 @@
-<div class='modal show' id='userDataModal' role='dialog'>
+<div class='modal show full-modal' id='userDataModal' role='dialog'>
     <div class='modal-dialog' style="width: 90%; max-width: 90%">
         <div class="modal-content" >
-            <div class="modal-header d-flex justify-content-between" id="uData-head">
-
-                <h5 class="modal-title p-1 ">User Information</h5>
-                <button type="button" class="close p-1" data-dismiss="modal" id="uData-close">&times;</button>
+            <div class="modal-header d-flex justify-content-between">
+                <div class="p-2" style="width: 30px;height: 30px;">
+                    <form action="/logout" method="post">
+                        <button style="background: none;border: none;"><i data-feather="arrow-left" style="width: 30px;height: 30px;"></i></button>
+                    </form>
+                </div>
+                <h5 class="modal-title p-2" style="font-size: 1.5rem;">ตั้งค่าบัญชีของคุณ</h5>
+                <div class="p-2" style="padding: 0!important; width: 20px;"></div>
             </div>
             <%if(user){%>
                 <%if(user.role=='Eater'){%>
-                    <% include eaterDataModal %>
+                    <% include firstEaterDataForm %>
                 <%} else if(user.role=='Hunter'){%>
                     <% include hunterDataModal %>
                 <%}%>

@@ -10,21 +10,27 @@ const   express = require('express'),
         LocalStrategy = require('passport-local'),
         passportLocalMongoose = require('passport-local-mongoose'),
         nodemailer = require('nodemailer'),
-        uuid = require('uuid/v1');
+        multer = require('multer'),
+        path = require('path'),
+        uuid = require('uuid/v1');;
 
 var     Eater  = require("./models/eater"),
+        EaterPic =require("./models/eaterPicture"),
         Hunter  = require("./models/hunter"),
         Menu  = require("./models/menu"),
         OrderPool  = require("./models/orderPool"),
         StoreHistory  = require("./models/storeHistory"),
         UserAuth = require('./models/userAuth'),
+        methodOverride = require("method-override"),
         UserActivation = require('./models/userActivation');
+
 
 const   tools = require('./calculations.js');
 
 mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-dev-db',{ useNewUrlParser: true } );
 app.set('view engine','ejs');
-
+// app.use(expressSanitizer());
+app.use(methodOverride("_method"));
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(require('express-session')({
@@ -575,6 +581,107 @@ app.post('/checkqr',(req,res)=>{
 
 });
 
+app.post('/eaterDataForm', (req,res) => {
+        //eaterdata
+        var MongoClient = require('mongodb').MongoClient;
+        let input = req.body;
+        // console.log(req.body)
+        console.log("pass")
+                var newEater = new Eater({
+                        firstName: input.firstname,
+                        lastName: input.lastname,
+                        phoneNumber: input.phone,
+                        gender: input.gender,
+                        birthday: input.birthDay,
+                        address : input.ADDRESS,
+                        email : input.email,
+                        picture : '/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
+                        c_dCardNumber : input.Cardnumber,
+                        holderName : input.CardName,
+                        expiration_m : input.expireMonth,
+                        expiration_y : input.expireYear,
+                        cvv : input.CVV,
+                        billingAddress: input.BillingAddress,
+                        refPending : null,
+                        costTotal : 0,
+                        discount : 100
+                });
+                console.log(newEater);
+                // console.log(req.user._id);
+                newEater.save().catch(err => {
+                        console.log('Code Saving Failed'+err);      
+                });
+                console.log("save!!!!");
+                Eater.find({firstName:req.body.firstname,lastName:req.body.lastname}, (err,eaterData)=>{
+                        if(err) console.log(err);
+                        console.log(eaterData)
+                        console.log(eaterData[0]._id);
+                        UserAuth.findOneAndUpdate({_id:req.user._id},{userDataId:eaterData[0]._id},(err,eaterID)=>{
+                                if(err) console.log(err);
+                                // res.send('summit Success!');
+                                console.log("updated")
+                                
+                        }); 
+
+                });
+        // ปิด 
+});
+
+const fileUpload = require('express-fileupload');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+// const path = require('path');
+app.use(fileUpload());
+app.use(express.static("userSrc"));
+
+app.post('/upload', (req, res) => {
+        uploadHandler(req,res, () =>{
+                res.send('/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg');
+        });
+        //อ่านจาก database     
+});
+  
+const uploadHandler = (req, res, callback) => {
+        if(req.files){
+                let fileUploaded = req.files.fileUpload;
+                let fileName = req.user._id+'.jpg';
+                console.log(req.user._id.toString());
+                let filePath = path.join('userSrc','photos',req.user._id.toString(),'avatar');
+                console.log(filePath);
+                console.log('Files named '+fileName+' was uploaded! to ->'+filePath);
+                fs.mkdir(path.join(__dirname,filePath), {recursive:true}, (err) => {
+                        if(!err){
+                                fileUploaded.mv(path.join(filePath,fileName), (err) =>{
+                                        if(err) {
+                                                console.log("Can't save file recieved");
+                                                res.status(500).send(err);
+                                        }
+                                        console.log("save!!!!")
+                                        callback();
+                                });
+                        }
+                });
+        }
+} 
+
+app.post('/contactUs', (req,res) => {
+        var contactemailback = {
+                from: bingmeMail,
+                to: req.body.conEmail,
+                subject: '[BINGME] Thank you for contact us !'
+        };
+        contactemailback.text = 'Thank you " '+ req.body.conusername + ' " for contact us , we got message from you as "' + req.body.content + '" We will contact you as soon as possible'
+        
+        transporter.sendMail(contactemailback, function(error, info){
+                if (error) {
+                        console.log(error);
+                } else {
+                        console.log('Email sent: ' + info.response);
+                }
+        });
+        res.redirect('/');
+});
+
 app.get('/dashboard', (req,res) => {
         // ZAAAAAAAAAAAAAAAAAAAAAA
 });
@@ -608,22 +715,4 @@ interact.on('connection', function(client){
         });
         
 });
-app.post('/contactUs', (req,res) => {
-        var contactemailback = {
-                from: bingmeMail,
-                to: req.body.conEmail,
-                subject: '[BINGME] Thank you for contact us !'
-        };
-        contactemailback.text = 'Thank you " '+ req.body.conusername + ' " for contact us , we got message from you as "' + req.body.content + '" We will contact you as soon as possible'
-        
-        transporter.sendMail(contactemailback, function(error, info){
-                if (error) {
-                        console.log(error);
-                } else {
-                        console.log('Email sent: ' + info.response);
-                }
-        });
-        res.redirect('/');
-});
-
 server.listen(process.env.PORT || 5500, () => console.log('Server run on port 5500'));

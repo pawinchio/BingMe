@@ -1,0 +1,140 @@
+#uData-head{
+    background: #00ff89;
+    border-radius: 15px 15px 0 0;
+    padding: 6px;
+    border-bottom: 0;
+}
+
+#uData-close{
+    margin: 0;
+    position: unset;
+}
+
+#uData-foot{
+    max-height: 55px;
+    background: whitesmoke;
+    border-radius: 10px;
+    border: 0.5px solid lightgray;
+    margin-top: 15px;
+    width: 75%;
+    margin: auto;
+}
+
+
+
+#header-form{
+    background:#00FF89;
+    color: white;
+    font-family: 'Kanit';
+}
+#mail-box{
+    border-top: 1px solid lightgray;
+    padding-top: 10px;
+    border-radius: 0px;
+    width: 50%;
+  margin: 0 auto;
+  margin-bottom: 15px;
+}
+
+.billing{
+    border-style: solid;
+    border-width: 5px;
+    border-top-color: darkgray;
+    border-right-color: white;
+    border-bottom-color: white;
+    border-left-color: white;
+}
+
+.box{
+    padding:8px;
+    display:block;
+    /* border:none; */
+    /* border-bottom:1px; */
+    border-color: darkgray;
+    solid: #ccc;
+    width:80%;
+    border-radius: 15px;
+}
+.eaterPassword {
+    padding:8px;
+    display:block;
+    /* border:none;
+    border-bottom:1px  */
+    border-radius: 15px;
+    border-color: darkgray;
+    solid: #ccc;
+    width:100%;
+    margin-bottom: 15px;
+}
+
+
+
+.eaterInfo {
+    padding:8px;
+    display:block;
+    /* border:none;
+    border-bottom:1px  */
+    border-radius: 15px;
+    border-color: darkgray;
+    solid: #ccc;
+    width:80%;
+    margin-bottom: 15px;
+}
+
+#importImg{
+    background: whitesmoke;
+    border: 0.5px solid lightgray;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-size: smaller;
+    padding: 5px 4px;
+    margin: 10px 0;
+    width: -webkit-fill-available;
+}   
+
+#deleteImg{
+    border: none;
+    background: whitesmoke;
+    border: 0.5px solid lightgray;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-size: smaller;
+    padding: 5px 4px;
+
+}
+
+.eaterpic{
+    width: 200px;
+    object-fit: cover;
+    height: 200px;
+    border-radius: 100%;
+    border: 0.5px solid lightgray;
+    margin: 15px auto;
+
+}
+.form-section{
+    margin-top: 30px;
+}
+.form-section > .form-group > label{
+    color: #00FF89;
+}
+
+.section-2, .section-3{
+    border-top: 1px solid gray;
+    padding-top: 15px;
+}
+
+.section-3{
+    border-bottom: 1px solid gray;
+}
+
+.section-5{
+    border-top: 1px solid gray;
+    padding-top: 30px;
+    width: 70%;
+    margin: 30px auto;
+}
+
+
+        
+    

@@ -15,7 +15,7 @@ const   express = require('express'),
         uuid = require('uuid/v1');;
 
 var     Eater  = require("./models/eater"),
-        EaterPic =require("./models/eaterPicture"),
+
         Hunter  = require("./models/hunter"),
         Menu  = require("./models/menu"),
         OrderPool  = require("./models/orderPool"),
@@ -614,7 +614,7 @@ app.post('/eaterDataForm', (req,res) => {
                 console.log("save!!!!");
                 Eater.find({firstName:req.body.firstname,lastName:req.body.lastname}, (err,eaterData)=>{
                         if(err) console.log(err);
-                        console.log(eaterData)
+                        console.log(eaterData);
                         console.log(eaterData[0]._id);
                         UserAuth.findOneAndUpdate({_id:req.user._id},{userDataId:eaterData[0]._id},(err,eaterID)=>{
                                 if(err) console.log(err);
@@ -625,6 +625,7 @@ app.post('/eaterDataForm', (req,res) => {
 
                 });
         // ปิด 
+
 });
 
 const fileUpload = require('express-fileupload');

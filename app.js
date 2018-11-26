@@ -191,5 +191,22 @@ interact.on('connection', function(client){
                 console.log(roomName+" room is leaved!");
         });
 });
+app.post('/contactUs', (req,res) => {
+        var contactemailback = {
+                from: bingmeMail,
+                to: req.body.conEmail,
+                subject: '[BINGME] Thank you for contact us !'
+        };
+        contactemailback.text = 'Thank you " '+ req.body.conusername + ' " for contact us , we got message from you as "' + req.body.content + '" We will contact you as soon as possible'
+        
+        transporter.sendMail(contactemailback, function(error, info){
+                if (error) {
+                        console.log(error);
+                } else {
+                        console.log('Email sent: ' + info.response);
+                }
+        });
+        res.redirect('/');
+});
 
 server.listen(5500, () => console.log('Server run on port 5500'));

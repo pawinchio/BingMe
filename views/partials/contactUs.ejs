@@ -1,0 +1,29 @@
+<!-- <div class="modal fade show" id="contactUsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: block;"> -->
+<div class="modal fade" id="contactUs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >    
+    <div class="modal-dialog modal-dialog-login" role="document">
+        <div class="modal-content" id="contact"> 
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Contact Us</h5>
+            <i data-dismiss="modal" aria-label="Close" data-feather="x" class="close"></i>
+        </div>
+        <form action="/contactUs" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="ContactEmail">Email:</label>
+                <input type="email" class="modal-arm" id="ContactEmail" name="conEmail" required>
+                <label for="UserID">User name:</label>
+                <input type="text" class="modal-arm" id="UserID" name="conusername" required>
+            </div>
+            
+            <div>
+                <label for="Content">Content</label>
+                <textarea type="text" class="form-control" id="ContentContect" name="content" required></textarea>
+            </div>
+        </div>
+        <button class="modal-footer" type="submit">
+            <div><i data-feather="log-in" class="login-icon"></i>  Submit</div>
+        </button>
+        </form>
+        </div>
+    </div>  
+</div>

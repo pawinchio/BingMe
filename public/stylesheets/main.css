@@ -287,5 +287,27 @@ body{
     width: 100%;
 }
 
+#contact{
+    width: 500px;
+}
 
+.modal-arm{
+    border: 0 solid #ced4da;
+    border-bottom: 1px solid #00FF89;
+    border-radius: 0; 
+    font-size: 1.0 rem;
+    outline:none !important;
+    box-shadow: none;
+    width: 33%;
+}
+
+#ContentContect{
+    margin-left: 10px;
+    margin-bottom: 20px;
+    margin-top: 10px; 
+    background: rgb(243, 238, 238);
+    width: 425px;
+    height: 100px;
+    font-size: 1.5 rem;
+}
 

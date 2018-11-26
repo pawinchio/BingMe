@@ -1,11 +1,8 @@
-const   mongoose = require('mongoose'),
-        passportLocalMongoose = require('passport-local-mongoose');
+const   mongoose = require('mongoose');
 
 const userActivateSchema = new mongoose.Schema({
-    userId: mongoose.Schema.Types.ObjectId,
+    userId: String,
     code: String
 });
-
-userActivateSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("UserActivation", userActivateSchema);

@@ -61,12 +61,14 @@ app.get('/', (req,res) => {
         if(req.user){
                 res.render('index',{
                         user: req.user,
-                        error: errSent
+                        error: errSent,
+                        flag: null
                 })
         }
         else res.render('index',{
                 user: null,
-                error: errSent
+                error: errSent,
+                flag: null
         });
 });
 
@@ -125,6 +127,7 @@ app.post('/activate', (req,res) => {
                         userId: req.user._id,
                         code: code
                 });
+                console.log(newActivation);
                 var mailOptions = {
                         from: bingmeMail,
                         to: req.body.email,
@@ -134,23 +137,30 @@ app.post('/activate', (req,res) => {
                 newActivation.save().then(()=>{
                         transporter.sendMail(mailOptions, function(error, info){
                                 if (error) {
-                                  console.log(error);
+                                        console.log(error);
+                                        res.send('failed');
                                 } else {
-                                  console.log('Email sent: ' + info.response);
+                                        console.log('Email sent: ' + info.response);
                                 }
                         });
                         res.send('created');
                 }).catch(err => {
                         if (err.name === 'MongoError' && err.code === 11000){
                                 console.log('Activation code was create before\n'+err);
-                                transporter.sendMail(mailOptions, function(error, info){
-                                        if (error) {
-                                          console.log(error);
-                                        } else {
-                                          console.log('Email sent: ' + info.response);
-                                        }
+                                UserActivation.findOne({userId: req.user._id,}, (err, activation) => {
+                                        if(!err){
+                                                mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+activation.code);
+                                                transporter.sendMail(mailOptions, function(error, info){
+                                                        if (error) {
+                                                                console.log(error);
+                                                                res.send('failed');
+                                                        } else {
+                                                                console.log('Email sent: ' + info.response);
+                                                        }
+                                                });
+                                                res.send('repeat');
+                                        }else res.send('failed');
                                 });
-                                res.send('repeat');
                         }
                         else{
                                 console.log('Code Saving Failed'+err);
@@ -172,6 +182,9 @@ app.get('/activate', (req,res) => {
                         res.redirect(url.format({
                                 pathname:"/",
                                 query: {
+                                        flag: {
+                                                toActivate: true
+                                        },
                                         errorTopic: 'Activation Failed',
                                         errorDesc: 'Your activation link is not exist or expired'
                                 }
@@ -186,6 +199,9 @@ app.get('/activate', (req,res) => {
                                                 res.redirect(url.format({
                                                         pathname:"/",
                                                         query: {
+                                                                flag: {
+                                                                        toActivate: true
+                                                                },
                                                                 errorTopic: 'Account Activated',
                                                                 errorDesc: 'Account activation success!'
                                                         }

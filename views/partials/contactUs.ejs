@@ -1,6 +1,6 @@
 <!-- <div class="modal fade show" id="contactUsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: block;"> -->
 <div class="modal fade" id="contactUs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >    
-    <div class="modal-dialog modal-dialog-login" role="document">
+    <div class="modal-dialog modal-dialog-login" role="document" style="max-width: 700px;width: 90%;">
         <div class="modal-content" id="contact"> 
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Contact Us</h5>
@@ -8,11 +8,15 @@
         </div>
         <form action="/contactUs" method="post">
         <div class="modal-body">
-            <div class="form-group">
-                <label for="ContactEmail">Email:</label>
-                <input type="email" class="modal-arm" id="ContactEmail" name="conEmail" required>
-                <label for="UserID">User name:</label>
-                <input type="text" class="modal-arm" id="UserID" name="conusername" required>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="ContactEmail">Email:</label>
+                    <input type="email" class="modal-arm" id="ContactEmail" name="conEmail" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="UserID">User name:</label>
+                    <input type="text" class="modal-arm" id="UserID" name="conusername" required>
+                </div>
             </div>
             
             <div>

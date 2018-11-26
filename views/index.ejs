@@ -4,6 +4,15 @@
         <%- include('partials/errorModal', {error: error}); %>
     <% } %>
 
+    <%if(flag){%>
+        <script>
+            flag = <%- JSON.stringify(flag) %>
+            console.log(flag);
+            if(flag.stopActivateModal){
+                $('#activateModal').modal('hide');
+            }
+        </script>
+    <% } %>
     <%if(user){%>
         <script>
             user = <%- JSON.stringify(user) %>

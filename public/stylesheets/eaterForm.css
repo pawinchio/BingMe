@@ -118,6 +118,9 @@
 .form-section > .form-group > label{
     color: #00FF89;
 }
+.section-1{
+    text-align: center;
+}
 
 .section-2, .section-3{
     border-top: 1px solid gray;
@@ -133,6 +136,21 @@
     padding-top: 30px;
     width: 70%;
     margin: 30px auto;
+}
+
+.custom-file-label{
+    line-height: 1.9;
+    text-align: left;
+}
+
+.custom-file-label::after{
+    line-height: 1.7!important;
+    font-size: 0.9rem!important;
+}
+
+.input-group-text {
+    line-height: 1.7!important;
+    font-size: 0.9rem!important;
 }
 
 

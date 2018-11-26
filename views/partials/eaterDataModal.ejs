@@ -2,18 +2,19 @@
         <div class="form-group">
 	        <div class="row">
                 <div class="col-lg-4 col-sm-12">
-                        <form id="photoForm" action="/upload" method="POST" enctype="multipart/form-data">
-                            <div class="form-section section-1" style="width: 100%;text-align: center">
-                                <div class="file-path-wrapper" style='text-align: center;'>
-                                    <img class="file-path validate eaterpic">
-                                </div>
-                                <div class="btn btn-defaut"id="">
-                                    <input id="photoInput" name="myImage" type="file" style='width:100%;margin: 10px auto;'>
-                                </div>
-                                
-                                <div  class="btn btn-primary" id="sendPhoto" style="margin: 0 8%;">Submit</div>
-                            </div>  
-                        </form>
+                    <div class="form-section section-1">
+                        <img class="file-path validate eaterpic">
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="photoInput" name="myImage" style='width:100%;margin: 10px auto;'>
+                                <label class="custom-file-label" for="photoInput">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="sendPhoto">Upload</span>
+                            </div>
+                        </div>
+                    </div>
+                       
                     <div class="form-section section-2">
                         <!-- <form action="/eaterDataForm" method="post" enctype="multipart/form-data"> -->
                             <form action="/eaterDataForm" method="post" >

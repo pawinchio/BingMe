@@ -582,66 +582,70 @@ app.post('/checkqr',(req,res)=>{
 });
 
 app.post('/eaterDataForm', (req,res) => {
-        //eaterdata
         var MongoClient = require('mongodb').MongoClient;
         let input = req.body;
-        // console.log(req.body)
         console.log("pass")
-                var newEater = new Eater({
-                        firstName: input.firstname,
-                        lastName: input.lastname,
-                        phoneNumber: input.phone,
-                        gender: input.gender,
-                        birthday: input.birthDay,
-                        address : input.ADDRESS,
-                        email : input.email,
-                        picture : '/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
-                        c_dCardNumber : input.Cardnumber,
-                        holderName : input.CardName,
-                        expiration_m : input.expireMonth,
-                        expiration_y : input.expireYear,
-                        cvv : input.CVV,
-                        billingAddress: input.BillingAddress,
-                        refPending : null,
-                        costTotal : 0,
-                        discount : 100
-                });
-                console.log(newEater);
-                // console.log(req.user._id);
-                newEater.save().catch(err => {
-                        console.log('Code Saving Failed'+err);      
-                });
-                console.log("save!!!!");
-                Eater.find({firstName:req.body.firstname,lastName:req.body.lastname}, (err,eaterData)=>{
-                        if(err) console.log(err);
-                        console.log(eaterData)
-                        console.log(eaterData[0]._id);
-                        UserAuth.findOneAndUpdate({_id:req.user._id},{userDataId:eaterData[0]._id},(err,eaterID)=>{
-                                if(err) console.log(err);
-                                // res.send('summit Success!');
-                                console.log("updated")
-                                
-                        }); 
-
-                });
-        // ปิด 
+        var newEater = new Eater({
+                firstName: input.firstname,
+                lastName: input.lastname,
+                phoneNumber: input.phone,
+                gender: input.gender,
+                birthday: input.birthDay,
+                address : input.ADDRESS,
+                email : req.user.email,
+                picture : '/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
+                c_dCardNumber : input.Cardnumber,
+                holderName : input.CardName,
+                expiration_m : input.expireMonth,
+                expiration_y : input.expireYear,
+                cvv : input.CVV,
+                billingAddress: input.BillingAddress,
+                refPending : null,
+                costTotal : 0,
+                discount : 100
+        });
+        console.log(newEater);
+        newEater.save((err, eaterData)=>{
+                if(err) {
+                        res.redirect(url.format({
+                                pathname:"/",
+                                query: {
+                                        errorTopic: 'Account Setting Failed',
+                                        errorDesc: err.message
+                                }
+                        }));
+                }
+                UserAuth.findOneAndUpdate({_id:req.user._id},{userDataId:eaterData._id},(err,eaterID)=>{
+                        if(err) {
+                                res.redirect(url.format({
+                                        pathname:"/",
+                                        query: {
+                                                errorTopic: 'Account Setting Failed',
+                                                errorDesc: err.message
+                                        }
+                                }));
+                        }
+                        res.redirect('/');
+                        console.log("updated")
+                        
+                }); 
+        })
+        console.log("save!!!!");
 });
 
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
-// const path = require('path');
+
 app.use(fileUpload());
 app.use(express.static("userSrc"));
 
 app.post('/upload', (req, res) => {
-        uploadHandler(req,res, () =>{
-                res.send('/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg');
-        });
+        uploadHandler(req,res);
         //อ่านจาก database     
 });
   
-const uploadHandler = (req, res, callback) => {
+const uploadHandler = (req, res) => {
         if(req.files){
                 let fileUploaded = req.files.fileUpload;
                 let fileName = req.user._id+'.jpg';
@@ -649,15 +653,17 @@ const uploadHandler = (req, res, callback) => {
                 let filePath = path.join('userSrc','photos',req.user._id.toString(),'avatar');
                 console.log(filePath);
                 console.log('Files named '+fileName+' was uploaded! to ->'+filePath);
-                fs.mkdir(path.join(__dirname,filePath), {recursive:true}, (err) => {
-                        fileUploaded.mv(path.join(filePath,fileName), (err) =>{
-                                if(err) {
-                                        console.log("Can't save file recieved");
-                                        res.status(500).send(err);
-                                }
+                !fs.existsSync(path.resolve('userSrc','photos',req.user._id.toString())) && fs.mkdirSync(path.resolve('userSrc','photos',req.user._id.toString()));
+                !fs.existsSync(path.resolve(filePath)) && fs.mkdirSync(path.resolve(filePath));
+                fileUploaded.mv(path.join(filePath,fileName), (err) =>{
+                        if(err) {
+                                console.log("Can't save file recieved\n"+err);
+                                res.status(500).send(err);
+                        }
+                        else {
                                 console.log("save!!!!")
-                                callback();
-                        });
+                                res.send('/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg');
+                        } 
                 });
         }
 } 

@@ -5,7 +5,7 @@
                         <form id="photoForm" action="/upload" method="POST" enctype="multipart/form-data">
                             <div class="form-section section-1" style="width: 100%;text-align: center">
                                 <div class="file-path-wrapper" style='text-align: center;'>
-                                    <img class="file-path validate eaterpic"></img>
+                                    <img class="file-path validate eaterpic">
                                 </div>
                                 <div class="btn btn-defaut"id="">
                                     <input id="photoInput" name="myImage" type="file" style='width:100%;margin: 10px auto;'>
@@ -116,16 +116,10 @@
 
 
 <script>
-
-    //  ตัวอย่าง object ที่ต้องใส่เพื่อส่งไฟล์
-    // {                         
-    //     route: '/upload',  <---- route ที่ต้องการส่ง post request ไป
-    //     triggerElementId: 'sendPhoto', <---- id ของ element ที่เมื่อกดจะเริ่มส่งไฟล์ เช่น ปุ่ม upload
-    //     inputElementId: 'photoInput', <---- id ของ <input type="file"> ที่ต้องการอัปโหลด
-    //     path: './userSrc/photos/', <---- ตำแหน่งที่ตั้งใน server ที่ต้องการเอาไฟล์ไปเก็บไว้
-    //     fileNameWithFormat: 'myfile.jpg' <---- ชื่อไฟล์ที่จะถูก save ใน server ที่ตำแหน่ง path
-    // }
-
+    $('.eaterpic').attr('src','http://'+ $(location).attr('host') + '/photos/'+user._id+'/avatar/'+user._id+'.jpg' + "?timestamp="  + new Date().getTime());
+    $('.eaterpic').on('error',function() {
+        $('.eaterpic').attr('src','');
+    });
     const uploadFile = (requestObj, callback) => {
         $('#'+requestObj.triggerElementId).on('click', () => {
             let formData =new FormData();
@@ -163,7 +157,7 @@
     uploadFile(myRequest, (data) => {
         // fuunction รับ data กลับ
         $('.eaterpic').attr('src','');
-        $('.eaterpic').attr('src','http://'+ $(location).attr('host') + data);
+        $('.eaterpic').attr('src','http://'+ $(location).attr('host') + data + "?timestamp="  + new Date().getTime());
     });
     //popup in ejs
 </script>

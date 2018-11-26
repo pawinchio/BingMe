@@ -650,16 +650,14 @@ const uploadHandler = (req, res, callback) => {
                 console.log(filePath);
                 console.log('Files named '+fileName+' was uploaded! to ->'+filePath);
                 fs.mkdir(path.join(__dirname,filePath), {recursive:true}, (err) => {
-                        if(!err){
-                                fileUploaded.mv(path.join(filePath,fileName), (err) =>{
-                                        if(err) {
-                                                console.log("Can't save file recieved");
-                                                res.status(500).send(err);
-                                        }
-                                        console.log("save!!!!")
-                                        callback();
-                                });
-                        }
+                        fileUploaded.mv(path.join(filePath,fileName), (err) =>{
+                                if(err) {
+                                        console.log("Can't save file recieved");
+                                        res.status(500).send(err);
+                                }
+                                console.log("save!!!!")
+                                callback();
+                        });
                 });
         }
 } 

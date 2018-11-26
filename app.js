@@ -625,7 +625,7 @@ app.post('/eaterDataForm', (req,res) => {
 
                 });
         // ปิด 
-
+        
 });
 
 const fileUpload = require('express-fileupload');
@@ -638,8 +638,7 @@ app.use(express.static("userSrc"));
 app.post('/upload', (req, res) => {
         uploadHandler(req,res, () =>{
                 res.send('/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg');
-        });
-        //อ่านจาก database     
+        });    
 });
   
 const uploadHandler = (req, res, callback) => {

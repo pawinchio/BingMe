@@ -134,6 +134,7 @@ app.post('/logout', (req,res) => {
 
 app.post('/activate', (req,res) => {
         //User request verification email
+        console.log('activation invoked!');
         if(req.body.email.toLowerCase() == req.user.email.toLowerCase()){
                 var code = uuid();
                 var newActivation = new UserActivation({

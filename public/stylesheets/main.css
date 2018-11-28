@@ -473,3 +473,10 @@ input.invalid {
     border-radius: 15px;
     padding: 2px 15px;
 }
+
+@media screen and (min-width: 800px) {
+    .full-modal-body{
+        padding-left:20%;
+        padding-right:20%;
+    }
+}

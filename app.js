@@ -215,6 +215,7 @@ app.get('/activate', (req,res) => {
                                         user.save();
                                         entry.remove(()=>{
                                                 res.redirect(url.format({
+                                                        protocol: 'https',
                                                         pathname:"/",
                                                         query: {
                                                                 flag: {

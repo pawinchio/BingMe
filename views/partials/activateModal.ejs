@@ -47,6 +47,7 @@
             $('#face1').empty();
             $('#face1').append('<div style="text-align:center"><h5 id="dialog"></h5><div id="icon"></div><p id="detail" style="color:red;"></p></div>');
             if(data == 'created' || data == 'repeat'){
+                console.log(data);
                 $('#face1 > div > #dialog').html('อีเมลถูกส่งไปแล้ว!</br>โปรดตรวจสอบกล่องข้อความของคุณ');
                 $('#face1 > div > #icon').append('<i data-feather="mail" style="color:#00ff89;width: 120px;height: 120px; margin:20px auto;"></i>');
             }else{

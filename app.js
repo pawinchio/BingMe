@@ -155,9 +155,9 @@ app.post('/activate', (req,res) => {
                                         res.send('failed');
                                 } else {
                                         console.log('Email sent: ' + info.response);
+                                        res.send('created');
                                 }
                         });
-                        res.send('created');
                 }).catch(err => {
                         if (err.name === 'MongoError' && err.code === 11000){
                                 console.log('Activation code was create before\n'+err);
@@ -169,10 +169,10 @@ app.post('/activate', (req,res) => {
                                                                 console.log(error);
                                                                 res.send('failed');
                                                         } else {
+                                                                res.send('repeat');
                                                                 console.log('Email sent: ' + info.response);
                                                         }
                                                 });
-                                                res.send('repeat');
                                         }else res.send('failed');
                                 });
                         }

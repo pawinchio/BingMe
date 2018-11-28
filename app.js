@@ -24,6 +24,11 @@ var     Eater  = require("./models/eater"),
         methodOverride = require("method-override"),
         UserActivation = require('./models/userActivation');
 
+const fileUpload = require('express-fileupload');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+
+
 
 const   tools = require('./calculations.js');
 
@@ -31,7 +36,9 @@ mongoose.connect('mongodb://db_admin:db_11121150@ds029541.mlab.com:29541/bingme-
 app.set('view engine','ejs');
 // app.use(expressSanitizer());
 app.use(methodOverride("_method"));
+app.use(fileUpload());
 app.use(express.static("public"));
+app.use(express.static("userSrc"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(require('express-session')({
         secret: 'bing me is about eating',
@@ -593,7 +600,7 @@ app.post('/eaterDataForm', (req,res) => {
                 birthday: input.birthDay,
                 address : input.ADDRESS,
                 email : req.user.email,
-                picture : '/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
+                picture : $(location).attr('protocol')+'://'+$(location).attr('hostname')+'/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
                 c_dCardNumber : input.Cardnumber,
                 holderName : input.CardName,
                 expiration_m : input.expireMonth,
@@ -633,12 +640,7 @@ app.post('/eaterDataForm', (req,res) => {
         console.log("save!!!!");
 });
 
-const fileUpload = require('express-fileupload');
-const fs = require('fs');
-const mkdirp = require('mkdirp');
 
-app.use(fileUpload());
-app.use(express.static("userSrc"));
 
 app.post('/upload', (req, res) => {
         uploadHandler(req,res);

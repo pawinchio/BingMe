@@ -185,7 +185,7 @@ app.post('/activate', (req,res) => {
                                 }
                         });     
                 });
-        }else res.send('failed');
+        }else res.send('failed!');
 });
 
 const activateEmailTemplate_th = (name, link)=>{

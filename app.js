@@ -137,50 +137,53 @@ app.post('/activate', (req,res) => {
         console.log('activation invoked!');
         if(req.body.email.toLowerCase() == req.user.email.toLowerCase()){
                 var code = uuid();
-                var newActivation = new UserActivation({
-                        userId: req.user._id,
-                        code: code
-                });
-                console.log(newActivation);
+                var ud = req.user._id.toString();
                 var mailOptions = {
                         from: bingmeMail,
                         to: req.body.email,
                         subject: '[BINGME] Verification Email',
                 };
                 mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+code);
-                newActivation.save().then(()=>{
-                        transporter.sendMail(mailOptions, function(error, info){
-                                if (error) {
-                                        console.log(error);
-                                        res.send('failed');
-                                } else {
-                                        console.log('Email sent: ' + info.response);
-                                        res.send('created');
-                                }
-                        });
-                }).catch(err => {
-                        if (err.name === 'MongoError' && err.code === 11000){
-                                console.log('Activation code was create before\n'+err);
-                                UserActivation.findOne({userId: req.user._id,}, (err, activation) => {
-                                        if(!err){
-                                                mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+activation.code);
-                                                transporter.sendMail(mailOptions, function(error, info){
-                                                        if (error) {
-                                                                console.log(error);
-                                                                res.send('failed');
-                                                        } else {
-                                                                res.send('repeat');
-                                                                console.log('Email sent: ' + info.response);
-                                                        }
-                                                });
-                                        }else res.send('failed');
+                
+                UserActivation.create({
+                        userId: ud,
+                        code: code
+                }, (err, data)=>{
+                        console.log("new error---> "+err);
+                        data.save().then(()=>{
+                                transporter.sendMail(mailOptions, function(error, info){
+                                        if (error) {
+                                                console.log(error);
+                                                res.send('failed');
+                                        } else {
+                                                console.log('Email sent: ' + info.response);
+                                                res.send('created');
+                                        }
                                 });
-                        }
-                        else{
-                                console.log('Code Saving Failed'+err);
-                                res.send('failed');
-                        }
-                });     
+                        }).catch(err => {
+                                if (err.name === 'MongoError' && err.code === 11000){
+                                        console.log('Activation code was create before\n'+err);
+                                        UserActivation.findOne({userId: req.user._id,}, (err, activation) => {
+                                                if(!err){
+                                                        mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+activation.code);
+                                                        transporter.sendMail(mailOptions, function(error, info){
+                                                                if (error) {
+                                                                        console.log(error);
+                                                                        res.send('failed');
+                                                                } else {
+                                                                        res.send('repeat');
+                                                                        console.log('Email sent: ' + info.response);
+                                                                }
+                                                        });
+                                                }else res.send('failed');
+                                        });
+                                }
+                                else{
+                                        console.log('Code Saving Failed'+err);
+                                        res.send('failed');
+                                }
+                        });     
+                });
         }else res.send('failed');
 });
 

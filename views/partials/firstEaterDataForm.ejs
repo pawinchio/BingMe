@@ -32,13 +32,13 @@
                 <div class="form-group">
                     <label for="expireDate">Expiration</label>
                     <div class='row'>
-                        <select id="expireDate" class="form-control col-md-5" name="expireMonth">
-                            <option selected>Month</option>
+                        <select id="expireDate" class="form-control col-md-5" name="expireMonth" required>
+                            <option selected >Month</option>
                             <%for(let i=1;i<=12;i++){%>
                             <option value=<%-i%>><%- i%></option>
                             <%}%>
                         </select>
-                        <select class="form-control col-md-7" name="expireYear">
+                        <select class="form-control col-md-7" name="expireYear" required>
                             <option selected>Year</option>
                             <%for(let i=2018;i<=2030;i++){%>
                             <option value=<%-i%>><%- i%></option>
@@ -71,8 +71,8 @@
             <div class="form-group">
                 <div class='row'>
                     <div class="col-md-4">
-                        <label style="color:#00ff89; margin-top:10px;" for="gender">Gender</label>
-                        <select class="form-control" id="gender"name="gender">
+                        <label style="color:#00ff89; margin-top:10px;" for="gender" >Gender</label>
+                        <select class="form-control" id="gender"name="gender" required>
                             <option selected>Select</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -93,11 +93,11 @@
     <div class="tab">ที่อยู่:
         <div class='form-group'>
             <label for="eater-address">Address</label>
-            <textarea class="form-control" id="eater-address" style="height: 120px;" placeholder="Your Address" name="ADDRESS"></textarea>
+            <textarea class="form-control" id="eater-address" style="height: 120px;" placeholder="Your Address" name="ADDRESS" required></textarea>
         </div>
         <div class='form-group'>
             <label for="eater-billing">Billing Address</label>
-            <textarea class="form-control" id="eater-billing" placeholder="Your Billing Address" name="BillingAddress"></textarea>
+            <textarea class="form-control" id="eater-billing" placeholder="Your Billing Address" name="BillingAddress" required></textarea>
         </div>
     </div>
         </form>
@@ -155,6 +155,9 @@
     
     $('.eaterpic').attr('src','http://'+ $(location).attr('host') + '/photos/'+user._id+'/avatar/'+user._id+'.jpg' + "?timestamp="  + new Date().getTime());
     
+    // var hostName =$(location).attr('protocol')+'://'+$(location).attr('hostname')+'/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg'
+
+
     uploadFile(myRequest, (data) => {
         // fuunction รับ data กลับ
         $('.eaterpic').attr('src','');
@@ -196,6 +199,7 @@
     if (currentTab >= x.length) {
         //...the form gets submitted:
         $('#eaterDataForm').get(0).submit();
+        
         return false;
     }
     // Otherwise, display the correct tab:

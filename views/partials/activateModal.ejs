@@ -40,7 +40,7 @@
 
     const createActivation = () => {
         $('.modal-loader').show();
-        $.post('/'+'activate', {
+        $.post('/activate', {
             email: $('#emailToVerify').val()
         }, (data, status)=>{
             console.log(data);

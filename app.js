@@ -68,6 +68,7 @@ function sleep(ms){
 }
 
 app.get('/', (req,res) => {
+        // console.log(req.protocol+'://');
         let errSent = null;
         if(Object.keys(req.query).length > 0) errSent = req.query;
         
@@ -143,7 +144,7 @@ app.post('/activate', (req,res) => {
                         to: req.body.email,
                         subject: '[BINGME] Verification Email',
                 };
-                mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+code);
+                mailOptions.html = activateEmailTemplate_th(req.user.username,req.protocol+'://'+req.get('host')+'/activate?code='+code);
                 
                 UserActivation.create({
                         userId: ud,
@@ -165,7 +166,7 @@ app.post('/activate', (req,res) => {
                                         console.log('Activation code was create before\n'+err);
                                         UserActivation.findOne({userId: req.user._id,}, (err, activation) => {
                                                 if(!err){
-                                                        mailOptions.html = activateEmailTemplate_th(req.user.username,req.get('host')+'/activate?code='+activation.code);
+                                                        mailOptions.html = activateEmailTemplate_th(req.user.username,req.protocol+'://'+req.get('host')+'/activate?code='+activation.code);
                                                         transporter.sendMail(mailOptions, function(error, info){
                                                                 if (error) {
                                                                         console.log(error);
@@ -725,4 +726,5 @@ interact.on('connection', function(client){
         });
         
 });
+
 server.listen(process.env.PORT || 5500, () => console.log('Server run on port 5500'));

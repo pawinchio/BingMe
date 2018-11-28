@@ -91,5 +91,12 @@
         <div class="col-md-2 col-sm-12"></div>
         
     </div>
+
+<script>
+    $('#usercard-pic').attr('src','http://'+ $(location).attr('host') + '/photos/'+user._id+'/avatar/'+user._id+'.jpg' + "?timestamp="  + new Date().getTime());
+    $('#usercard-pic').on('error',function() {
+        $('.eaterpic').attr('src','../assets/images/user.svg');
+    });
+</script>
     
 <% include partials/footer %>

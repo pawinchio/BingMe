@@ -15,7 +15,7 @@ const   express = require('express'),
         uuid = require('uuid/v1');;
 
 var     Eater  = require("./models/eater"),
-
+        
         Hunter  = require("./models/hunter"),
         Menu  = require("./models/menu"),
         OrderPool  = require("./models/orderPool"),
@@ -605,7 +605,9 @@ app.post('/eaterDataForm', (req,res) => {
                 birthday: input.birthDay,
                 address : input.ADDRESS,
                 email : req.user.email,
-                picture : $(location).attr('protocol')+'://'+$(location).attr('hostname')+'/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
+                // picture : $(location).attr('protocol')+'://'+$(location).attr('hostname')+':5500/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
+                picture : req.protocol+'://'+req.hostname+'/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
+                // picture :'/photos/'+req.user._id+'/avatar/'+req.user._id+'.jpg',
                 c_dCardNumber : input.Cardnumber,
                 holderName : input.CardName,
                 expiration_m : input.expireMonth,

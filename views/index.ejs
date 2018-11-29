@@ -93,9 +93,9 @@
     </div>
 
 <script>
-    $('#usercard-pic').attr('src','http://'+ $(location).attr('host') + '/photos/'+user._id+'/avatar/'+user._id+'.jpg' + "?timestamp="  + new Date().getTime());
-    $('#usercard-pic').on('error',function() {
-        $('.eaterpic').attr('src','../assets/images/user.svg');
+    $('.eaterpic').attr('src','../assets/images/user.svg');
+    getUserBySession((data) => {
+        if(data) $('#usercard-pic').attr('src',data.user.picture + "?timestamp="  + new Date().getTime());
     });
 </script>
     

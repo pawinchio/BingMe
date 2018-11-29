@@ -444,21 +444,7 @@ const showInteractBoard = () => {
     });
 }
 
-const getUserByOrderId = (orderId, callback) => {
-    $.post('/fetchUserByOrderId',{orderId: orderId},(data, status)=>{
-        if(status=='success'){
-            callback(data);
-        }else console.log(status);
-    })
-}
 
-const getUserBySession = (callback) => {
-    $.get('/fetchUserBySession', (data, status) => {
-        if(status=='success'){
-            callback(data);
-        }
-    });
-}
 
 //================================== ส่วนฟังก์ชั่นไว้ใช้เพิ่ม element ใน interractboard =======================================
 

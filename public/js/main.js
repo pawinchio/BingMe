@@ -148,6 +148,21 @@ const searchForHunter = (range) => {
     $('.search-load').css({"display":"none"});
 }
 
+const getUserByOrderId = (orderId, callback) => {
+    $.post('/fetchUserByOrderId',{orderId: orderId},(data, status)=>{
+        if(status=='success'){
+            callback(data);
+        }else console.log(status);
+    })
+}
+
+const getUserBySession = (callback) => {
+    $.get('/fetchUserBySession', (data, status) => {
+        if(status=='success'){
+            callback(data);
+        }
+    });
+}
 
 
 
